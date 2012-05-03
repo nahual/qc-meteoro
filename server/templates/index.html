@@ -1,0 +1,34 @@
+<!doctype html>
+<title>SpeedRacer - {{node}}</title>
+<style>
+.method-name {
+    font-weight: bold;
+}
+.param-name {
+    font-style: italic;
+}
+</style>
+
+<h1>SpeedRacer {{ node }}!</h1>
+
+<p>A Python weather service</p>
+
+<div>
+    <p>Available services</p>
+    <ul>
+        <li>
+            <span class="method-name">get_cities</span>: Returns a list of cities (a list of dictionaries with keys: code, name)<br/>
+            <ul>
+                <li><span class="param-name">contains</span>: optional - the cities returned should contain the given letters</li>
+            </ul>
+        </li>
+        <li>
+            <span class="method-name">get_forecast</span>: Returns the forecast for a city (a list of dictionaries with keys: date, temperature, humidity, uv, chill, status)<br/>
+            <ul>
+                <li><span class="param-name">city</span>: mandatory - the name of the city for which the forecast is required</li>
+            </ul>
+        </li>
+    </ul>
+</div>
+
+<span style='font-size:x-small'>Running as {{ environment }} environment, using {{provider}} as provider</span>

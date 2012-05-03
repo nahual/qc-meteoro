@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:orientation="vertical" >
+
+	<LinearLayout
+	    android:layout_height="wrap_content" 
+	    android:layout_width="fill_parent"
+	    >
+	    <TextView 
+	        android:id="@+id/nombreCiudad_txt" 
+	        android:text="Ciudad"
+	        android:layout_height="wrap_content"
+	        android:layout_width="wrap_content"
+	        android:layout_weight="1.0"
+	        />
+	    <TextView 
+	        android:id="@+id/temperaturaCiudad_txt" 
+	        android:text="NN°"
+	        android:layout_height="wrap_content"
+	        android:layout_width="wrap_content"
+	        />
+	</LinearLayout>
+	
+	<ListView
+	    android:id="@android:id/list"
+	    android:layout_width="fill_parent" 
+	    android:layout_height="wrap_content"
+	    android:layout_weight="1.0"
+	    >
+	    
+	</ListView>
+    
+
+</LinearLayout>
