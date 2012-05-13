@@ -16,8 +16,15 @@ import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.CheckBox;
 import ar.com.iron.android.extensions.activities.CustomActivity;
+import ar.com.iron.android.extensions.services.local.LocalServiceConnectionListener;
+import ar.com.iron.android.extensions.services.local.LocalServiceConnector;
+import ar.com.iron.helpers.ToastHelper;
 import ar.com.iron.helpers.ViewHelper;
+import ar.com.iron.persistence.PersistenceDao;
+import ar.com.iron.persistence.PersistenceOperationListener;
+import ar.com.iron.persistence.PersistenceService;
 import ar.nahual.meteoro.model.Ciudad;
+import ar.nahual.meteoro.model.CiudadPersistida;
 
 /**
  * 
@@ -37,6 +44,9 @@ public class AgregarCiudadActivity extends CustomActivity {
 	private CheckBox usaRayosUv;
 	private CheckBox usaSensacionTermica;
 	private CheckBox usaTemperatura;
+
+	private LocalServiceConnector<PersistenceDao> persistenceConector;
+	private PersistenceDao persistenceDao;
 
 	/**
 	 * @see ar.com.iron.android.extensions.activities.model.CustomableActivity#getLayoutIdForActivity()
@@ -61,6 +71,19 @@ public class AgregarCiudadActivity extends CustomActivity {
 	 */
 	@Override
 	public void setUpComponents() {
+		persistenceConector = LocalServiceConnector.create(PersistenceService.class);
+		persistenceConector.setConnectionListener(new LocalServiceConnectionListener<PersistenceDao>() {
+			@Override
+			public void onServiceDisconnection(final PersistenceDao disconnectedIntercomm) {
+				// No hacemos nada
+			}
+
+			@Override
+			public void onServiceConnection(final PersistenceDao intercommObject) {
+				onPersistenceDaoDisponible(intercommObject);
+			}
+		});
+		persistenceConector.bindToService(this);
 
 		usaHumedad = ViewHelper.findCheckBox(R.id.usaHumedad, getContentView());
 		usaPresion = ViewHelper.findCheckBox(R.id.usaPresion, getContentView());
@@ -98,11 +121,35 @@ public class AgregarCiudadActivity extends CustomActivity {
 		});
 	}
 
+	protected void onPersistenceDaoDisponible(final PersistenceDao intercommObject) {
+		this.persistenceDao = intercommObject;
+	}
+
 	/**
 	 * Invocado al guadar la ciudad
 	 */
 	protected void onSaveClicked() {
+		final CiudadPersistida persistible = CiudadPersistida.create(selectedCiudad);
+		persistenceDao.save(persistible, new PersistenceOperationListener<CiudadPersistida>() {
+			@Override
+			public void onSuccess(final CiudadPersistida result) {
+				onCiudadAgregada(result);
+			}
 
+			@Override
+			public void onFailure(final Exception exceptionThrown) {
+				ToastHelper.create(getContext()).showShort(
+						"Error al guardar en la base: " + exceptionThrown.getMessage());
+			}
+		});
+	}
+
+	/**
+	 * Invocado al guardar la ciudad agregada
+	 */
+	protected void onCiudadAgregada(final CiudadPersistida result) {
+		ToastHelper.create(this).showShort("Ciudad \"" + result.getCityName() + "\" agregada");
+		finish();
 	}
 
 	/**
@@ -144,4 +191,12 @@ public class AgregarCiudadActivity extends CustomActivity {
 		cityProgress.cancel();
 	}
 
+	/**
+	 * @see android.app.Activity#onStop()
+	 */
+	@Override
+	protected void onStop() {
+		persistenceConector.unbindFromService(this);
+		super.onStop();
+	}
 }

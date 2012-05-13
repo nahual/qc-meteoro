@@ -43,7 +43,7 @@ public class PaginationAdapter<T, P> {
 	 * @param nextPageRequest
 	 *            El objeto que sirve para buscar los próximos items en el fetching code
 	 */
-	public void setNextPageRequest(final P nextPageRequest) {
+	public void setNextPageRequest(P nextPageRequest) {
 		this.nextPageRequest = nextPageRequest;
 		this.isPageRequested = false;
 		this.listAdapter.notifyDataSetChanged();
@@ -53,13 +53,13 @@ public class PaginationAdapter<T, P> {
 		return config;
 	}
 
-	public void setConfig(final PaginationConfiguration<T, P> config) {
+	public void setConfig(PaginationConfiguration<T, P> config) {
 		this.config = config;
 	}
 
-	public static <T, P> PaginationAdapter<T, P> create(final PaginationConfiguration<T, P> config,
-			final CustomArrayAdapter<T> listaAdapter) {
-		final PaginationAdapter<T, P> name = new PaginationAdapter<T, P>();
+	public static <T, P> PaginationAdapter<T, P> create(PaginationConfiguration<T, P> config,
+			CustomArrayAdapter<T> listaAdapter) {
+		PaginationAdapter<T, P> name = new PaginationAdapter<T, P>();
 		name.config = config;
 		name.listAdapter = listaAdapter;
 		return name;
@@ -96,7 +96,7 @@ public class PaginationAdapter<T, P> {
 	 *            El request a verificar
 	 * @return false si este adapter tiene un nuevo request como actual
 	 */
-	public boolean isStillValid(final P testedRequest) {
+	public boolean isStillValid(P testedRequest) {
 		return testedRequest == this.nextPageRequest;
 	}
 
@@ -110,7 +110,7 @@ public class PaginationAdapter<T, P> {
 	 *            Los resultados
 	 * @return true si los elementos fueron agregados, false si el request ya no es valido
 	 */
-	public boolean onItemsReceivedFor(final P originalPageRequest, final List<T> result) {
+	public boolean onItemsReceivedFor(P originalPageRequest, List<T> result) {
 		if (!isStillValid(originalPageRequest)) {
 			// Dispararon otra busqueda antes que llegaran los resultados,
 			// los descartamos
@@ -128,7 +128,7 @@ public class PaginationAdapter<T, P> {
 	 * @param firstPageRequest
 	 *            El primer pedido de página
 	 */
-	public void startNextSearch(final P firstPageRequest) {
+	public void startNextSearch(P firstPageRequest) {
 		listAdapter.clear();
 		setNextPageRequest(firstPageRequest);
 	}

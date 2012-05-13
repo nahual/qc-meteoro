@@ -38,7 +38,7 @@ public class ActivityHelper {
 	 *            Actividad de la que se sacará la vista
 	 * @return Vista raíz
 	 */
-	public static View getContentViewFrom(final Activity activity) {
+	public static View getContentViewFrom(Activity activity) {
 		return activity.getWindow().getDecorView();
 	}
 
@@ -48,11 +48,11 @@ public class ActivityHelper {
 	 * @param activity
 	 *            Actividad que esta mostrando el teclado virtual
 	 */
-	public static void hideSoftKeyboardFor(final Activity activity) {
-		final InputMethodManager keyboardManager = ContextHelper.getKeyboardManager(activity);
-		final Window window = activity.getWindow();
-		final View rootView = window.getDecorView();
-		final IBinder viewTokenId = rootView.getWindowToken();
+	public static void hideSoftKeyboardFor(Activity activity) {
+		InputMethodManager keyboardManager = ContextHelper.getKeyboardManager(activity);
+		Window window = activity.getWindow();
+		View rootView = window.getDecorView();
+		IBinder viewTokenId = rootView.getWindowToken();
 		keyboardManager.hideSoftInputFromWindow(viewTokenId, 0);
 	}
 
@@ -62,8 +62,8 @@ public class ActivityHelper {
 	 * @param activity
 	 *            Actividad que esta mostrando el teclado virtual
 	 */
-	public static void showSoftKeyboardFor(final Activity activity, final View viewWithTextInput) {
-		final InputMethodManager keyboardManager = ContextHelper.getKeyboardManager(activity);
+	public static void showSoftKeyboardFor(Activity activity, View viewWithTextInput) {
+		InputMethodManager keyboardManager = ContextHelper.getKeyboardManager(activity);
 		keyboardManager.showSoftInput(viewWithTextInput, 0);
 	}
 
@@ -76,12 +76,12 @@ public class ActivityHelper {
 	 *            Activity a comprobar
 	 * @return false si el menú es fijo
 	 */
-	public static boolean usesDynamicMenuOptions(final CustomableActivity activity) {
-		final ActivityMenuItem<? extends CustomableActivity>[] menuItems = activity.getMenuItems();
+	public static boolean usesDynamicMenuOptions(CustomableActivity activity) {
+		ActivityMenuItem<? extends CustomableActivity>[] menuItems = activity.getMenuItems();
 		if (menuItems == null) {
 			return false;
 		}
-		for (final ActivityMenuItem<? extends CustomableActivity> menuItem : menuItems) {
+		for (ActivityMenuItem<? extends CustomableActivity> menuItem : menuItems) {
 			if (menuItem instanceof DynamicMenuItem) {
 				return true;
 			}
@@ -99,7 +99,7 @@ public class ActivityHelper {
 	 *            El menú a mostrar
 	 * @return boolean si se debe mostrar el menú
 	 */
-	public static boolean prepareDynamicOptionsMenuFor(final CustomableActivity customActivity, final Menu menu) {
+	public static boolean prepareDynamicOptionsMenuFor(CustomableActivity customActivity, Menu menu) {
 		menu.clear();
 		return createActivityOptionsFor(customActivity, menu);
 	}
@@ -112,8 +112,8 @@ public class ActivityHelper {
 	 * @return true si se crearon opciones para el menú
 	 */
 	@SuppressWarnings("unchecked")
-	public static boolean createActivityOptionsFor(final CustomableActivity activity, final Menu menu) {
-		final ActivityMenuItem<Activity>[] menuItems = (ActivityMenuItem<Activity>[]) activity.getMenuItems();
+	public static boolean createActivityOptionsFor(CustomableActivity activity, Menu menu) {
+		ActivityMenuItem<Activity>[] menuItems = (ActivityMenuItem<Activity>[]) activity.getMenuItems();
 		return ScreenMenuHelper.createActivityOptionsFor(menu, (Activity) activity, menuItems);
 	}
 }

@@ -34,7 +34,7 @@ public abstract class CustomActivity extends Activity implements CustomableActiv
 		return intentReceptor;
 	}
 
-	public void setIntentReceptor(final IntentReceptor intentReceptor) {
+	public void setIntentReceptor(IntentReceptor intentReceptor) {
 		this.intentReceptor = intentReceptor;
 	}
 
@@ -42,7 +42,6 @@ public abstract class CustomActivity extends Activity implements CustomableActiv
 	 * @return Devuelve el array de items para crear en el menu de opcioens accesible desde el botón
 	 *         "menu". Null indica sin menu
 	 */
-	@Override
 	public ActivityMenuItem<? extends CustomActivity>[] getMenuItems() {
 		return null;
 	}
@@ -51,14 +50,12 @@ public abstract class CustomActivity extends Activity implements CustomableActiv
 	 * Crea y configura los controles que se usaran en la pantalla. Opcional para aquellas pantallas
 	 * que no tengan controles
 	 */
-	@Override
 	public void setUpComponents() {
 	}
 
 	/**
 	 * @return Devuelve la vista raiz de toda la pantalla
 	 */
-	@Override
 	public View getContentView() {
 		return ActivityHelper.getContentViewFrom(this);
 	}
@@ -67,7 +64,7 @@ public abstract class CustomActivity extends Activity implements CustomableActiv
 	 * @see android.app.Activity#onCreate(android.os.Bundle)
 	 */
 	@Override
-	public void onCreate(final Bundle savedInstanceState) {
+	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 
 		this.setContentView(this.getLayoutIdForActivity());
@@ -82,14 +79,12 @@ public abstract class CustomActivity extends Activity implements CustomableActiv
 	/**
 	 * Obtiene los managers o servicios que sean necesarios para el funcionamiento de esta pantalla
 	 */
-	@Override
 	public void initDependencies() {
 	}
 
 	/**
 	 * Ejecuta código específico de la subclase para configurar cosas adicionales (es opcional)
 	 */
-	@Override
 	public void afterOnCreate() {
 	}
 
@@ -99,7 +94,7 @@ public abstract class CustomActivity extends Activity implements CustomableActiv
 	 * @see android.app.Activity#onCreateOptionsMenu(android.view.Menu)
 	 */
 	@Override
-	public boolean onCreateOptionsMenu(final Menu menu) {
+	public boolean onCreateOptionsMenu(Menu menu) {
 		if (usesDynamicMenuOptions()) {
 			// No creamos el menú ahora, ya que en el prepare se hará de nuevo por ser dinámico
 			return true;
@@ -111,7 +106,7 @@ public abstract class CustomActivity extends Activity implements CustomableActiv
 	 * @see android.app.Activity#onPrepareOptionsMenu(android.view.Menu)
 	 */
 	@Override
-	public boolean onPrepareOptionsMenu(final Menu menu) {
+	public boolean onPrepareOptionsMenu(Menu menu) {
 		if (usesDynamicMenuOptions()) {
 			menu.clear();
 			return createActivityOptions(menu);
@@ -126,11 +121,11 @@ public abstract class CustomActivity extends Activity implements CustomableActiv
 	 * @return false por defecto ya que la mayoría de los menúes son fijos
 	 */
 	public boolean usesDynamicMenuOptions() {
-		final ActivityMenuItem<? extends CustomActivity>[] menuItems = getMenuItems();
+		ActivityMenuItem<? extends CustomActivity>[] menuItems = getMenuItems();
 		if (menuItems == null) {
 			return false;
 		}
-		for (final ActivityMenuItem<? extends CustomActivity> menuItem : menuItems) {
+		for (ActivityMenuItem<? extends CustomActivity> menuItem : menuItems) {
 			if (menuItem instanceof DynamicMenuItem) {
 				return true;
 			}
@@ -146,9 +141,9 @@ public abstract class CustomActivity extends Activity implements CustomableActiv
 	 * @return true si se crearon opciones para el menú
 	 */
 	@SuppressWarnings("unchecked")
-	protected boolean createActivityOptions(final Menu menu) {
+	protected boolean createActivityOptions(Menu menu) {
 		@SuppressWarnings("rawtypes")
-		final ActivityMenuItem[] menuItems = getMenuItems();
+		ActivityMenuItem[] menuItems = getMenuItems();
 		return ScreenMenuHelper.createActivityOptionsFor(menu, this, menuItems);
 	}
 
@@ -162,8 +157,7 @@ public abstract class CustomActivity extends Activity implements CustomableActiv
 	 * @param executedWhenReceived
 	 *            Listener a ejecutar cuando se recibe el mensaje
 	 */
-	@Override
-	public void registerMessageReceiver(final String expectedAction, final BroadcastReceiver executedWhenReceived) {
+	public void registerMessageReceiver(String expectedAction, BroadcastReceiver executedWhenReceived) {
 		getIntentReceptor().registerMessageReceiver(expectedAction, executedWhenReceived);
 	}
 
@@ -184,7 +178,6 @@ public abstract class CustomActivity extends Activity implements CustomableActiv
 	 * Al registrar los receivers en este metodo se asegura que se recibirán los mensajes aún cuando
 	 * la pantalla no es visible
 	 */
-	@Override
 	public void initMessageReceivers() {
 	}
 

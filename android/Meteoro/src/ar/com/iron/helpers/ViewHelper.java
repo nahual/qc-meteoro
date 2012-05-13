@@ -46,7 +46,7 @@ public abstract class ViewHelper {
 	 *            Vista de la que obtendrá el control
 	 * @return El control existente en la vista
 	 */
-	public static TextView findTextView(final int textViewId, final View view) {
+	public static TextView findTextView(int textViewId, View view) {
 		return getControlFromView(view, textViewId, TextView.class);
 	}
 
@@ -60,7 +60,7 @@ public abstract class ViewHelper {
 	 *            Vista de la que obtendrá el control
 	 * @return El control existente en la vista
 	 */
-	public static CheckedTextView findCheckedTextView(final int textViewId, final View view) {
+	public static CheckedTextView findCheckedTextView(int textViewId, View view) {
 		return getControlFromView(view, textViewId, CheckedTextView.class);
 	}
 
@@ -74,7 +74,7 @@ public abstract class ViewHelper {
 	 *            Vista de la que obtendrá el control
 	 * @return El control existente en la vista
 	 */
-	public static Button findButton(final int buttonId, final View view) {
+	public static Button findButton(int buttonId, View view) {
 		return getControlFromView(view, buttonId, Button.class);
 	}
 
@@ -88,7 +88,7 @@ public abstract class ViewHelper {
 	 *            Vista de la que obtendrá el control
 	 * @return El control existente en la vista
 	 */
-	public static AutoCompleteTextView findAutoComplete(final int autoCompleteId, final View view) {
+	public static AutoCompleteTextView findAutoComplete(int autoCompleteId, View view) {
 		return getControlFromView(view, autoCompleteId, AutoCompleteTextView.class);
 	}
 
@@ -102,7 +102,7 @@ public abstract class ViewHelper {
 	 *            Vista de la que obtendrá el control
 	 * @return El control existente en la vista
 	 */
-	public static CheckBox findCheckBox(final int checkBoxId, final View view) {
+	public static CheckBox findCheckBox(int checkBoxId, View view) {
 		return getControlFromView(view, checkBoxId, CheckBox.class);
 	}
 
@@ -116,7 +116,7 @@ public abstract class ViewHelper {
 	 *            Vista de la que obtendrá el control
 	 * @return El control existente en la vista
 	 */
-	public static Chronometer findChronometer(final int chronometerId, final View view) {
+	public static Chronometer findChronometer(int chronometerId, View view) {
 		return getControlFromView(view, chronometerId, Chronometer.class);
 	}
 
@@ -130,7 +130,7 @@ public abstract class ViewHelper {
 	 *            Vista de la que obtendrá el control
 	 * @return El control existente en la vista
 	 */
-	public static DatePicker findDatePicker(final int datePickerId, final View view) {
+	public static DatePicker findDatePicker(int datePickerId, View view) {
 		return getControlFromView(view, datePickerId, DatePicker.class);
 	}
 
@@ -144,7 +144,7 @@ public abstract class ViewHelper {
 	 *            Vista de la que obtendrá el control
 	 * @return El control existente en la vista
 	 */
-	public static EditText findEditText(final int editTextId, final View view) {
+	public static EditText findEditText(int editTextId, View view) {
 		return getControlFromView(view, editTextId, EditText.class);
 	}
 
@@ -158,7 +158,7 @@ public abstract class ViewHelper {
 	 *            Vista de la que obtendrá el control
 	 * @return El control existente en la vista
 	 */
-	public static Gallery findGallery(final int galleryId, final View view) {
+	public static Gallery findGallery(int galleryId, View view) {
 		return getControlFromView(view, galleryId, Gallery.class);
 	}
 
@@ -172,7 +172,7 @@ public abstract class ViewHelper {
 	 *            Vista de la que obtendrá el control
 	 * @return El control existente en la vista
 	 */
-	public static ImageButton findImageButton(final int imageButtonId, final View view) {
+	public static ImageButton findImageButton(int imageButtonId, View view) {
 		return getControlFromView(view, imageButtonId, ImageButton.class);
 	}
 
@@ -186,7 +186,7 @@ public abstract class ViewHelper {
 	 *            Vista de la que obtendrá el control
 	 * @return El control existente en la vista
 	 */
-	public static ImageView findImageView(final int imageViewId, final View view) {
+	public static ImageView findImageView(int imageViewId, View view) {
 		return getControlFromView(view, imageViewId, ImageView.class);
 	}
 
@@ -200,7 +200,7 @@ public abstract class ViewHelper {
 	 *            Vista de la que obtendrá el control
 	 * @return El control existente en la vista
 	 */
-	public static MultiAutoCompleteTextView findMultiAutoComplete(final int multiAutoCompleteId, final View view) {
+	public static MultiAutoCompleteTextView findMultiAutoComplete(int multiAutoCompleteId, View view) {
 		return getControlFromView(view, multiAutoCompleteId, MultiAutoCompleteTextView.class);
 	}
 
@@ -214,7 +214,7 @@ public abstract class ViewHelper {
 	 *            Vista de la que obtendrá el control
 	 * @return El control existente en la vista
 	 */
-	public static ProgressBar findProgressBar(final int progressBarId, final View view) {
+	public static ProgressBar findProgressBar(int progressBarId, View view) {
 		return getControlFromView(view, progressBarId, ProgressBar.class);
 	}
 
@@ -228,7 +228,7 @@ public abstract class ViewHelper {
 	 *            Vista de la que obtendrá el control
 	 * @return El control existente en la vista
 	 */
-	public static RadioButton findRadioButton(final int radioButtonId, final View view) {
+	public static RadioButton findRadioButton(int radioButtonId, View view) {
 		return getControlFromView(view, radioButtonId, RadioButton.class);
 	}
 
@@ -242,7 +242,7 @@ public abstract class ViewHelper {
 	 *            Vista de la que obtendrá el control
 	 * @return El control existente en la vista
 	 */
-	public static RatingBar findRatingBar(final int ratingBarId, final View view) {
+	public static RatingBar findRatingBar(int ratingBarId, View view) {
 		return getControlFromView(view, ratingBarId, RatingBar.class);
 	}
 
@@ -256,7 +256,7 @@ public abstract class ViewHelper {
 	 *            Vista de la que obtendrá el control
 	 * @return El control existente en la vista
 	 */
-	public static SeekBar findSeekBar(final int seekBarId, final View view) {
+	public static SeekBar findSeekBar(int seekBarId, View view) {
 		return getControlFromView(view, seekBarId, SeekBar.class);
 	}
 
@@ -270,7 +270,7 @@ public abstract class ViewHelper {
 	 *            Vista de la que obtendrá el control
 	 * @return El control existente en la vista
 	 */
-	public static Spinner findSpinner(final int spinnerId, final View view) {
+	public static Spinner findSpinner(int spinnerId, View view) {
 		return getControlFromView(view, spinnerId, Spinner.class);
 	}
 
@@ -284,7 +284,7 @@ public abstract class ViewHelper {
 	 *            Vista de la que obtendrá el control
 	 * @return El control existente en la vista
 	 */
-	public static TimePicker findTimePicker(final int timePickerId, final View view) {
+	public static TimePicker findTimePicker(int timePickerId, View view) {
 		return getControlFromView(view, timePickerId, TimePicker.class);
 	}
 
@@ -298,7 +298,7 @@ public abstract class ViewHelper {
 	 *            Vista de la que obtendrá el control
 	 * @return El control existente en la vista
 	 */
-	public static ToggleButton findToggleButton(final int toggleButtonId, final View view) {
+	public static ToggleButton findToggleButton(int toggleButtonId, View view) {
 		return getControlFromView(view, toggleButtonId, ToggleButton.class);
 	}
 
@@ -312,7 +312,7 @@ public abstract class ViewHelper {
 	 *            Vista de la que obtendrá el control
 	 * @return El control existente en la vista
 	 */
-	public static VideoView findVideoView(final int videoViewId, final View view) {
+	public static VideoView findVideoView(int videoViewId, View view) {
 		return getControlFromView(view, videoViewId, VideoView.class);
 	}
 
@@ -326,7 +326,7 @@ public abstract class ViewHelper {
 	 *            Vista de la que obtendrá el control
 	 * @return El control existente en la vista
 	 */
-	public static ZoomButton findZoomButton(final int zoomButtonId, final View view) {
+	public static ZoomButton findZoomButton(int zoomButtonId, View view) {
 		return getControlFromView(view, zoomButtonId, ZoomButton.class);
 	}
 
@@ -340,7 +340,7 @@ public abstract class ViewHelper {
 	 *            Vista de la que obtendrá el control
 	 * @return El control existente en la vista
 	 */
-	public static ZoomControls findZoomControls(final int zoomControlsId, final View view) {
+	public static ZoomControls findZoomControls(int zoomControlsId, View view) {
 		return getControlFromView(view, zoomControlsId, ZoomControls.class);
 	}
 
@@ -354,7 +354,7 @@ public abstract class ViewHelper {
 	 *            Vista de la que obtendrá el control
 	 * @return El control existente en la vista
 	 */
-	public static View findInnerView(final int viewId, final View view) {
+	public static View findInnerView(int viewId, View view) {
 		return getControlFromView(view, viewId, View.class);
 	}
 
@@ -368,7 +368,7 @@ public abstract class ViewHelper {
 	 *            Vista de la que obtendrá el control
 	 * @return El control existente en la vista
 	 */
-	public static ScrollView findScrollView(final int viewId, final View view) {
+	public static ScrollView findScrollView(int viewId, View view) {
 		return getControlFromView(view, viewId, ScrollView.class);
 	}
 
@@ -382,7 +382,7 @@ public abstract class ViewHelper {
 	 *            Vista de la que obtendrá el control
 	 * @return El control existente en la vista
 	 */
-	public static LinearLayout findLinearLayout(final int viewId, final View view) {
+	public static LinearLayout findLinearLayout(int viewId, View view) {
 		return getControlFromView(view, viewId, LinearLayout.class);
 	}
 
@@ -396,7 +396,7 @@ public abstract class ViewHelper {
 	 *            Vista de la que obtendrá el control
 	 * @return El control existente en la vista
 	 */
-	public static SlidingDrawer findSlidingDrawer(final int viewId, final View view) {
+	public static SlidingDrawer findSlidingDrawer(int viewId, View view) {
 		return getControlFromView(view, viewId, SlidingDrawer.class);
 	}
 
@@ -410,7 +410,7 @@ public abstract class ViewHelper {
 	 *            Vista de la que obtendrá el control
 	 * @return El control existente en la vista
 	 */
-	public static GridView findGridView(final int viewId, final View view) {
+	public static GridView findGridView(int viewId, View view) {
 		return getControlFromView(view, viewId, GridView.class);
 	}
 
@@ -424,7 +424,7 @@ public abstract class ViewHelper {
 	 *            Vista de la que obtendrá el control
 	 * @return El control existente en la vista
 	 */
-	public static ExpandableListView findExpandableListView(final int viewId, final View view) {
+	public static ExpandableListView findExpandableListView(int viewId, View view) {
 		return getControlFromView(view, viewId, ExpandableListView.class);
 	}
 
@@ -438,7 +438,7 @@ public abstract class ViewHelper {
 	 *            Vista de la que obtendrá el control
 	 * @return El control existente en la vista
 	 */
-	public static <V extends View> V findInnerViewAs(final Class<V> tipoVista, final int viewId, final View view) {
+	public static <V extends View> V findInnerViewAs(Class<V> tipoVista, int viewId, View view) {
 		return getControlFromView(view, viewId, tipoVista);
 	}
 
@@ -457,9 +457,8 @@ public abstract class ViewHelper {
 	 * @return El control esperado
 	 */
 	@SuppressWarnings("unchecked")
-	private static <V extends View> V getControlFromView(final View view, final int textViewId,
-			final Class<V> expectedControlType) {
-		final View control = view.findViewById(textViewId);
+	private static <V extends View> V getControlFromView(View view, int textViewId, Class<V> expectedControlType) {
+		View control = view.findViewById(textViewId);
 		if (control == null) {
 			throw new RuntimeException("La vista[" + view + "] no posee el control que se esperaba[" + textViewId
 					+ "] de tipo[" + expectedControlType + "]");

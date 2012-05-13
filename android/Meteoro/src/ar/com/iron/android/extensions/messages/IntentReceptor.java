@@ -32,7 +32,7 @@ public class IntentReceptor {
 	/**
 	 * Contexto utilizado para el intercambio de mensajes
 	 */
-	private final Context messageContext;
+	private Context messageContext;
 
 	/**
 	 * Handler opcional a utilizar para el encolado de mensajes
@@ -42,7 +42,7 @@ public class IntentReceptor {
 	/**
 	 * @param customActivity
 	 */
-	public IntentReceptor(final Context context) {
+	public IntentReceptor(Context context) {
 		this.messageContext = context;
 	}
 
@@ -61,8 +61,8 @@ public class IntentReceptor {
 	 * @param executedWhenReceived
 	 *            Listener a ejecutar cuando se recibe el mensaje
 	 */
-	public void registerMessageReceiver(final String expectedAction, final BroadcastReceiver executedWhenReceived) {
-		final IntentFilter filtroMensajes = new IntentFilter(expectedAction);
+	public void registerMessageReceiver(String expectedAction, BroadcastReceiver executedWhenReceived) {
+		IntentFilter filtroMensajes = new IntentFilter(expectedAction);
 		if (customHandler != null) {
 			messageContext.registerReceiver(executedWhenReceived, filtroMensajes, null, customHandler);
 		} else {
@@ -87,8 +87,8 @@ public class IntentReceptor {
 		if (messageReceivers == null) {
 			return;
 		}
-		for (final Iterator<BroadcastReceiver> iterator = messageReceivers.iterator(); iterator.hasNext();) {
-			final BroadcastReceiver broadcastReceiver = iterator.next();
+		for (Iterator<BroadcastReceiver> iterator = messageReceivers.iterator(); iterator.hasNext();) {
+			BroadcastReceiver broadcastReceiver = iterator.next();
 			messageContext.unregisterReceiver(broadcastReceiver);
 			iterator.remove();
 		}
@@ -100,7 +100,7 @@ public class IntentReceptor {
 	 * @param customHandler
 	 *            Handler custom que debe utilizarse en vez del default del contexto
 	 */
-	public void setCustomHandler(final Handler customHandler) {
+	public void setCustomHandler(Handler customHandler) {
 		this.customHandler = customHandler;
 	}
 

@@ -38,7 +38,7 @@ public class PaginationConfiguration<T, P> {
 		return paginatedItemLayoutId;
 	}
 
-	public void setPaginatedItemLayoutId(final int paginatedItemLayoutId) {
+	public void setPaginatedItemLayoutId(int paginatedItemLayoutId) {
 		this.paginatedItemLayoutId = paginatedItemLayoutId;
 	}
 
@@ -46,7 +46,7 @@ public class PaginationConfiguration<T, P> {
 		return paginatedItemRenderBlock;
 	}
 
-	public void setPaginatedItemRenderBlock(final RenderBlock<T> paginatedItemRenderBlock) {
+	public void setPaginatedItemRenderBlock(RenderBlock<T> paginatedItemRenderBlock) {
 		this.paginatedItemRenderBlock = paginatedItemRenderBlock;
 	}
 
@@ -54,13 +54,13 @@ public class PaginationConfiguration<T, P> {
 		return fetchingCode;
 	}
 
-	public void setFetchingCode(final PageFetchingCode<T, P> fetchingCode) {
+	public void setFetchingCode(PageFetchingCode<T, P> fetchingCode) {
 		this.fetchingCode = fetchingCode;
 	}
 
-	public static <T, P> PaginationConfiguration<T, P> create(final int paginatedItemLayoutId,
-			final RenderBlock<T> paginatedRenderBlock, final PageFetchingCode<T, P> pageFetchingBlock) {
-		final PaginationConfiguration<T, P> name = new PaginationConfiguration<T, P>();
+	public static <T, P> PaginationConfiguration<T, P> create(int paginatedItemLayoutId,
+			RenderBlock<T> paginatedRenderBlock, PageFetchingCode<T, P> pageFetchingBlock) {
+		PaginationConfiguration<T, P> name = new PaginationConfiguration<T, P>();
 		name.fetchingCode = pageFetchingBlock;
 		name.paginatedItemLayoutId = paginatedItemLayoutId;
 		name.paginatedItemRenderBlock = paginatedRenderBlock;

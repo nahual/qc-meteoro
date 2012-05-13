@@ -55,7 +55,7 @@ public class CustomArrayAdapter<T> extends ArrayAdapter<T> {
 	 * @param pagination
 	 *            La configuración de la paginación a utilizar
 	 */
-	public void usePagination(@CantBeNull final PaginationConfiguration<T, ?> pagination) {
+	public void usePagination(@CantBeNull PaginationConfiguration<T, ?> pagination) {
 		paginationAdapter = PaginationAdapter.create(pagination, this);
 	}
 
@@ -105,7 +105,7 @@ public class CustomArrayAdapter<T> extends ArrayAdapter<T> {
 	 * @see android.widget.ArrayAdapter#getView(int, android.view.View, android.view.ViewGroup)
 	 */
 	@Override
-	public View getView(final int position, final View itemView, final ViewGroup parent) {
+	public View getView(final int position, View itemView, final ViewGroup parent) {
 		int inflatedLayoutId = this.itemLayoutId;
 		RenderBlock<T> populationBlock = this.renderBlock;
 		boolean viewIsGoingToBeUsedForPaginationItem = false;
@@ -118,7 +118,7 @@ public class CustomArrayAdapter<T> extends ArrayAdapter<T> {
 			}
 		}
 
-		final View populatedView = populateItemView(position, itemView, inflatedLayoutId, populationBlock);
+		View populatedView = populateItemView(position, itemView, inflatedLayoutId, populationBlock);
 		if (viewIsGoingToBeUsedForPaginationItem) {
 			this.paginationAdapter.requestMoreItems();
 		}
@@ -140,8 +140,8 @@ public class CustomArrayAdapter<T> extends ArrayAdapter<T> {
 	 *            flag que indica si se debe generar una nueva vista para el elemento
 	 * @return La vista creada
 	 */
-	private View populateItemView(final int position, View itemView, final int inflatedLayoutId,
-			final RenderBlock<T> populationBlock) {
+	private View populateItemView(final int position, View itemView, int inflatedLayoutId,
+			RenderBlock<T> populationBlock) {
 		if (itemView == null) {
 			// Crea la instancia de la vista del item a partir del id
 			itemView = getInflater().inflate(inflatedLayoutId, null);
@@ -199,7 +199,7 @@ public class CustomArrayAdapter<T> extends ArrayAdapter<T> {
 	 */
 	@Override
 	public int getCount() {
-		final int realCount = super.getCount();
+		int realCount = super.getCount();
 		if (usingPagination() && this.paginationAdapter.hasMoreItems()) {
 			return realCount + 1;
 		}
@@ -228,7 +228,7 @@ public class CustomArrayAdapter<T> extends ArrayAdapter<T> {
 	 * @see android.widget.BaseAdapter#getItemViewType(int)
 	 */
 	@Override
-	public int getItemViewType(final int position) {
+	public int getItemViewType(int position) {
 		if (position == getObjects().size()) {
 			// Usamos este tipo para el pseudo elemento
 			return 1;

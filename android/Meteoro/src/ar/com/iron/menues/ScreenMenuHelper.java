@@ -40,8 +40,8 @@ public abstract class ScreenMenuHelper {
 	 * @return false si no se debe crear un menú (por que no hay opciones), true si se creó y
 	 *         configuró cada opción
 	 */
-	public static <A extends Activity> boolean createActivityOptionsFor(final Menu menu, final A hostActivity,
-			final ActivityMenuItem<A>[] menuOptionDefinitions) {
+	public static <A extends Activity> boolean createActivityOptionsFor(Menu menu, final A hostActivity,
+			ActivityMenuItem<A>[] menuOptionDefinitions) {
 		if (menuOptionDefinitions == null || menuOptionDefinitions.length == 0) {
 			return false;
 		}
@@ -49,20 +49,20 @@ public abstract class ScreenMenuHelper {
 		for (int itemId = 0; itemId < menuOptionDefinitions.length; itemId++) {
 			final ActivityMenuItem<A> menuOptionDefinition = menuOptionDefinitions[itemId];
 			if (menuOptionDefinition instanceof DynamicMenuItem) {
-				final DynamicMenuItem dynamicOptionDefinition = (DynamicMenuItem) menuOptionDefinition;
+				DynamicMenuItem dynamicOptionDefinition = (DynamicMenuItem) menuOptionDefinition;
 				if (!dynamicOptionDefinition.isVisible()) {
 					// Si no es visible, no se incluye como opción
 					continue;
 				}
 			}
 
-			final MenuItem addedMenuItem = createMenuOptionFor(menuOptionDefinition, itemId, menu);
+			MenuItem addedMenuItem = createMenuOptionFor(menuOptionDefinition, itemId, menu);
 			if (!addedMenuItem.isEnabled()) {
 				// Si no es seleccionable, no agregamos código para tratar su selección
 				continue;
 			}
 
-			final Intent firedActivityIntent = menuOptionDefinition.getFiredActivityIntent(hostActivity);
+			Intent firedActivityIntent = menuOptionDefinition.getFiredActivityIntent(hostActivity);
 			if (firedActivityIntent != null) {
 				addedMenuItem.setIntent(firedActivityIntent);
 				// Si tiene intent no se debe usar un click listener
@@ -71,8 +71,7 @@ public abstract class ScreenMenuHelper {
 
 			// Por defecto derivamos la invocación a su definición
 			addedMenuItem.setOnMenuItemClickListener(new OnMenuItemClickListener() {
-				@Override
-				public boolean onMenuItemClick(final MenuItem item) {
+				public boolean onMenuItemClick(MenuItem item) {
 					return menuOptionDefinition.onSelection(hostActivity);
 				}
 			});
@@ -102,8 +101,8 @@ public abstract class ScreenMenuHelper {
 	 *            Adapter de la lista o lista expandible utilizada para acceder a los elementos al
 	 *            ser seleccionada una opción
 	 */
-	public static <A extends Activity> void createContextOptionsFor(final ContextMenu menu,
-			final ContextMenuItem<A, ?>[] menuOptionDefinitions, final Object contextMenuHeaderTitleOrResourceId,
+	public static <A extends Activity> void createContextOptionsFor(ContextMenu menu,
+			ContextMenuItem<A, ?>[] menuOptionDefinitions, Object contextMenuHeaderTitleOrResourceId,
 			final A hostActivity, final Object listAdapterOrExpandableListAdapter) {
 		if (menuOptionDefinitions == null || menuOptionDefinitions.length == 0) {
 			// Si no hay opciones no hacemos nada
@@ -116,14 +115,14 @@ public abstract class ScreenMenuHelper {
 			final ContextMenuItem<A, ?> menuOptionDefinition = menuOptionDefinitions[itemId];
 
 			if (menuOptionDefinition instanceof DynamicMenuItem) {
-				final DynamicMenuItem dynamicOptionDefinition = (DynamicMenuItem) menuOptionDefinition;
+				DynamicMenuItem dynamicOptionDefinition = (DynamicMenuItem) menuOptionDefinition;
 				if (!dynamicOptionDefinition.isVisible()) {
 					// Si no es visible, no se incluye como opción
 					continue;
 				}
 			}
 
-			final MenuItem addedMenuItem = createMenuOptionFor(menuOptionDefinition, itemId, menu);
+			MenuItem addedMenuItem = createMenuOptionFor(menuOptionDefinition, itemId, menu);
 			if (!addedMenuItem.isEnabled()) {
 				// Si no es seleccionable, no agregamos código para tratar su selección
 				continue;
@@ -132,8 +131,7 @@ public abstract class ScreenMenuHelper {
 			// Agregamos el listener para que nos derive la invocación
 			final MenuItem clickedItem = addedMenuItem;
 			addedMenuItem.setOnMenuItemClickListener(new OnMenuItemClickListener() {
-				@Override
-				public boolean onMenuItemClick(final MenuItem selectedMenu) {
+				public boolean onMenuItemClick(MenuItem selectedMenu) {
 					return processContextItemClick(clickedItem, hostActivity, listAdapterOrExpandableListAdapter,
 							menuOptionDefinition);
 				}
@@ -152,21 +150,20 @@ public abstract class ScreenMenuHelper {
 	 *            El menú contenedor de todas las opciones
 	 * @return La opción creada
 	 */
-	private static MenuItem createMenuOptionFor(final CustomMenuItem menuOptionDefinition, final int itemId,
-			final Menu menu) {
-		final Object itemTitleOrResId = menuOptionDefinition.getItemTitleOrResId();
+	private static MenuItem createMenuOptionFor(final CustomMenuItem menuOptionDefinition, int itemId, Menu menu) {
+		Object itemTitleOrResId = menuOptionDefinition.getItemTitleOrResId();
 
-		final MenuItem addedMenuItem = createMenuItemIn(menu, itemId, itemTitleOrResId);
+		MenuItem addedMenuItem = createMenuItemIn(menu, itemId, itemTitleOrResId);
 
 		if (menuOptionDefinition instanceof DynamicMenuItem) {
-			final DynamicMenuItem dynamicOptionDefinition = (DynamicMenuItem) menuOptionDefinition;
+			DynamicMenuItem dynamicOptionDefinition = (DynamicMenuItem) menuOptionDefinition;
 			addedMenuItem.setEnabled(dynamicOptionDefinition.isEnabled());
 		}
 
 		// Vemos si define un ícono
 		if (menuOptionDefinition instanceof ActivityMenuItem) {
-			final ActivityMenuItem<?> iconizedDefinition = (ActivityMenuItem<?>) menuOptionDefinition;
-			final Integer iconId = iconizedDefinition.getIconId();
+			ActivityMenuItem<?> iconizedDefinition = (ActivityMenuItem<?>) menuOptionDefinition;
+			Integer iconId = iconizedDefinition.getIconId();
 			if (iconId != null) {
 				// Si tiene se lo definimos
 				addedMenuItem.setIcon(iconId);
@@ -195,17 +192,17 @@ public abstract class ScreenMenuHelper {
 	 *            El item elegido de todas las opciones
 	 * @return true si el evento fue tratado
 	 */
-	private static <D, A extends Activity> boolean processContextItemClick(final MenuItem item, final A activity,
-			final Object listAdapterOrExpandableListAdapter, final ContextMenuItem<A, D> selectedItem) {
+	private static <D, A extends Activity> boolean processContextItemClick(MenuItem item, A activity,
+			Object listAdapterOrExpandableListAdapter, ContextMenuItem<A, D> selectedItem) {
 		Object contextualObject;
-		final ContextMenuInfo menuInfo = item.getMenuInfo();
+		ContextMenuInfo menuInfo = item.getMenuInfo();
 		if (menuInfo instanceof AdapterContextMenuInfo) {
 			// Este tipo tiene la información de posición directamente
-			final AdapterContextMenuInfo info = (AdapterContextMenuInfo) item.getMenuInfo();
+			AdapterContextMenuInfo info = (AdapterContextMenuInfo) item.getMenuInfo();
 			ListAdapter listAdapter;
 			try {
 				listAdapter = (ListAdapter) listAdapterOrExpandableListAdapter;
-			} catch (final ClassCastException e) {
+			} catch (ClassCastException e) {
 				throw new IllegalArgumentException(
 						"El adapter pasado no es un ListAdapter pero el menu contextual si corresponde a uno", e);
 			}
@@ -214,21 +211,21 @@ public abstract class ScreenMenuHelper {
 			ExpandableListAdapter expandableAdapter;
 			try {
 				expandableAdapter = (ExpandableListAdapter) listAdapterOrExpandableListAdapter;
-			} catch (final ClassCastException e) {
+			} catch (ClassCastException e) {
 				throw new IllegalArgumentException(
 						"El adapter pasado no es un ExpandableListAdapter pero el menu contextual si corresponde a uno",
 						e);
 			}
 
 			// Este tipo tiene la posición empaquetada
-			final ExpandableListContextMenuInfo contextMenu = (ExpandableListContextMenuInfo) menuInfo;
-			final int positionType = ExpandableListView.getPackedPositionType(contextMenu.packedPosition);
+			ExpandableListContextMenuInfo contextMenu = (ExpandableListContextMenuInfo) menuInfo;
+			int positionType = ExpandableListView.getPackedPositionType(contextMenu.packedPosition);
 			if (positionType == ExpandableListView.PACKED_POSITION_TYPE_GROUP) {
-				final int groupPosition = ExpandableListView.getPackedPositionGroup(contextMenu.packedPosition);
+				int groupPosition = ExpandableListView.getPackedPositionGroup(contextMenu.packedPosition);
 				contextualObject = expandableAdapter.getGroup(groupPosition);
 			} else if (positionType == ExpandableListView.PACKED_POSITION_TYPE_CHILD) {
-				final int groupPosition = ExpandableListView.getPackedPositionGroup(contextMenu.packedPosition);
-				final int childPosition = ExpandableListView.getPackedPositionChild(contextMenu.packedPosition);
+				int groupPosition = ExpandableListView.getPackedPositionGroup(contextMenu.packedPosition);
+				int childPosition = ExpandableListView.getPackedPositionChild(contextMenu.packedPosition);
 				contextualObject = expandableAdapter.getChild(groupPosition, childPosition);
 			} else {
 				// Es un tipo de evento que no manejamos
@@ -240,7 +237,7 @@ public abstract class ScreenMenuHelper {
 					+ " o de " + ExpandableListContextMenuInfo.class + ". Se obtuvo: " + menuInfo);
 		}
 		@SuppressWarnings("unchecked")
-		final D selectedObject = (D) contextualObject;
+		D selectedObject = (D) contextualObject;
 		return selectedItem.onSelection(activity, selectedObject);
 	}
 
@@ -256,13 +253,13 @@ public abstract class ScreenMenuHelper {
 	 *            El titulo como texto o como ID
 	 * @return La opción del menú creada
 	 */
-	private static MenuItem createMenuItemIn(final Menu menu, final int itemId, final Object titleResId) {
+	private static MenuItem createMenuItemIn(Menu menu, int itemId, Object titleResId) {
 		MenuItem addedMenuItem;
 		if (titleResId instanceof CharSequence) {
-			final CharSequence rawText = (CharSequence) titleResId;
+			CharSequence rawText = (CharSequence) titleResId;
 			addedMenuItem = menu.add(0, itemId, ContextMenu.NONE, rawText);
 		} else if (titleResId instanceof Number) {
-			final int textId = ((Number) titleResId).intValue();
+			int textId = ((Number) titleResId).intValue();
 			addedMenuItem = menu.add(0, itemId, ContextMenu.NONE, textId);
 		} else {
 			throw new RuntimeException(
@@ -279,16 +276,16 @@ public abstract class ScreenMenuHelper {
 	 * @param contextMenuHeaderTitleResourceId
 	 *            El texto para el titulo o el ID de recurso, o null si no se usa titulo
 	 */
-	private static void configureMenuTitle(final ContextMenu menu, final Object contextMenuHeaderTitleResourceId) {
+	private static void configureMenuTitle(ContextMenu menu, Object contextMenuHeaderTitleResourceId) {
 		if (contextMenuHeaderTitleResourceId == null) {
 			// No hay titulo para mostrar
 			return;
 		}
 		if (contextMenuHeaderTitleResourceId instanceof CharSequence) {
-			final CharSequence rawText = (CharSequence) contextMenuHeaderTitleResourceId;
+			CharSequence rawText = (CharSequence) contextMenuHeaderTitleResourceId;
 			menu.setHeaderTitle(rawText);
 		} else if (contextMenuHeaderTitleResourceId instanceof Number) {
-			final int textId = ((Number) contextMenuHeaderTitleResourceId).intValue();
+			int textId = ((Number) contextMenuHeaderTitleResourceId).intValue();
 			menu.setHeaderTitle(textId);
 		} else {
 			throw new RuntimeException("El titulo del menu contextual debe ser un id o un texto: "

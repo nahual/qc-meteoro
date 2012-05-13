@@ -46,14 +46,12 @@ public abstract class CustomListActivity<D> extends ListActivity implements Cust
 	/**
 	 * Ejecuta código específico de la subclase para configurar cosas adicionales (es opcional)
 	 */
-	@Override
 	public void afterOnCreate() {
 	}
 
 	/**
 	 * @return Devuelve la vista raíz de toda la pantalla
 	 */
-	@Override
 	public View getContentView() {
 		return ActivityHelper.getContentViewFrom(this);
 	}
@@ -61,7 +59,6 @@ public abstract class CustomListActivity<D> extends ListActivity implements Cust
 	/**
 	 * @return Devuelve el adapter real utilizado por este activity
 	 */
-	@Override
 	@SuppressWarnings("unchecked")
 	public CustomArrayAdapter<D> getCustomAdapter() {
 		return (CustomArrayAdapter<D>) getListAdapter();
@@ -71,7 +68,6 @@ public abstract class CustomListActivity<D> extends ListActivity implements Cust
 	 * @return Devuelve el array de items para crear en el menu de opcioens accesible desde el botón
 	 *         "menu"
 	 */
-	@Override
 	public ActivityMenuItem<? extends CustomListActivity<D>>[] getMenuItems() {
 		return null;
 	}
@@ -86,7 +82,6 @@ public abstract class CustomListActivity<D> extends ListActivity implements Cust
 	/**
 	 * Obtiene los managers o servicios que sean necesarios para el funcionamiento de esta pantalla
 	 */
-	@Override
 	public void initDependencies() {
 	}
 
@@ -96,14 +91,12 @@ public abstract class CustomListActivity<D> extends ListActivity implements Cust
 	 * Al registrar los receivers en este metodo se asegura que se recibirán los mensajes aún cuando
 	 * la pantalla no es visible
 	 */
-	@Override
 	public void initMessageReceivers() {
 	}
 
 	/**
 	 * Notifica al adapter que se modificaron los datos y se debe actualizar la vista de los items
 	 */
-	@Override
 	public void notificarCambioEnLosDatos() {
 		final List<D> newList = safeGetInitialElementList();
 		updateElementList(newList);
@@ -230,7 +223,6 @@ public abstract class CustomListActivity<D> extends ListActivity implements Cust
 	 * @param executedWhenReceived
 	 *            Listener a ejecutar cuando se recibe el mensaje
 	 */
-	@Override
 	public void registerMessageReceiver(final String expectedAction, final BroadcastReceiver executedWhenReceived) {
 		getIntentReceptor().registerMessageReceiver(expectedAction, executedWhenReceived);
 	}
@@ -261,7 +253,6 @@ public abstract class CustomListActivity<D> extends ListActivity implements Cust
 	 * Crea y configura los controles que se usaran en la pantalla. Opcional para aquellas pantallas
 	 * que no tengan controles
 	 */
-	@Override
 	public void setUpComponents() {
 	}
 
@@ -280,7 +271,6 @@ public abstract class CustomListActivity<D> extends ListActivity implements Cust
 	 * 
 	 * @see ar.com.iron.android.extensions.activities.model.CustomableListActivity#getContextMenuHeaderTitleOrId()
 	 */
-	@Override
 	public abstract Object getContextMenuHeaderTitleOrId();
 
 	/**

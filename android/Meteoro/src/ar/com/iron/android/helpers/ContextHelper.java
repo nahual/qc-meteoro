@@ -41,7 +41,7 @@ public class ContextHelper {
 	 *            Contexto actual de la app
 	 * @return El manager de las notificaciones
 	 */
-	public static NotificationManager getNotificationManager(final Context contexto) {
+	public static NotificationManager getNotificationManager(Context contexto) {
 		return getSystemManager(contexto, Context.NOTIFICATION_SERVICE, NotificationManager.class);
 	}
 
@@ -53,7 +53,7 @@ public class ContextHelper {
 	 *            Contexto actual de la app
 	 * @return El manager de las alarmas
 	 */
-	public static AlarmManager getAlarmManager(final Context contexto) {
+	public static AlarmManager getAlarmManager(Context contexto) {
 		return getSystemManager(contexto, Context.ALARM_SERVICE, AlarmManager.class);
 	}
 
@@ -65,7 +65,7 @@ public class ContextHelper {
 	 *            El contexto de android
 	 * @return El manager para las conexiones
 	 */
-	public static ConnectivityManager getConnectivityManager(final Context contexto) {
+	public static ConnectivityManager getConnectivityManager(Context contexto) {
 		return getSystemManager(contexto, Context.CONNECTIVITY_SERVICE, ConnectivityManager.class);
 	}
 
@@ -77,7 +77,7 @@ public class ContextHelper {
 	 *            Contexto actual de la app
 	 * @return El manager del input
 	 */
-	public static InputMethodManager getKeyboardManager(final Context contexto) {
+	public static InputMethodManager getKeyboardManager(Context contexto) {
 		return getSystemManager(contexto, Context.INPUT_METHOD_SERVICE, InputMethodManager.class);
 	}
 
@@ -89,7 +89,7 @@ public class ContextHelper {
 	 *            Contexto de la app
 	 * @return El manager de locación geográfica
 	 */
-	public static LocationManager getLocationManager(final Context contexto) {
+	public static LocationManager getLocationManager(Context contexto) {
 		return getSystemManager(contexto, Context.LOCATION_SERVICE, LocationManager.class);
 	}
 
@@ -101,7 +101,7 @@ public class ContextHelper {
 	 *            Contexto de la app
 	 * @return El manager de la energía
 	 */
-	public static PowerManager getPowerManager(final Context contexto) {
+	public static PowerManager getPowerManager(Context contexto) {
 		return getSystemManager(contexto, Context.POWER_SERVICE, PowerManager.class);
 	}
 
@@ -112,7 +112,7 @@ public class ContextHelper {
 	 *            El contexto desde el cuál tomar el inflater
 	 * @return El generador de layouts
 	 */
-	public static LayoutInflater getLayoutInflater(final Context contexto) {
+	public static LayoutInflater getLayoutInflater(Context contexto) {
 		return getSystemManager(contexto, Context.LAYOUT_INFLATER_SERVICE, LayoutInflater.class);
 	}
 
@@ -130,12 +130,12 @@ public class ContextHelper {
 	 * @return El servicio de sistema
 	 */
 	@SuppressWarnings("unchecked")
-	private static <T> T getSystemManager(final Context contexto, final String serviceName, final Class<T> expectedType) {
-		final Object systemService = contexto.getSystemService(serviceName);
+	private static <T> T getSystemManager(Context contexto, String serviceName, Class<T> expectedType) {
+		Object systemService = contexto.getSystemService(serviceName);
 		if (systemService == null) {
 			throw new RuntimeException("El dispositivo no cuenta con el servicio de sistema pedido: " + serviceName);
 		}
-		final Class<? extends Object> serviceType = systemService.getClass();
+		Class<? extends Object> serviceType = systemService.getClass();
 		if (!expectedType.isAssignableFrom(serviceType)) {
 			throw new RuntimeException("El servicio[" + serviceType + "] no es del tipo esperado[" + expectedType + "]");
 		}
@@ -151,10 +151,10 @@ public class ContextHelper {
 	 *            Medida independiente de la densidad
 	 * @return La cantidad de píxeles reales utilizados para representar la medida en dps
 	 */
-	public static int convertDpToPixels(final Context contexto, final int dps) {
-		final Resources resources = contexto.getResources();
+	public static int convertDpToPixels(Context contexto, int dps) {
+		Resources resources = contexto.getResources();
 		final float scale = resources.getDisplayMetrics().density;
-		final int pixels = (int) (dps * scale);
+		int pixels = (int) (dps * scale);
 		return pixels;
 	}
 

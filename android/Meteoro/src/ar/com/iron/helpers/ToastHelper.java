@@ -41,11 +41,11 @@ public class ToastHelper {
 		return inflater;
 	}
 
-	public static ToastHelper create(final Context contexto) {
+	public static ToastHelper create(Context contexto) {
 		if (contexto == null) {
 			throw new IllegalArgumentException("El contexto no puede ser null para el ToastHelper");
 		}
-		final ToastHelper helper = new ToastHelper();
+		ToastHelper helper = new ToastHelper();
 		helper.currentContext = contexto;
 		return helper;
 	}
@@ -56,7 +56,7 @@ public class ToastHelper {
 	 * @param mensaje
 	 *            El mensaje a mostrar
 	 */
-	public void showShort(final Object mensaje) {
+	public void showShort(Object mensaje) {
 		showMsg(mensaje, Toast.LENGTH_SHORT);
 	}
 
@@ -66,7 +66,7 @@ public class ToastHelper {
 	 * @param mensaje
 	 *            El mensaje a mostrar
 	 */
-	public void showLong(final Object mensaje) {
+	public void showLong(Object mensaje) {
 		showMsg(mensaje, Toast.LENGTH_LONG);
 	}
 
@@ -78,13 +78,13 @@ public class ToastHelper {
 	 * @param duracion
 	 *            La duración del mensaje
 	 */
-	private void showMsg(final Object mensaje, final int duracion) {
+	private void showMsg(Object mensaje, int duracion) {
 		Toast makeText;
 		if (mensaje instanceof CharSequence) {
-			final CharSequence text = (CharSequence) mensaje;
+			CharSequence text = (CharSequence) mensaje;
 			makeText = Toast.makeText(currentContext, text, duracion);
 		} else if (mensaje instanceof Number) {
-			final Number stringResourceId = (Number) mensaje;
+			Number stringResourceId = (Number) mensaje;
 			makeText = Toast.makeText(currentContext, stringResourceId.intValue(), duracion);
 		} else {
 			throw new IllegalArgumentException("Se esperaba un String o resource ID, se recibió: " + mensaje);
@@ -107,15 +107,14 @@ public class ToastHelper {
 	 * @param toastDuration
 	 *            Duración del toast
 	 */
-	public <T> void showCustom(final int toastLayoutId, final T model, final RenderBlock<T> toastRenderblock,
-			final int toastDuration) {
-		final LayoutInflater inflater = getInflater();
-		final View layout = inflater.inflate(toastLayoutId, null);
+	public <T> void showCustom(int toastLayoutId, T model, RenderBlock<T> toastRenderblock, int toastDuration) {
+		LayoutInflater inflater = getInflater();
+		View layout = inflater.inflate(toastLayoutId, null);
 
 		// Popula los datos del toast
 		toastRenderblock.render(layout, model, inflater);
 
-		final Toast toast = new Toast(currentContext);
+		Toast toast = new Toast(currentContext);
 		toast.setGravity(Gravity.CENTER, 0, 0);
 		toast.setDuration(toastDuration);
 		toast.setView(layout);
