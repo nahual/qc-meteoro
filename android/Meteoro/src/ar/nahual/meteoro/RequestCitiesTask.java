@@ -14,12 +14,9 @@ import java.util.List;
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
 import org.apache.http.HttpStatus;
-import org.apache.http.NameValuePair;
 import org.apache.http.StatusLine;
 import org.apache.http.client.methods.HttpGet;
-import org.apache.http.client.utils.URLEncodedUtils;
 import org.apache.http.impl.client.DefaultHttpClient;
-import org.apache.http.message.BasicNameValuePair;
 import org.apache.http.params.BasicHttpParams;
 import org.apache.http.params.HttpConnectionParams;
 import org.apache.http.params.HttpParams;
@@ -27,9 +24,7 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import android.app.Activity;
 import android.os.AsyncTask;
-import ar.com.iron.android.extensions.adapters.CustomArrayAdapter;
 import ar.com.iron.helpers.ToastHelper;
 import ar.nahual.meteoro.model.Ciudad;
 
@@ -39,16 +34,14 @@ import ar.nahual.meteoro.model.Ciudad;
  */
 public class RequestCitiesTask extends AsyncTask<String, Void, List<Ciudad>> {
 	private DefaultHttpClient httpClient;
-	private final Activity activity;
-	private final CustomArrayAdapter<Ciudad> adapter;
+	private final AgregarCiudadActivity activity;
 
 	/**
 	 * @param customArrayAdapter
 	 * 
 	 */
-	public RequestCitiesTask(final Activity context, final CustomArrayAdapter<Ciudad> customArrayAdapter) {
+	public RequestCitiesTask(final AgregarCiudadActivity context) {
 		this.activity = context;
-		this.adapter = customArrayAdapter;
 	}
 
 	/**
@@ -56,13 +49,7 @@ public class RequestCitiesTask extends AsyncTask<String, Void, List<Ciudad>> {
 	 */
 	@Override
 	protected List<Ciudad> doInBackground(final String... params) {
-		final String partialName = params[0];
-		showToast("requesting: " + partialName);
-		final List<NameValuePair> parameters = new ArrayList<NameValuePair>();
-		parameters.add(new BasicNameValuePair("contains", partialName));
-		final String extraParameter = URLEncodedUtils.format(parameters, "UTF-8");
-
-		final HttpGet request = new HttpGet("http://192.168.1.102:5000/get_cities?" + extraParameter);
+		final HttpGet request = new HttpGet("http://meteoro.herokuapp.com/get_cities");
 		HttpResponse response;
 		try {
 			response = httpClient.execute(request);
@@ -145,8 +132,7 @@ public class RequestCitiesTask extends AsyncTask<String, Void, List<Ciudad>> {
 	 */
 	@Override
 	protected void onPostExecute(final List<Ciudad> result) {
-		adapter.clear();
-		adapter.addAll(result);
+		this.activity.onCiudadesDisponibles(result);
 	}
 
 	public static String convertStreamToString(final InputStream is) {

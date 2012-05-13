@@ -50,4 +50,12 @@ public class Ciudad {
 		this.pronosticos = pronosticos;
 	}
 
+	/**
+	 * @see java.lang.Object#toString()
+	 */
+	@Override
+	public String toString() {
+		return this.name;
+	}
+
 }

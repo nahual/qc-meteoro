@@ -6,16 +6,16 @@ package ar.nahual.meteoro;
 import java.util.ArrayList;
 import java.util.List;
 
-import android.os.Handler;
+import android.app.ProgressDialog;
 import android.text.Editable;
 import android.text.TextWatcher;
-import android.view.LayoutInflater;
 import android.view.View;
+import android.view.View.OnClickListener;
+import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
-import android.widget.TextView;
+import android.widget.Button;
+import android.widget.CheckBox;
 import ar.com.iron.android.extensions.activities.CustomActivity;
-import ar.com.iron.android.extensions.adapters.CustomArrayAdapter;
-import ar.com.iron.android.extensions.adapters.RenderBlock;
 import ar.com.iron.helpers.ViewHelper;
 import ar.nahual.meteoro.model.Ciudad;
 
@@ -26,24 +26,17 @@ import ar.nahual.meteoro.model.Ciudad;
 public class AgregarCiudadActivity extends CustomActivity {
 
 	private AutoCompleteTextView ciudadAutoComplete;
-	private final List<Ciudad> ciudades = new ArrayList<Ciudad>();
-	private CustomArrayAdapter<Ciudad> customArrayAdapter;
-
-	private Handler currentHandler;
-	private Runnable textChangeHandler;
-
-	public class OnTextChangeHandler implements Runnable {
-
-		@Override
-		public void run() {
-			if (this != textChangeHandler) {
-				// No somos nosotros el que podemos ejecutar
-				return;
-			}
-			onTextChangedAndNoInput();
-		}
-
-	}
+	public static List<Ciudad> ciudadesDisponibles;
+	public static List<String> nombresCiudades;
+	private ArrayAdapter<String> autoCompleteAdapter;
+	private ProgressDialog cityProgress;
+	private Ciudad selectedCiudad;
+	private Button saveButton;
+	private CheckBox usaHumedad;
+	private CheckBox usaPresion;
+	private CheckBox usaRayosUv;
+	private CheckBox usaSensacionTermica;
+	private CheckBox usaTemperatura;
 
 	/**
 	 * @see ar.com.iron.android.extensions.activities.model.CustomableActivity#getLayoutIdForActivity()
@@ -54,19 +47,13 @@ public class AgregarCiudadActivity extends CustomActivity {
 	}
 
 	/**
-	 * Invocado después de que el usuario no tuvo input
-	 */
-	public void onTextChangedAndNoInput() {
-		requestCiudades();
-	}
-
-	/**
-	 * 
+	 * Pide las ciudades para popular el autocomplete
 	 */
 	private void requestCiudades() {
-		final String partialName = ciudadAutoComplete.getText().toString();
-		final RequestCitiesTask requestCitiesTask = new RequestCitiesTask(this, customArrayAdapter);
-		requestCitiesTask.execute(partialName);
+		cityProgress = ProgressDialog.show(this, "Ciudades disponibles", "Buscando ciudades disponibles...", true,
+				false);
+		final RequestCitiesTask requestCitiesTask = new RequestCitiesTask(this);
+		requestCitiesTask.execute("");
 	}
 
 	/**
@@ -74,8 +61,26 @@ public class AgregarCiudadActivity extends CustomActivity {
 	 */
 	@Override
 	public void setUpComponents() {
-		currentHandler = new Handler();
+
+		usaHumedad = ViewHelper.findCheckBox(R.id.usaHumedad, getContentView());
+		usaPresion = ViewHelper.findCheckBox(R.id.usaPresion, getContentView());
+		usaRayosUv = ViewHelper.findCheckBox(R.id.usaRayosUv, getContentView());
+		usaSensacionTermica = ViewHelper.findCheckBox(R.id.usaSensacionTermica, getContentView());
+		usaTemperatura = ViewHelper.findCheckBox(R.id.usaTemperatura, getContentView());
+
 		ciudadAutoComplete = ViewHelper.findAutoComplete(R.id.nombreParcialCiudad, getContentView());
+		saveButton = ViewHelper.findButton(R.id.agregarBtn, getContentView());
+		saveButton.setEnabled(false);
+		saveButton.setOnClickListener(new OnClickListener() {
+			@Override
+			public void onClick(final View v) {
+				onSaveClicked();
+			}
+		});
+
+		autoCompleteAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_dropdown_item_1line,
+				getNombresCiudades());
+		ciudadAutoComplete.setAdapter(autoCompleteAdapter);
 		ciudadAutoComplete.addTextChangedListener(new TextWatcher() {
 			@Override
 			public void onTextChanged(final CharSequence s, final int start, final int before, final int count) {
@@ -87,27 +92,56 @@ public class AgregarCiudadActivity extends CustomActivity {
 
 			@Override
 			public void afterTextChanged(final Editable s) {
-				if (textChangeHandler != null) {
-					currentHandler.removeCallbacks(textChangeHandler);
-				}
-				textChangeHandler = new OnTextChangeHandler();
-				currentHandler.postDelayed(textChangeHandler, 1500);
-				onTextChangedAndNoInput();
+				final String textoDeLaCiudad = s.toString();
+				onTextoCambiado(textoDeLaCiudad);
 			}
 		});
+	}
 
-		ciudades.add(new Ciudad("Buenos", "Aires"));
-		ciudades.add(new Ciudad("Bulga", "Aires"));
-		ciudades.add(new Ciudad("Bumurin", "Aires"));
-		customArrayAdapter = new CustomArrayAdapter<Ciudad>(this, android.R.layout.simple_dropdown_item_1line,
-				ciudades, new RenderBlock<Ciudad>() {
-					@Override
-					public void render(final View itemView, final Ciudad item, final LayoutInflater inflater) {
-						final TextView textView = (TextView) itemView;
-						textView.setText(item.getName());
-					}
-				});
-		ciudadAutoComplete.setAdapter(customArrayAdapter);
+	/**
+	 * Invocado al guadar la ciudad
+	 */
+	protected void onSaveClicked() {
+
+	}
+
+	/**
+	 * @param textoDeLaCiudad
+	 */
+	protected void onTextoCambiado(final String textoDeLaCiudad) {
+		selectedCiudad = null;
+		if (textoDeLaCiudad.length() > 3) {
+			for (final Ciudad ciudad : ciudadesDisponibles) {
+				if (ciudad.getName().equals(textoDeLaCiudad)) {
+					selectedCiudad = ciudad;
+					break;
+				}
+			}
+		}
+		final boolean hayCiudadElegida = selectedCiudad != null;
+		saveButton.setEnabled(hayCiudadElegida);
+	}
+
+	public List<String> getNombresCiudades() {
+		if (nombresCiudades == null) {
+			nombresCiudades = new ArrayList<String>();
+			ciudadesDisponibles = new ArrayList<Ciudad>();
+			requestCiudades();
+		}
+		return nombresCiudades;
+	}
+
+	/**
+	 * Recibe las ciudades en background
+	 */
+	public void onCiudadesDisponibles(final List<Ciudad> result) {
+		this.ciudadesDisponibles = result;
+		nombresCiudades.clear();
+		for (final Ciudad ciudad : result) {
+			nombresCiudades.add(ciudad.getName());
+		}
+		autoCompleteAdapter.notifyDataSetChanged();
+		cityProgress.cancel();
 	}
 
 }

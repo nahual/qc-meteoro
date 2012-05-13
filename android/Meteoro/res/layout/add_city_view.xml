@@ -25,7 +25,8 @@
            <CheckBox
                android:id="@+id/usaTemperatura" 
                android:layout_width="wrap_content"
-               android:layout_height="wrap_content" 
+               android:layout_height="wrap_content"
+               android:checked="true" 
                />
        </TableRow>
        <TableRow>
@@ -38,6 +39,7 @@
                android:id="@+id/usaHumedad" 
                android:layout_width="wrap_content"
                android:layout_height="wrap_content" 
+               android:checked="true" 
                />
        </TableRow>
               <TableRow>
@@ -50,6 +52,7 @@
                android:id="@+id/usaPresion" 
                android:layout_width="wrap_content"
                android:layout_height="wrap_content" 
+               android:checked="true" 
                />
        </TableRow>
        <TableRow>
@@ -62,6 +65,7 @@
                android:id="@+id/usaSensacionTermica" 
                android:layout_width="wrap_content"
                android:layout_height="wrap_content" 
+               android:checked="true" 
                />
        </TableRow>
        <TableRow>
@@ -74,6 +78,7 @@
                android:id="@+id/usaRayosUv" 
                android:layout_width="wrap_content"
                android:layout_height="wrap_content" 
+               android:checked="true" 
                />
        </TableRow>
        	</TableLayout>
