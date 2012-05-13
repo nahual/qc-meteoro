@@ -23,7 +23,8 @@ class MockWeatherProvider(WeatherProvider):
         if filtered:
             filtered = filtered.encode("UTF-8")
             matcher = re.compile(".*%s.*" % strings.normalize(filtered), re.IGNORECASE)
-            cities = map(lambda c: {"code": c, "name": self._cities[c]}, filter(lambda c : matcher.match(c), self._cities_list))
+            cities = filter(lambda c : matcher.match(c), cities)
+        cities = map(lambda c: {"code": c, "name": self._cities[c]}, cities)
         return cities
 
     def get_forecast(self, city):
