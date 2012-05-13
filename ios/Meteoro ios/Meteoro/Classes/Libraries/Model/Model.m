@@ -422,7 +422,7 @@
 - (void) insert {
 	NSDictionary* dictionary = [self toDictionary];
 	id <ModelResultInsert> insert = [[[self class] getDelegate] insertInto:[self className] values:(NSDictionary*)dictionary];
-	[self setId:[insert insertId]];
+	//[self setId:[insert insertId]];
 }
 
 - (void) update {

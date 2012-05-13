@@ -23,6 +23,7 @@
     NSArray* searchResultArray;
         
     IBOutlet UIButton *addCityButton;
+    IBOutlet UIButton *blackDIMButton;
     
     IBOutlet UILabel *selectedCity;
 

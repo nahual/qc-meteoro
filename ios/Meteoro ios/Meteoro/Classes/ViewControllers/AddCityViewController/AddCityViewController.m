@@ -70,6 +70,8 @@
     rayosSwitch = nil;
     [selectedCity release];
     selectedCity = nil;
+    [blackDIMButton release];
+    blackDIMButton = nil;
     [addCityButton release];
     addCityButton = nil;
     [settingsViewPanel release];
@@ -89,8 +91,24 @@
 }
 
 - (IBAction)onAddCityButtonTUI:(id)sender {
-    //[[Config getInstance] addCity:];
-    [self onDoneButtonTUI:nil];
+    if (temperaturaSwitch.isOn ||
+        humedadSwitch.isOn ||
+        presionSwitch.isOn ||
+        sensacionTermicaSwitch.isOn ||
+        rayosSwitch.isOn)
+    {
+        city.temperatura = temperaturaSwitch.isOn;
+        city.humedad = humedadSwitch.isOn;
+        city.presion = presionSwitch.isOn;
+        city.sensacionTermica = sensacionTermicaSwitch.isOn;
+        city.rayos = rayosSwitch.isOn;
+        
+        [[Config getInstance] addCity:city];
+        [self onDoneButtonTUI:nil];
+    }
+    else {
+        [Config showAlertWithTitle:@"Error" andMessage:@"Please Select at least one item."];
+    }
 }
 
 - (IBAction)onBackgroundTUI:(id)sender {
@@ -114,6 +132,7 @@
     [rayosSwitch release];
     [selectedCity release];
     [addCityButton release];
+    [blackDIMButton release];
     [settingsViewPanel release];
     [super dealloc];
 }
@@ -142,17 +161,30 @@
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
     [city release];
-    city = [[searchResultArray objectAtIndex:indexPath.row] retain];
+    city = nil;
+    City* newCity = [searchResultArray objectAtIndex:indexPath.row];
+    
+    if (![[Config getInstance].cities containsObject:newCity])
+    {
+        city = [newCity retain];
+    }
+    else
+    {
+        [Config showAlertWithTitle:@"Error" andMessage:@"You can not add the same city twice"];
+    }
+    
     [searchResultArray release];
     searchResultArray = nil;
     
     [theTableView reloadData];
     
-    selectedCity.text = city.name;
-    
     theSearchBar.text = @"";
-    [self onBackgroundTUI:nil];
-    [self setOptionsEnabled:YES];
+    if (city)
+    {
+        selectedCity.text = city.name;
+        [self onBackgroundTUI:nil];
+        [self setOptionsEnabled:YES];
+    }
 }
 
 - (void) cancelSearchRequest
@@ -200,6 +232,15 @@
 }
 
 #pragma mark - search delegate
+- (void)searchBarTextDidBeginEditing:(UISearchBar *)searchBar
+{
+    blackDIMButton.hidden = NO;
+}
+- (void)searchBarTextDidEndEditing:(UISearchBar *)searchBar
+{
+    blackDIMButton.hidden = YES;
+}
+
 - (void)searchBar:(UISearchBar *)searchBar textDidChange:(NSString *)searchText
 {
     [self cancelSearchRequest];
@@ -216,6 +257,7 @@
 
 - (void) setOptionsEnabled:(BOOL) enabled
 {
+    settingsViewPanel.hidden = !enabled;
     temperaturaSwitch.enabled = enabled;
     humedadSwitch.enabled = enabled;
     presionSwitch.enabled = enabled;

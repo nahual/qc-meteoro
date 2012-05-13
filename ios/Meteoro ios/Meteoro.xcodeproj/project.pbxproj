@@ -70,6 +70,11 @@
 		43228D69154F265B001FE3BC /* MessageUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 43228D68154F265B001FE3BC /* MessageUI.framework */; };
 		43228D71154F26CB001FE3BC /* PRPDebug.m in Sources */ = {isa = PBXBuildFile; fileRef = 43228D70154F26CB001FE3BC /* PRPDebug.m */; };
 		43228D73154F274B001FE3BC /* MobileCoreServices.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 43228D72154F274B001FE3BC /* MobileCoreServices.framework */; };
+		433CC2C115602F8700E5731F /* CityForecastView.m in Sources */ = {isa = PBXBuildFile; fileRef = 433CC2C015602F8700E5731F /* CityForecastView.m */; };
+		433CC2C315602F9200E5731F /* CityForecastView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 433CC2C215602F9200E5731F /* CityForecastView.xib */; };
+		43822B7515603CED00F17D72 /* ForecastCellView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 43822B7415603CED00F17D72 /* ForecastCellView.xib */; };
+		43822B7815603D0800F17D72 /* ForecastCellView.m in Sources */ = {isa = PBXBuildFile; fileRef = 43822B7715603D0800F17D72 /* ForecastCellView.m */; };
+		43822B7B1560421100F17D72 /* Forecast.m in Sources */ = {isa = PBXBuildFile; fileRef = 43822B7A1560421100F17D72 /* Forecast.m */; };
 		4391A2B0154F499500919356 /* City.m in Sources */ = {isa = PBXBuildFile; fileRef = 4391A2AF154F499500919356 /* City.m */; };
 /* End PBXBuildFile section */
 
@@ -198,6 +203,14 @@
 		43228D6F154F26CB001FE3BC /* PRPDebug.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PRPDebug.h; sourceTree = "<group>"; };
 		43228D70154F26CB001FE3BC /* PRPDebug.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PRPDebug.m; sourceTree = "<group>"; };
 		43228D72154F274B001FE3BC /* MobileCoreServices.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MobileCoreServices.framework; path = System/Library/Frameworks/MobileCoreServices.framework; sourceTree = SDKROOT; };
+		433CC2BF15602F8700E5731F /* CityForecastView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CityForecastView.h; sourceTree = "<group>"; };
+		433CC2C015602F8700E5731F /* CityForecastView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CityForecastView.m; sourceTree = "<group>"; };
+		433CC2C215602F9200E5731F /* CityForecastView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = CityForecastView.xib; sourceTree = "<group>"; };
+		43822B7415603CED00F17D72 /* ForecastCellView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ForecastCellView.xib; sourceTree = "<group>"; };
+		43822B7615603D0800F17D72 /* ForecastCellView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ForecastCellView.h; sourceTree = "<group>"; };
+		43822B7715603D0800F17D72 /* ForecastCellView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ForecastCellView.m; sourceTree = "<group>"; };
+		43822B791560421100F17D72 /* Forecast.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Forecast.h; sourceTree = "<group>"; };
+		43822B7A1560421100F17D72 /* Forecast.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Forecast.m; sourceTree = "<group>"; };
 		4391A2AE154F499500919356 /* City.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = City.h; sourceTree = "<group>"; };
 		4391A2AF154F499500919356 /* City.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = City.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -494,6 +507,7 @@
 		43228D1A154F21DC001FE3BC /* ViewControllers */ = {
 			isa = PBXGroup;
 			children = (
+				433CC2BD15602F7100E5731F /* CityForecastView */,
 				43228D1B154F21DC001FE3BC /* AddCityViewController */,
 				43228D1F154F21DC001FE3BC /* ViewController */,
 			);
@@ -538,11 +552,34 @@
 			path = PRPDebug;
 			sourceTree = "<group>";
 		};
+		433CC2BD15602F7100E5731F /* CityForecastView */ = {
+			isa = PBXGroup;
+			children = (
+				433CC2BF15602F8700E5731F /* CityForecastView.h */,
+				433CC2C015602F8700E5731F /* CityForecastView.m */,
+				433CC2C215602F9200E5731F /* CityForecastView.xib */,
+				43822B7215603CDB00F17D72 /* ForecastCellView */,
+			);
+			path = CityForecastView;
+			sourceTree = "<group>";
+		};
+		43822B7215603CDB00F17D72 /* ForecastCellView */ = {
+			isa = PBXGroup;
+			children = (
+				43822B7615603D0800F17D72 /* ForecastCellView.h */,
+				43822B7715603D0800F17D72 /* ForecastCellView.m */,
+				43822B7415603CED00F17D72 /* ForecastCellView.xib */,
+			);
+			path = ForecastCellView;
+			sourceTree = "<group>";
+		};
 		4391A2AC154F492E00919356 /* Domain */ = {
 			isa = PBXGroup;
 			children = (
 				4391A2AE154F499500919356 /* City.h */,
 				4391A2AF154F499500919356 /* City.m */,
+				43822B791560421100F17D72 /* Forecast.h */,
+				43822B7A1560421100F17D72 /* Forecast.m */,
 			);
 			path = Domain;
 			sourceTree = "<group>";
@@ -600,6 +637,8 @@
 				43228C91154F1FB9001FE3BC /* InfoPlist.strings in Resources */,
 				43228D50154F21DC001FE3BC /* AddCityViewController.xib in Resources */,
 				43228D52154F21DC001FE3BC /* ViewController.xib in Resources */,
+				433CC2C315602F9200E5731F /* CityForecastView.xib in Resources */,
+				43822B7515603CED00F17D72 /* ForecastCellView.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -661,6 +700,9 @@
 				43228D5D154F25E0001FE3BC /* Config.m in Sources */,
 				43228D71154F26CB001FE3BC /* PRPDebug.m in Sources */,
 				4391A2B0154F499500919356 /* City.m in Sources */,
+				433CC2C115602F8700E5731F /* CityForecastView.m in Sources */,
+				43822B7815603D0800F17D72 /* ForecastCellView.m in Sources */,
+				43822B7B1560421100F17D72 /* Forecast.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

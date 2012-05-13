@@ -43,7 +43,7 @@
 
 //SERVER REQUEST
 #define USER_AGENT @""
-//#define CONFIG_BASE_URL @""
+#define CONFIG_BASE_URL_DEFAULT @"http://meteoro.herokuapp.com/"
 //#define CONFIG_BASE_URL @""
 #define CRASH_REPORTING_PATH @"analytics/recordCrash"
 #define USER_ACCOUNT_KEY @"__User_Account__" 
@@ -82,6 +82,7 @@
 @property (nonatomic, readonly) NSArray* cities;
 
 - (void) addCity:(City*) city;
+- (void) saveCities;
 
 + (Config*)getInstance;
 

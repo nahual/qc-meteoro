@@ -7,11 +7,13 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "iCarousel.h"
 
-@interface ViewController : UIViewController
+@interface ViewController : UIViewController <iCarouselDelegate, iCarouselDataSource>
 {
     IBOutlet UINavigationBar *fakeNavBar;
-    
+    IBOutlet iCarousel *theCarousel;
+    IBOutlet UIPageControl *thePageControl;
 }
 
 - (IBAction)onAddCityButtonTUI:(id)sender;
