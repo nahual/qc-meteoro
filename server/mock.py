@@ -4,7 +4,14 @@ from datetime import datetime, timedelta
 class MockWeatherProvider(WeatherProvider):
     def __init__(self, log_handlers):
         WeatherProvider.__init__(self, "MockWeahterProvider", log_handlers)
-        self._cities = [{"code":"466863", "name": "Mock Mar del Plata"}]          
+        self._cities = [
+            {"code":"466863", "name": "Mar del Plata"},
+            {"code":"466863", "name": "Buenos Aires"},
+            {"code":"466863", "name": "La Plata"},
+            {"code":"466863", "name": "Mendoza"},
+            {"code":"466863", "name": "Cordoba"},
+            {"code":"466863", "name": "Rosario"},
+        ]          
 
     def get_forecast(self, city):
         today = datetime.now()
