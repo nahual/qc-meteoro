@@ -8,7 +8,7 @@ ENV = 'Development'
 DEBUG = True
 HOST = '0.0.0.0'
 
-NODE_NAME=u'太小'
+NODE_NAME=u'local'
 
 LOG_HANDLERS=[
                 llog.file("%s.log" % NODE_NAME, when=llog.every(1, llog.DAY)),

@@ -30,9 +30,9 @@ class MockWeatherProvider(WeatherProvider):
     def get_forecast(self, city):
         today = datetime.now()
         return [
-                {'date': today.strftime("%Y-%m-%d"), 'temperature': 10, 'humidity': 60, 'uv': 10, 'chill': 20, 'status':'clear'},
-                {'date': (today+timedelta(days=1)).strftime("%Y-%m-%d"), 'temperature': 20, 'humidity': 50, 'uv': 20, 'chill': 30, 'status':'rainy'},
-                {'date': (today+timedelta(days=2)).strftime("%Y-%m-%d"), 'temperature': 20, 'humidity': 50, 'uv': 20, 'chill': 30, 'status':'rainy'},
-                {'date': (today+timedelta(days=3)).strftime("%Y-%m-%d"), 'temperature': 20, 'humidity': 50, 'uv': 20, 'chill': 30, 'status':'rainy'}
+                {'date': today.strftime("%Y-%m-%d"), 'temperature': 10, 'humidity': 60, 'chill': 10, 'status':'clear', 'min': 20, 'max': 10},
+                {'date': (today+timedelta(days=1)).strftime("%Y-%m-%d"), 'temperature': '', 'humidity': '', 'chill': '', 'status':'rainy', 'min': 20, 'max': 10},
+                {'date': (today+timedelta(days=2)).strftime("%Y-%m-%d"), 'temperature': '', 'humidity': '', 'chill': '', 'status':'clear', 'min': 20, 'max': 10},
+                {'date': (today+timedelta(days=3)).strftime("%Y-%m-%d"), 'temperature': '', 'humidity': '', 'chill': '', 'status':'clear', 'min': 20, 'max': 10}
                ]
 
