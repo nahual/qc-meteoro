@@ -15,9 +15,7 @@ class YahooWeatherProvider(WeatherProvider):
     def __init__(self, log_handlers):
         WeatherProvider.__init__(self, "MockWeahterProvider", log_handlers)
         self.url = 'http://weather.yahooapis.com/forecastjson?w=%s&d=3&u=c'
-        self.date_format = '%Y-%m-%d'
-    def get_cities(self, filtered):
-        return [{"code":"466863", "name": "Mar del Plata"}]
+        self._cities = [{"code":"466863", "name": "Mar del Plata"}]
 
     def get_forecast(self, city):
         try:
