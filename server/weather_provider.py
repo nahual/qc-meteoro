@@ -10,7 +10,7 @@ class WeatherProvider:
         for handler in log_handlers:
             self._log.addHandler(handler)
 
-from yaml import load, dump
+from yaml import load
 class MockWeatherProvider(WeatherProvider):
     def __init__(self, log_handlers):
         WeatherProvider.__init__(self, "MockWeahterProvider", log_handlers)
