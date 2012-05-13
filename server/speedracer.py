@@ -1,6 +1,8 @@
 import os
 import json
-from weather_provider import MockWeatherProvider
+from yahoo import YahooWeatherProvider
+from mock import MockWeatherProvider
+
 os.sys.path.append(os.path.abspath(os.path.dirname(__file__)))
 
 from flask import Flask, request, render_template
@@ -29,7 +31,20 @@ def get_forecast():
         return json.dumps({'error':'City is mandatory'})
     return json.dumps(weather_provider.get_forecast(city))
 
+@app.route('/change_provider', methods=['GET'])
+def chage_provider():
+    name = request.args.get('name')
+    if name not in providers:
+        return json.dumps({'error':"%s is not a provider" % name })
+    global weather_provider
+    weather_provider = providers[name]
+    return json.dumps({'message':'ok'}) 
+
 if __name__ == '__main__':
-    weather_provider = MockWeatherProvider(log_handlers=app.config['LOG_HANDLERS'])
+    providers = {
+        'yahoo': YahooWeatherProvider(log_handlers=app.config['LOG_HANDLERS']),
+        'mock': MockWeatherProvider(log_handlers=app.config['LOG_HANDLERS']),
+    }
+    weather_provider = providers['yahoo'] 
     app.run(host=app.config['HOST'], port=app.config['PORT'], debug=app.config['DEBUG'])
 
