@@ -3,11 +3,19 @@ import urllib2
 import json
 from datetime import datetime, timedelta
 
+def safe_get(data, keys):
+    try:
+        for key in keys:
+            data = data[key]
+        return data
+    except KeyError:
+        return ''
+
 class YahooWeatherProvider(WeatherProvider):
     def __init__(self, log_handlers):
         WeatherProvider.__init__(self, "MockWeahterProvider", log_handlers)
         self.url = 'http://weather.yahooapis.com/forecastjson?w=%s&d=3&u=c'
-
+        self.date_format = '%Y-%m-%d'
     def get_cities(self, filtered):
         return [{"code":"466863", "name": "Mar del Plata"}]
 
@@ -24,10 +32,25 @@ class YahooWeatherProvider(WeatherProvider):
 
     def _build_meteoro_result(self, response):
         today = datetime.now()
-        return [
-                {'date': today.strftime("%Y-%m-%d"), 'temperature': 10, 'humidity': 60, 'chill': 10, 'status':'clear', 'min': 20, 'max': 10},
-                {'date': (today+timedelta(days=1)).strftime("%Y-%m-%d"), 'temperature': '', 'humidity': '', 'chill': '', 'status':'rainy', 'min': 20, 'max': 10},
-                {'date': (today+timedelta(days=2)).strftime("%Y-%m-%d"), 'temperature': '', 'humidity': '', 'chill': '', 'status':'clear', 'min': 20, 'max': 10},
-                {'date': (today+timedelta(days=3)).strftime("%Y-%m-%d"), 'temperature': '', 'humidity': '', 'chill': '', 'status':'clear', 'min': 20, 'max': 10}
-               ]
+        rv = []
+        rv.append({
+            'date': today.strftime(self.date_format),
+            'temperature': safe_get(response, ['condition', 'temperature']),
+            'chill': safe_get(response, ['condition','temperature']),
+            'humidity': safe_get(response, ['atmosphere','humidity']),
+            'status': safe_get(response, ['condition','text']),
+            'wind': "%s %s %s" % (safe_get(response,['wind','direction']), safe_get(response, ['wind','speed']), safe_get(response,['units','speed'])),
+            'min': '', 'max': ''
+        })
+        forecast = safe_get(response, ['forecast'])
+        if forecast:
+            for i, day in enumerate(forecast):
+                rv.append({
+                    'date': (today+timedelta(days=i)).strftime(self.date_format),
+                    'min': safe_get(day, ['low_temperature']),
+                    'max': safe_get(day, ['high_temperature']),
+                    'status': safe_get(day, ['condition']),
+                    'temperature': '', 'chill': '', 'humidity': '', 'wind': ''
+                })
+        return rv
 
