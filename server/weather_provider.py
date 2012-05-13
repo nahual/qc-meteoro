@@ -16,7 +16,6 @@ class MockWeatherProvider(WeatherProvider):
         WeatherProvider.__init__(self, "MockWeahterProvider", log_handlers)
         with open('cities.yaml', 'r') as f:
             self._cities = load(f)
-            print self._cities
         self._cities_list = map(lambda c : strings.normalize(c), self._cities.values())          
 
     def get_cities(self, filtered):
