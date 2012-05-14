@@ -14,6 +14,6 @@ class WeatherProvider:
         if filtered:
             filtered = filtered.encode("UTF-8")
             matcher = re.compile(".*%s.*" % strings.normalize(filtered), re.IGNORECASE)
-            cities = filter(lambda c : matcher.match(c['name']), cities)
+            cities = filter(lambda c : matcher.match(strings.normalize(c['name'].encode('UTF-8'))), cities)
         return cities
 
