@@ -28,18 +28,24 @@
 	        android:text="NN°"
 	        android:layout_height="wrap_content"
 	        android:layout_width="wrap_content"
+	        android:gravity="center"
+	        android:layout_weight="1"
 	        />
 	    <TextView 
             android:id="@+id/humedad_txt" 
             android:text="NN°"
             android:layout_height="wrap_content"
             android:layout_width="wrap_content"
+            android:gravity="center"
+            android:layout_weight="1"
             />
 	    <TextView 
             android:id="@+id/sensacion_txt" 
             android:text="NN°"
             android:layout_height="wrap_content"
             android:layout_width="wrap_content"
+            android:gravity="center"
+            android:layout_weight="1"
             />
 	</LinearLayout>
 	<TextView 
