@@ -1,7 +1,7 @@
 package ar.nahual.meteoro;
 
 import java.util.ArrayList;
-import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 
 import android.content.Intent;
@@ -90,6 +90,7 @@ public class VerCiudadActivity extends CustomListActivity<Pronostico> {
 	 */
 	private void mostrarLaCiudad(final CiudadPersistida ciudadPersistida) {
 		ciudadActual = ciudadPersistida;
+		ViewHelper.findTextView(R.id.nombreCiudad_txt, getContentView()).setText(ciudadActual.getCityName());
 	}
 
 	protected void onPronosticoDisponible() {
@@ -109,8 +110,7 @@ public class VerCiudadActivity extends CustomListActivity<Pronostico> {
 	 */
 	@Override
 	public List<Pronostico> getElementList() {
-		return Arrays.asList(new Pronostico(), new Pronostico(), new Pronostico(), new Pronostico());
-		//return ciudadActual.getFuturos();
+		return Collections.nCopies(4, new Pronostico());
 	}
 
 	/**
