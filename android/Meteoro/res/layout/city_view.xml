@@ -3,24 +3,42 @@
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
     android:orientation="vertical" >
-
+    <TextView 
+        android:id="@+id/nombreCiudad_txt" 
+        android:text="Ciudad"
+        android:layout_height="wrap_content"
+        android:layout_width="fill_parent"
+        android:textSize="30dp"
+        />
+    <TextView 
+        android:id="@+id/estado_txt" 
+        android:text="Nublado"
+        android:layout_height="wrap_content"
+        android:layout_width="fill_parent"
+        android:gravity="center_horizontal"
+        />
 	<LinearLayout
 	    android:layout_height="wrap_content" 
 	    android:layout_width="fill_parent"
 	    >
 	    <TextView 
-	        android:id="@+id/nombreCiudad_txt" 
-	        android:text="Ciudad"
-	        android:layout_height="wrap_content"
-	        android:layout_width="0dip"
-	        android:layout_weight="1.0"
-	        />
-	    <TextView 
-	        android:id="@+id/temperaturaCiudad_txt" 
+	        android:id="@+id/temperatura_txt" 
 	        android:text="NN°"
 	        android:layout_height="wrap_content"
 	        android:layout_width="wrap_content"
 	        />
+	    <TextView 
+            android:id="@+id/humedad_txt" 
+            android:text="NN°"
+            android:layout_height="wrap_content"
+            android:layout_width="wrap_content"
+            />
+	    <TextView 
+            android:id="@+id/sensacion_txt" 
+            android:text="NN°"
+            android:layout_height="wrap_content"
+            android:layout_width="wrap_content"
+            />
 	</LinearLayout>
 	
 	<ListView

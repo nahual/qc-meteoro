@@ -101,7 +101,11 @@ public class VerCiudadActivity extends CustomListActivity<Pronostico> {
 
 	protected void onPronosticoDisponible() {
 		ViewHelper.findTextView(R.id.nombreCiudad_txt, getContentView()).setText(ciudadActual.getCityName());
-		ViewHelper.findTextView(R.id.temperaturaCiudad_txt, getContentView()).setText(ciudadActual.getActual().getTemperature());
+		final Pronostico estadoActual = ciudadActual.getActual();
+		ViewHelper.findTextView(R.id.estado_txt, getContentView()).setText(estadoActual.getStatus());
+		ViewHelper.findTextView(R.id.temperatura_txt, getContentView()).setText(estadoActual.getTemperature());
+		ViewHelper.findTextView(R.id.humedad_txt, getContentView()).setText(estadoActual.getHumidity());
+		ViewHelper.findTextView(R.id.sensacion_txt, getContentView()).setText(estadoActual.getChill());
 		this.notificarCambioEnLosDatos();
 	}
 
