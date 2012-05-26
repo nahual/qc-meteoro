@@ -13,11 +13,10 @@ import ar.com.iron.android.extensions.activities.model.CustomableListActivity;
 import ar.com.iron.android.extensions.adapters.RenderBlock;
 import ar.com.iron.android.extensions.services.local.LocalServiceConnectionListener;
 import ar.com.iron.android.extensions.services.local.LocalServiceConnector;
-import ar.com.iron.helpers.ToastHelper;
 import ar.com.iron.helpers.ViewHelper;
 import ar.com.iron.menues.ContextMenuItem;
+import ar.com.iron.persistence.DefaultOnFailurePersistenceOperationListener;
 import ar.com.iron.persistence.PersistenceDao;
-import ar.com.iron.persistence.PersistenceOperationListener;
 import ar.com.iron.persistence.PersistenceService;
 import ar.com.iron.persistence.db4o.filters.AllInstancesFilter;
 import ar.nahual.meteoro.model.CiudadPersistida;
@@ -25,6 +24,7 @@ import ar.nahual.meteoro.model.Pronostico;
 
 public class VerCiudadActivity extends CustomListActivity<Pronostico> {
 
+	public static final String CITY_ID = "CITY_ID";
 	private final List<CiudadPersistida> ciudades = new ArrayList<CiudadPersistida>();
 	private CiudadPersistida ciudadActual;
 
@@ -59,13 +59,7 @@ public class VerCiudadActivity extends CustomListActivity<Pronostico> {
 	protected void onPersistenceDaoDisponible(final PersistenceDao intercommObject) {
 		this.persistenceDao = intercommObject;
 		final AllInstancesFilter todasLasCiudades = new AllInstancesFilter(CiudadPersistida.class);
-		persistenceDao.findAllMatching(todasLasCiudades, new PersistenceOperationListener<List<CiudadPersistida>>() {
-			@Override
-			public void onFailure(final Exception exceptionThrown) {
-				ToastHelper.create(getContext()).showShort(
-						"Se produjo un error al acceder a las bases guardadas: " + exceptionThrown.getMessage());
-			}
-
+		persistenceDao.findAllMatching(todasLasCiudades, new DefaultOnFailurePersistenceOperationListener<List<CiudadPersistida>>(getContext()) {
 			@Override
 			public void onSuccess(final List<CiudadPersistida> result) {
 				onCiudadesCargadasDeLaBase(result);
@@ -77,10 +71,15 @@ public class VerCiudadActivity extends CustomListActivity<Pronostico> {
 		this.ciudades.clear();
 		this.ciudades.addAll(result);
 		if (ciudades.isEmpty()) {
-			startActivity(new Intent(this, AgregarCiudadActivity.class));
+			startActivityForResult(new Intent(this, AgregarCiudadActivity.class), 1);
 		} else {
-			mostrarLaCiudad(ciudades.get(0));
+			mostrarLaCiudad(ciudades.get(0).getId());
 		}
+	}
+
+	@Override
+	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+		mostrarLaCiudad(data.getLongExtra(VerCiudadActivity.CITY_ID, -1l));
 	}
 
 	/**
@@ -88,15 +87,22 @@ public class VerCiudadActivity extends CustomListActivity<Pronostico> {
 	 * 
 	 * @param ciudadPersistida
 	 */
-	private void mostrarLaCiudad(final CiudadPersistida ciudadPersistida) {
-		ciudadActual = ciudadPersistida;
-		final RequestForecastTask requestForecastTask = new RequestForecastTask(this);
-		requestForecastTask.execute(ciudadActual);
-		ViewHelper.findTextView(R.id.nombreCiudad_txt, getContentView()).setText(ciudadActual.getCityName());
+	private void mostrarLaCiudad(final Long idDeCiudad) {
+		persistenceDao.getOf(CiudadPersistida.class, idDeCiudad, new DefaultOnFailurePersistenceOperationListener<CiudadPersistida>(getContext()) {
+			@Override
+			public void onSuccess(CiudadPersistida result) {
+				ciudadActual = result;
+				ViewHelper.findTextView(R.id.nombreCiudad_txt, getContentView()).setText(ciudadActual.getCityName());
+				final RequestForecastTask requestForecastTask = new RequestForecastTask(VerCiudadActivity.this);
+				requestForecastTask.execute(ciudadActual);			
+			}
+		}); 
 	}
 
 	protected void onPronosticoDisponible() {
-
+		ViewHelper.findTextView(R.id.nombreCiudad_txt, getContentView()).setText(ciudadActual.getCityName());
+		ViewHelper.findTextView(R.id.temperaturaCiudad_txt, getContentView()).setText(ciudadActual.getActual().getTemperature());
+		this.notificarCambioEnLosDatos();
 	}
 
 	/**
@@ -112,7 +118,11 @@ public class VerCiudadActivity extends CustomListActivity<Pronostico> {
 	 */
 	@Override
 	public List<Pronostico> getElementList() {
-		return Collections.nCopies(4, new Pronostico());
+		if (ciudadActual != null && ciudadActual.getFuturos() != null && ciudadActual.getFuturos().size() != 0) {
+			return ciudadActual.getFuturos();
+		} else {
+			return Collections.nCopies(4, new Pronostico());
+		}
 	}
 
 	/**

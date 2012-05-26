@@ -18,10 +18,9 @@ import android.widget.Button;
 import ar.com.iron.android.extensions.activities.CustomActivity;
 import ar.com.iron.android.extensions.services.local.LocalServiceConnectionListener;
 import ar.com.iron.android.extensions.services.local.LocalServiceConnector;
-import ar.com.iron.helpers.ToastHelper;
 import ar.com.iron.helpers.ViewHelper;
+import ar.com.iron.persistence.DefaultOnFailurePersistenceOperationListener;
 import ar.com.iron.persistence.PersistenceDao;
-import ar.com.iron.persistence.PersistenceOperationListener;
 import ar.com.iron.persistence.PersistenceService;
 import ar.com.iron.persistence.db4o.filters.Db4oFilter;
 import ar.nahual.meteoro.model.CiudadPersistida;
@@ -126,33 +125,21 @@ public class AgregarCiudadActivity extends CustomActivity {
 			public ObjectSet<?> executeOn(ObjectContainer container) {
 				return container.queryByExample(selectedCiudad);
 			}
-		}, new PersistenceOperationListener<List<CiudadPersistida>>() {
+		}, new DefaultOnFailurePersistenceOperationListener<List<CiudadPersistida>>(getContext()) {
 
 			@Override
 			public void onSuccess(List<CiudadPersistida> result) {
 				if (result.size() == 0) {
-					persistenceDao.save(selectedCiudad, new PersistenceOperationListener<CiudadPersistida>() {
+					persistenceDao.save(selectedCiudad, new DefaultOnFailurePersistenceOperationListener<CiudadPersistida>(getContext()) {
 						@Override
 						public void onSuccess(final CiudadPersistida result) {
 							onCiudadAgregada(result);
-						}
-
-						@Override
-						public void onFailure(final Exception exceptionThrown) {
-							ToastHelper.create(getContext()).showShort(
-									"Error al guardar en la base: " + exceptionThrown.getMessage());
 						}
 					});
 				} else {
 					Log.d("DB", "La ciudad ya existe");
 					onCiudadAgregada(selectedCiudad);
 				}
-			}
-
-			@Override
-			public void onFailure(final Exception exceptionThrown) {
-				ToastHelper.create(getContext()).showShort(
-						"Error al guardar en la base: " + exceptionThrown.getMessage());
 			}
 		});
 	}

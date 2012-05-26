@@ -11,6 +11,7 @@ import ar.com.iron.android.extensions.activities.CustomActivity;
 import ar.com.iron.android.extensions.services.local.LocalServiceConnectionListener;
 import ar.com.iron.android.extensions.services.local.LocalServiceConnector;
 import ar.com.iron.helpers.ToastHelper;
+import ar.com.iron.persistence.DefaultOnFailurePersistenceOperationListener;
 import ar.com.iron.persistence.PersistenceDao;
 import ar.com.iron.persistence.PersistenceOperationListener;
 import ar.com.iron.persistence.PersistenceService;
@@ -57,13 +58,7 @@ public class SplasActivity extends CustomActivity {
 	protected void onPersistenceDaoDisponible(final PersistenceDao intercommObject) {
 		this.persistenceDao = intercommObject;
 		final AllInstancesFilter todasLasCiudades = new AllInstancesFilter(CiudadPersistida.class);
-		persistenceDao.findAllMatching(todasLasCiudades, new PersistenceOperationListener<List<CiudadPersistida>>() {
-			@Override
-			public void onFailure(final Exception exceptionThrown) {
-				ToastHelper.create(getContext()).showShort(
-						"Se produjo un error al acceder a las bases guardadas: " + exceptionThrown.getMessage());
-			}
-
+		persistenceDao.findAllMatching(todasLasCiudades, new DefaultOnFailurePersistenceOperationListener<List<CiudadPersistida>>(getContext()) {
 			@Override
 			public void onSuccess(final List<CiudadPersistida> result) {
 				onCiudadesCargadasDeLaBase(result);
