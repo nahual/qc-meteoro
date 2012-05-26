@@ -12,13 +12,13 @@
         android:background="#ADADAD"
         android:textColor="#FFFFFF"
         />
-    <TextView 
-        android:id="@+id/estado_txt" 
-        android:text="Nublado"
+    <ImageView
+        android:id="@+id/estado_img" 
         android:layout_height="wrap_content"
-        android:layout_width="fill_parent"
-        android:gravity="center_horizontal"
-        />
+        android:layout_width="wrap_content"
+        android:layout_gravity="center"
+        android:src="@drawable/unknown"
+    />
 	<LinearLayout
 	    android:layout_height="wrap_content" 
 	    android:layout_width="fill_parent"
