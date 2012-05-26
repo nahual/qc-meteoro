@@ -4,28 +4,76 @@ import java.util.ArrayList;
 import java.util.List;
 
 import android.content.Intent;
-import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.TextView;
 import ar.com.iron.android.extensions.activities.CustomListActivity;
 import ar.com.iron.android.extensions.activities.model.CustomableListActivity;
 import ar.com.iron.android.extensions.adapters.RenderBlock;
+import ar.com.iron.android.extensions.services.local.LocalServiceConnectionListener;
+import ar.com.iron.android.extensions.services.local.LocalServiceConnector;
+import ar.com.iron.helpers.ToastHelper;
 import ar.com.iron.helpers.ViewHelper;
 import ar.com.iron.menues.ContextMenuItem;
-import ar.nahual.meteoro.model.Ciudad;
+import ar.com.iron.persistence.PersistenceDao;
+import ar.com.iron.persistence.PersistenceOperationListener;
+import ar.com.iron.persistence.PersistenceService;
+import ar.com.iron.persistence.db4o.filters.AllInstancesFilter;
+import ar.nahual.meteoro.model.CiudadPersistida;
 import ar.nahual.meteoro.model.PronosticoDiario;
 
 public class VerCiudadActivity extends CustomListActivity<PronosticoDiario> {
 
-	public static final List<Ciudad> ciudades = new ArrayList<Ciudad>();
+	private final List<CiudadPersistida> ciudades = new ArrayList<CiudadPersistida>();
+
+	private LocalServiceConnector<PersistenceDao> persistenceConector;
+	private PersistenceDao persistenceDao;
 
 	/**
-	 * @see ar.com.iron.android.extensions.activities.CustomListActivity#onCreate(android.os.Bundle)
+	 * @see ar.com.iron.android.extensions.activities.CustomListActivity#setUpComponents()
 	 */
 	@Override
-	public void onCreate(final Bundle savedInstanceState) {
-		super.onCreate(savedInstanceState);
+	public void setUpComponents() {
+		persistenceConector = LocalServiceConnector.create(PersistenceService.class);
+		persistenceConector.setConnectionListener(new LocalServiceConnectionListener<PersistenceDao>() {
+			@Override
+			public void onServiceDisconnection(final PersistenceDao disconnectedIntercomm) {
+				// No hacemos nada
+			}
+
+			@Override
+			public void onServiceConnection(final PersistenceDao intercommObject) {
+				onPersistenceDaoDisponible(intercommObject);
+			}
+		});
+		persistenceConector.bindToService(this);
+	}
+
+	/**
+	 * Invocado cuando tenemos disponible el dao para los datos
+	 * 
+	 * @param intercommObject
+	 */
+	protected void onPersistenceDaoDisponible(final PersistenceDao intercommObject) {
+		this.persistenceDao = intercommObject;
+		final AllInstancesFilter todasLasCiudades = new AllInstancesFilter(CiudadPersistida.class);
+		persistenceDao.findAllMatching(todasLasCiudades, new PersistenceOperationListener<List<CiudadPersistida>>() {
+			@Override
+			public void onFailure(final Exception exceptionThrown) {
+				ToastHelper.create(getContext()).showShort(
+						"Se produjo un error al acceder a las bases guardadas: " + exceptionThrown.getMessage());
+			}
+
+			@Override
+			public void onSuccess(final List<CiudadPersistida> result) {
+				onCiudadesCargadasDeLaBase(result);
+			}
+		});
+	}
+
+	protected void onCiudadesCargadasDeLaBase(final List<CiudadPersistida> result) {
+		this.ciudades.clear();
+		this.ciudades.addAll(result);
 		if (ciudades.isEmpty()) {
 			startActivity(new Intent(this, AgregarCiudadActivity.class));
 		}
@@ -89,6 +137,15 @@ public class VerCiudadActivity extends CustomListActivity<PronosticoDiario> {
 	@Override
 	public Object getContextMenuHeaderTitleOrId() {
 		return null;
+	}
+
+	/**
+	 * @see android.app.Activity#onStop()
+	 */
+	@Override
+	protected void onStop() {
+		persistenceConector.unbindFromService(this);
+		super.onStop();
 	}
 
 }
