@@ -6,9 +6,13 @@ package ar.nahual.meteoro;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.db4o.ObjectContainer;
+import com.db4o.ObjectSet;
+
 import android.app.ProgressDialog;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.ArrayAdapter;
@@ -19,9 +23,11 @@ import ar.com.iron.android.extensions.services.local.LocalServiceConnectionListe
 import ar.com.iron.android.extensions.services.local.LocalServiceConnector;
 import ar.com.iron.helpers.ToastHelper;
 import ar.com.iron.helpers.ViewHelper;
+import ar.com.iron.persistence.DataFilter;
 import ar.com.iron.persistence.PersistenceDao;
 import ar.com.iron.persistence.PersistenceOperationListener;
 import ar.com.iron.persistence.PersistenceService;
+import ar.com.iron.persistence.db4o.filters.Db4oFilter;
 import ar.nahual.meteoro.model.Ciudad;
 import ar.nahual.meteoro.model.CiudadPersistida;
 
@@ -118,10 +124,32 @@ public class AgregarCiudadActivity extends CustomActivity {
 	 */
 	protected void onSaveClicked() {
 		final CiudadPersistida persistible = CiudadPersistida.create(selectedCiudad);
-		persistenceDao.save(persistible, new PersistenceOperationListener<CiudadPersistida>() {
+		persistenceDao.findAllMatching(new Db4oFilter() {
 			@Override
-			public void onSuccess(final CiudadPersistida result) {
-				onCiudadAgregada(result);
+			public ObjectSet<?> executeOn(ObjectContainer container) {
+				return container.queryByExample(persistible);
+			}
+		}, new PersistenceOperationListener<List<CiudadPersistida>>() {
+
+			@Override
+			public void onSuccess(List<CiudadPersistida> result) {
+				if (result.size() == 0) {
+					persistenceDao.save(persistible, new PersistenceOperationListener<CiudadPersistida>() {
+						@Override
+						public void onSuccess(final CiudadPersistida result) {
+							onCiudadAgregada(result);
+						}
+
+						@Override
+						public void onFailure(final Exception exceptionThrown) {
+							ToastHelper.create(getContext()).showShort(
+									"Error al guardar en la base: " + exceptionThrown.getMessage());
+						}
+					});
+				} else {
+					Log.d("DB", "La ciudad ya existe");
+					onCiudadAgregada(persistible);
+				}
 			}
 
 			@Override
