@@ -26,13 +26,13 @@ import org.json.JSONObject;
 
 import android.os.AsyncTask;
 import ar.com.iron.helpers.ToastHelper;
-import ar.nahual.meteoro.model.Ciudad;
+import ar.nahual.meteoro.model.CiudadPersistida;
 
 /**
  * 
  * @author D. García
  */
-public class RequestCitiesTask extends AsyncTask<String, Void, List<Ciudad>> {
+public class RequestCitiesTask extends AsyncTask<String, Void, List<CiudadPersistida>> {
 	private DefaultHttpClient httpClient;
 	private final AgregarCiudadActivity activity;
 
@@ -48,7 +48,7 @@ public class RequestCitiesTask extends AsyncTask<String, Void, List<Ciudad>> {
 	 * @see android.os.AsyncTask#doInBackground(Params[])
 	 */
 	@Override
-	protected List<Ciudad> doInBackground(final String... params) {
+	protected List<CiudadPersistida> doInBackground(final String... params) {
 		final HttpGet request = new HttpGet("http://meteoro.herokuapp.com/get_cities");
 		HttpResponse response;
 		try {
@@ -77,14 +77,14 @@ public class RequestCitiesTask extends AsyncTask<String, Void, List<Ciudad>> {
 			return Collections.emptyList();
 		}
 		final String result = convertStreamToString(instream);
-		final ArrayList<Ciudad> ciudades = new ArrayList<Ciudad>();
+		final ArrayList<CiudadPersistida> ciudades = new ArrayList<CiudadPersistida>();
 		try {
 			final JSONArray results = new JSONArray(result);
 			for (int i = 0; i < results.length(); i++) {
 				final JSONObject object = results.getJSONObject(i);
 				final String nombre = (String) object.get("name");
 				final String codigo = (String) object.get("code");
-				ciudades.add(new Ciudad(codigo, nombre));
+				ciudades.add(new CiudadPersistida(nombre, codigo));
 			}
 		} catch (final JSONException e) {
 			showToast("Error en los datos recibidos: " + e.getMessage());
@@ -131,7 +131,7 @@ public class RequestCitiesTask extends AsyncTask<String, Void, List<Ciudad>> {
 	 * @see android.os.AsyncTask#onPostExecute(java.lang.Object)
 	 */
 	@Override
-	protected void onPostExecute(final List<Ciudad> result) {
+	protected void onPostExecute(final List<CiudadPersistida> result) {
 		this.activity.onCiudadesDisponibles(result);
 	}
 

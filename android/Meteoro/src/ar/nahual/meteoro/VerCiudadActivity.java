@@ -1,6 +1,7 @@
 package ar.nahual.meteoro;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import android.content.Intent;
@@ -20,9 +21,9 @@ import ar.com.iron.persistence.PersistenceOperationListener;
 import ar.com.iron.persistence.PersistenceService;
 import ar.com.iron.persistence.db4o.filters.AllInstancesFilter;
 import ar.nahual.meteoro.model.CiudadPersistida;
-import ar.nahual.meteoro.model.PronosticoDiario;
+import ar.nahual.meteoro.model.Pronostico;
 
-public class VerCiudadActivity extends CustomListActivity<PronosticoDiario> {
+public class VerCiudadActivity extends CustomListActivity<Pronostico> {
 
 	private final List<CiudadPersistida> ciudades = new ArrayList<CiudadPersistida>();
 	private CiudadPersistida ciudadActual;
@@ -89,7 +90,9 @@ public class VerCiudadActivity extends CustomListActivity<PronosticoDiario> {
 	 */
 	private void mostrarLaCiudad(final CiudadPersistida ciudadPersistida) {
 		ciudadActual = ciudadPersistida;
-		new RequestForecastTask(this);
+		final RequestForecastTask requestForecastTask = new RequestForecastTask(this);
+		requestForecastTask.execute(ciudadActual);
+		ViewHelper.findTextView(R.id.nombreCiudad_txt, getContentView()).setText(ciudadActual.getCityName());
 	}
 
 	protected void onPronosticoDisponible() {
@@ -100,7 +103,7 @@ public class VerCiudadActivity extends CustomListActivity<PronosticoDiario> {
 	 * @see ar.com.iron.android.extensions.activities.model.CustomableListActivity#getContextMenuItems()
 	 */
 	@Override
-	public ContextMenuItem<? extends CustomableListActivity<PronosticoDiario>, PronosticoDiario>[] getContextMenuItems() {
+	public ContextMenuItem<? extends CustomableListActivity<Pronostico>, Pronostico>[] getContextMenuItems() {
 		return null;
 	}
 
@@ -108,26 +111,22 @@ public class VerCiudadActivity extends CustomListActivity<PronosticoDiario> {
 	 * @see ar.com.iron.android.extensions.activities.model.CustomableListActivity#getElementList()
 	 */
 	@Override
-	public List<PronosticoDiario> getElementList() {
-		final List<PronosticoDiario> pronosticos = new ArrayList<PronosticoDiario>();
-		pronosticos.add(PronosticoDiario.create("Martes", 22));
-		pronosticos.add(PronosticoDiario.create("Miercoles", 23));
-		pronosticos.add(PronosticoDiario.create("jueves", 24));
-		return pronosticos;
+	public List<Pronostico> getElementList() {
+		return Collections.nCopies(4, new Pronostico());
 	}
 
 	/**
 	 * @see ar.com.iron.android.extensions.activities.model.CustomableListActivity#getElementRenderBlock()
 	 */
 	@Override
-	public RenderBlock<PronosticoDiario> getElementRenderBlock() {
-		return new RenderBlock<PronosticoDiario>() {
+	public RenderBlock<Pronostico> getElementRenderBlock() {
+		return new RenderBlock<Pronostico>() {
 			@Override
-			public void render(final View itemView, final PronosticoDiario item, final LayoutInflater inflater) {
+			public void render(final View itemView, final Pronostico item, final LayoutInflater inflater) {
 				final TextView diaPronosticoText = ViewHelper.findTextView(R.id.diaPronostico_txt, itemView);
-				diaPronosticoText.setText(item.getDia());
+				diaPronosticoText.setText(item.getDate());
 				final TextView tempPronostico = ViewHelper.findTextView(R.id.tempPronostico_txt, itemView);
-				tempPronostico.setText(String.valueOf(item.getTemp()));
+				tempPronostico.setText(String.valueOf(item.getTemperature()));
 			}
 		};
 	}

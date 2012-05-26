@@ -105,14 +105,14 @@ public class RequestForecastTask extends AsyncTask<CiudadPersistida, Void, List<
 			final JSONArray results = new JSONArray(result);
 			for (int i = 0; i < results.length(); i++) {
 				final JSONObject object = results.getJSONObject(i);
-				final String status = (String) object.get("status");
-				final String temperature = (String) object.get("temperature");
-				final String min = (String) object.get("min");
-				final String date = (String) object.get("date");
-				final String max = (String) object.get("max");
-				final String humidity = (String) object.get("humidity");
-				final String wind = (String) object.get("wind");
-				final String chill = (String) object.get("chill");
+				final String status = object.get("status").toString();
+				final String temperature = object.get("temperature").toString();
+				final String min = object.get("min").toString();
+				final String date = object.get("date").toString();
+				final String max = object.get("max").toString();
+				final String humidity = object.get("humidity").toString();
+				final String wind = object.get("wind").toString();
+				final String chill = object.get("chill").toString();
 				final Pronostico pronostico = new Pronostico();
 				pronostico.setChill(chill);
 				pronostico.setDate(date);
@@ -178,7 +178,7 @@ public class RequestForecastTask extends AsyncTask<CiudadPersistida, Void, List<
 		final Pronostico pronosticoActual = result.get(0);
 		final ArrayList<Pronostico> futuros = new ArrayList<Pronostico>(result.size() - 1);
 		for (int i = 1; i < result.size(); i++) {
-			final Pronostico pronostico = result.get(0);
+			final Pronostico pronostico = result.get(i);
 			futuros.add(pronostico);
 		}
 		this.ciudadElegida.setActual(pronosticoActual);

@@ -9,14 +9,14 @@ package ar.nahual.meteoro.model;
  * @author D. García
  */
 public class Pronostico {
-	private String status;
-	private String temperature;
-	private String min;
-	private String date;
-	private String max;
-	private String humidity;
-	private String wind;
-	private String chill;
+	private String status = "N/D";
+	private String temperature = "N/D";
+	private String min = "N/D";
+	private String date = "N/D";
+	private String max = "N/D";
+	private String humidity = "N/D";
+	private String wind = "N/D";
+	private String chill = "N/D";
 
 	public String getStatus() {
 		return status;
