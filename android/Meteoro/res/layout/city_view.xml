@@ -9,6 +9,8 @@
         android:layout_height="wrap_content"
         android:layout_width="fill_parent"
         android:textSize="30dp"
+        android:background="#ADADAD"
+        android:textColor="#FFFFFF"
         />
     <TextView 
         android:id="@+id/estado_txt" 
@@ -40,7 +42,13 @@
             android:layout_width="wrap_content"
             />
 	</LinearLayout>
-	
+	<TextView 
+        android:text="Pronóstico"
+        android:layout_height="wrap_content"
+        android:layout_width="fill_parent"
+        android:background="#ADADAD"
+        android:textColor="#FFFFFF"
+        />
 	<ListView
 	    android:id="@android:id/list"
 	    android:layout_width="fill_parent" 
