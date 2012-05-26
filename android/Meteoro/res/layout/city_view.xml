@@ -17,7 +17,7 @@
         android:layout_height="wrap_content"
         android:layout_width="wrap_content"
         android:layout_gravity="center"
-        android:src="@drawable/unknown"
+        android:src="@drawable/status_unknown"
     />
 	<LinearLayout
 	    android:layout_height="wrap_content" 
