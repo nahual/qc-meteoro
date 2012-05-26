@@ -89,6 +89,7 @@ public class VerCiudadActivity extends CustomListActivity<PronosticoDiario> {
 	 */
 	private void mostrarLaCiudad(final CiudadPersistida ciudadPersistida) {
 		ciudadActual = ciudadPersistida;
+		new RequestForecastTask(this);
 	}
 
 	protected void onPronosticoDisponible() {

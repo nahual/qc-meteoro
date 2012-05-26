@@ -1,5 +1,5 @@
 /**
- * 30/04/2012 20:27:44 Copyright (C) 2011 10Pines S.R.L.
+ * 26/05/2012 16:55:16 Copyright (C) 2011 10Pines S.R.L.
  */
 package ar.nahual.meteoro;
 
@@ -24,32 +24,55 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import android.net.Uri;
 import android.os.AsyncTask;
 import ar.com.iron.helpers.ToastHelper;
-import ar.nahual.meteoro.model.Ciudad;
+import ar.nahual.meteoro.model.CiudadPersistida;
+import ar.nahual.meteoro.model.Pronostico;
 
 /**
  * 
  * @author D. García
  */
-public class RequestCitiesTask extends AsyncTask<String, Void, List<Ciudad>> {
+public class RequestForecastTask extends AsyncTask<CiudadPersistida, Void, List<Pronostico>> {
+
+	private final VerCiudadActivity activity;
 	private DefaultHttpClient httpClient;
-	private final AgregarCiudadActivity activity;
+	private CiudadPersistida ciudadElegida;
 
 	/**
-	 * @param customArrayAdapter
+	 * @see android.os.AsyncTask#onPreExecute()
+	 */
+	@Override
+	protected void onPreExecute() {
+		createHttpClient();
+	}
+
+	/**
 	 * 
 	 */
-	public RequestCitiesTask(final AgregarCiudadActivity context) {
-		this.activity = context;
+	private void createHttpClient() {
+		final int TIMEOUT_MILLISEC = 10000; // = 10 seconds
+		final HttpParams httpParams = new BasicHttpParams();
+		HttpConnectionParams.setConnectionTimeout(httpParams, TIMEOUT_MILLISEC);
+		HttpConnectionParams.setSoTimeout(httpParams, TIMEOUT_MILLISEC);
+		httpClient = new DefaultHttpClient(httpParams);
+	}
+
+	public RequestForecastTask(final VerCiudadActivity activity) {
+		this.activity = activity;
 	}
 
 	/**
 	 * @see android.os.AsyncTask#doInBackground(Params[])
 	 */
 	@Override
-	protected List<Ciudad> doInBackground(final String... params) {
-		final HttpGet request = new HttpGet("http://meteoro.herokuapp.com/get_cities");
+	protected List<Pronostico> doInBackground(final CiudadPersistida... params) {
+		ciudadElegida = params[0];
+		final Uri forecastUri = new Uri.Builder().scheme("http").authority("meteoro.herokuapp.com")
+				.path("get_forecast").appendQueryParameter("city", ciudadElegida.getCityCode()).build();
+
+		final HttpGet request = new HttpGet(forecastUri.toString());
 		HttpResponse response;
 		try {
 			response = httpClient.execute(request);
@@ -77,14 +100,29 @@ public class RequestCitiesTask extends AsyncTask<String, Void, List<Ciudad>> {
 			return Collections.emptyList();
 		}
 		final String result = convertStreamToString(instream);
-		final ArrayList<Ciudad> ciudades = new ArrayList<Ciudad>();
+		final ArrayList<Pronostico> pronosticos = new ArrayList<Pronostico>();
 		try {
 			final JSONArray results = new JSONArray(result);
 			for (int i = 0; i < results.length(); i++) {
 				final JSONObject object = results.getJSONObject(i);
-				final String nombre = (String) object.get("name");
-				final String codigo = (String) object.get("code");
-				ciudades.add(new Ciudad(codigo, nombre));
+				final String status = (String) object.get("status");
+				final String temperature = (String) object.get("temperature");
+				final String min = (String) object.get("min");
+				final String date = (String) object.get("date");
+				final String max = (String) object.get("max");
+				final String humidity = (String) object.get("humidity");
+				final String wind = (String) object.get("wind");
+				final String chill = (String) object.get("chill");
+				final Pronostico pronostico = new Pronostico();
+				pronostico.setChill(chill);
+				pronostico.setDate(date);
+				pronostico.setHumidity(humidity);
+				pronostico.setMax(max);
+				pronostico.setMin(min);
+				pronostico.setStatus(status);
+				pronostico.setTemperature(temperature);
+				pronostico.setWind(wind);
+				pronosticos.add(pronostico);
 			}
 		} catch (final JSONException e) {
 			showToast("Error en los datos recibidos: " + e.getMessage());
@@ -96,7 +134,7 @@ public class RequestCitiesTask extends AsyncTask<String, Void, List<Ciudad>> {
 			// Ya fue
 		}
 		showToast("Terminando");
-		return ciudades;
+		return pronosticos;
 	}
 
 	private void showToast(final String texto) {
@@ -106,33 +144,6 @@ public class RequestCitiesTask extends AsyncTask<String, Void, List<Ciudad>> {
 				ToastHelper.create(activity).showShort(texto);
 			}
 		});
-	}
-
-	/**
-	 * @see android.os.AsyncTask#onPreExecute()
-	 */
-	@Override
-	protected void onPreExecute() {
-		createHttpClient();
-	}
-
-	/**
-	 * 
-	 */
-	private void createHttpClient() {
-		final int TIMEOUT_MILLISEC = 10000; // = 10 seconds
-		final HttpParams httpParams = new BasicHttpParams();
-		HttpConnectionParams.setConnectionTimeout(httpParams, TIMEOUT_MILLISEC);
-		HttpConnectionParams.setSoTimeout(httpParams, TIMEOUT_MILLISEC);
-		httpClient = new DefaultHttpClient(httpParams);
-	}
-
-	/**
-	 * @see android.os.AsyncTask#onPostExecute(java.lang.Object)
-	 */
-	@Override
-	protected void onPostExecute(final List<Ciudad> result) {
-		this.activity.onCiudadesDisponibles(result);
 	}
 
 	public static String convertStreamToString(final InputStream is) {
@@ -155,4 +166,24 @@ public class RequestCitiesTask extends AsyncTask<String, Void, List<Ciudad>> {
 		return sb.toString();
 	}
 
+	/**
+	 * @see android.os.AsyncTask#onPostExecute(java.lang.Object)
+	 */
+	@Override
+	protected void onPostExecute(final List<Pronostico> result) {
+		if (result.isEmpty()) {
+			// No tenemos pronostico
+			return;
+		}
+		final Pronostico pronosticoActual = result.get(0);
+		final ArrayList<Pronostico> futuros = new ArrayList<Pronostico>(result.size() - 1);
+		for (int i = 1; i < result.size(); i++) {
+			final Pronostico pronostico = result.get(0);
+			futuros.add(pronostico);
+		}
+		this.ciudadElegida.setActual(pronosticoActual);
+		this.ciudadElegida.setFuturos(futuros);
+
+		activity.onPronosticoDisponible();
+	}
 }
