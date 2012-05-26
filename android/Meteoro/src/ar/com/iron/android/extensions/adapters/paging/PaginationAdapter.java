@@ -117,7 +117,7 @@ public class PaginationAdapter<T, P> {
 			return false;
 		}
 		// Agregamos los resultados recibidos
-		listAdapter.addAll(result);
+		listAdapter.addAllFrom(result);
 		this.setNextPageRequest(null);
 		return true;
 	}

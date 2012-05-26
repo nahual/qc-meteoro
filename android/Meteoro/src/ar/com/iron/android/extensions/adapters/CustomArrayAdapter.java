@@ -171,7 +171,7 @@ public class CustomArrayAdapter<T> extends ArrayAdapter<T> {
 	 * @param elements
 	 *            Los elementos a agregar
 	 */
-	public void addAll(final Iterable<T> elements) {
+	public void addAllFrom(final Iterable<T> elements) {
 		setNotifyOnChange(false);
 		for (final T element : elements) {
 			add(element);
@@ -190,7 +190,7 @@ public class CustomArrayAdapter<T> extends ArrayAdapter<T> {
 	public void replaceAll(final Iterable<T> elements) {
 		setNotifyOnChange(false);
 		clear();
-		addAll(elements);
+		addAllFrom(elements);
 		notifyDataSetChanged();
 	}
 
