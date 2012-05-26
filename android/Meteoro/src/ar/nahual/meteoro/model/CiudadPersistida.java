@@ -17,9 +17,13 @@ public class CiudadPersistida extends PersistibleSupport {
 
 	private String cityCode;
 	private String cityName;
-
 	private Pronostico actual;
 	private List<Pronostico> futuros;
+
+	public CiudadPersistida(final String name, final String code) {
+		this.cityName = name;
+		this.cityCode = code;
+	}
 
 	public Pronostico getActual() {
 		return actual;
@@ -54,12 +58,5 @@ public class CiudadPersistida extends PersistibleSupport {
 
 	public void setCityName(final String cityName) {
 		this.cityName = cityName;
-	}
-
-	public static CiudadPersistida create(final Ciudad ciudadBase) {
-		final CiudadPersistida name = new CiudadPersistida();
-		name.cityCode = ciudadBase.getCode();
-		name.cityName = ciudadBase.getName();
-		return name;
 	}
 }

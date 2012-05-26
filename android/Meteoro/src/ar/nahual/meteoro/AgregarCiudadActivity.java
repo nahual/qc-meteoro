@@ -6,9 +6,6 @@ package ar.nahual.meteoro;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.db4o.ObjectContainer;
-import com.db4o.ObjectSet;
-
 import android.app.ProgressDialog;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -23,13 +20,14 @@ import ar.com.iron.android.extensions.services.local.LocalServiceConnectionListe
 import ar.com.iron.android.extensions.services.local.LocalServiceConnector;
 import ar.com.iron.helpers.ToastHelper;
 import ar.com.iron.helpers.ViewHelper;
-import ar.com.iron.persistence.DataFilter;
 import ar.com.iron.persistence.PersistenceDao;
 import ar.com.iron.persistence.PersistenceOperationListener;
 import ar.com.iron.persistence.PersistenceService;
 import ar.com.iron.persistence.db4o.filters.Db4oFilter;
-import ar.nahual.meteoro.model.Ciudad;
 import ar.nahual.meteoro.model.CiudadPersistida;
+
+import com.db4o.ObjectContainer;
+import com.db4o.ObjectSet;
 
 /**
  * 
@@ -38,11 +36,11 @@ import ar.nahual.meteoro.model.CiudadPersistida;
 public class AgregarCiudadActivity extends CustomActivity {
 
 	private AutoCompleteTextView ciudadAutoComplete;
-	public static List<Ciudad> ciudadesDisponibles;
+	public static List<CiudadPersistida> ciudadesDisponibles;
 	public static List<String> nombresCiudades;
 	private ArrayAdapter<String> autoCompleteAdapter;
 	private ProgressDialog cityProgress;
-	private Ciudad selectedCiudad;
+	private CiudadPersistida selectedCiudad;
 	private Button saveButton;
 
 	private LocalServiceConnector<PersistenceDao> persistenceConector;
@@ -123,18 +121,17 @@ public class AgregarCiudadActivity extends CustomActivity {
 	 * Invocado al guadar la ciudad
 	 */
 	protected void onSaveClicked() {
-		final CiudadPersistida persistible = CiudadPersistida.create(selectedCiudad);
 		persistenceDao.findAllMatching(new Db4oFilter() {
 			@Override
 			public ObjectSet<?> executeOn(ObjectContainer container) {
-				return container.queryByExample(persistible);
+				return container.queryByExample(selectedCiudad);
 			}
 		}, new PersistenceOperationListener<List<CiudadPersistida>>() {
 
 			@Override
 			public void onSuccess(List<CiudadPersistida> result) {
 				if (result.size() == 0) {
-					persistenceDao.save(persistible, new PersistenceOperationListener<CiudadPersistida>() {
+					persistenceDao.save(selectedCiudad, new PersistenceOperationListener<CiudadPersistida>() {
 						@Override
 						public void onSuccess(final CiudadPersistida result) {
 							onCiudadAgregada(result);
@@ -148,7 +145,7 @@ public class AgregarCiudadActivity extends CustomActivity {
 					});
 				} else {
 					Log.d("DB", "La ciudad ya existe");
-					onCiudadAgregada(persistible);
+					onCiudadAgregada(selectedCiudad);
 				}
 			}
 
@@ -173,8 +170,8 @@ public class AgregarCiudadActivity extends CustomActivity {
 	protected void onTextoCambiado(final String textoDeLaCiudad) {
 		selectedCiudad = null;
 		if (textoDeLaCiudad.length() > 3) {
-			for (final Ciudad ciudad : ciudadesDisponibles) {
-				if (ciudad.getName().equals(textoDeLaCiudad)) {
+			for (final CiudadPersistida ciudad : ciudadesDisponibles) {
+				if (ciudad.getCityName().equals(textoDeLaCiudad)) {
 					selectedCiudad = ciudad;
 					break;
 				}
@@ -187,7 +184,7 @@ public class AgregarCiudadActivity extends CustomActivity {
 	public List<String> getNombresCiudades() {
 		if (nombresCiudades == null) {
 			nombresCiudades = new ArrayList<String>();
-			ciudadesDisponibles = new ArrayList<Ciudad>();
+			ciudadesDisponibles = new ArrayList<CiudadPersistida>();
 			requestCiudades();
 		}
 		return nombresCiudades;
@@ -196,11 +193,11 @@ public class AgregarCiudadActivity extends CustomActivity {
 	/**
 	 * Recibe las ciudades en background
 	 */
-	public void onCiudadesDisponibles(final List<Ciudad> result) {
+	public void onCiudadesDisponibles(final List<CiudadPersistida> result) {
 		this.ciudadesDisponibles = result;
 		nombresCiudades.clear();
-		for (final Ciudad ciudad : result) {
-			nombresCiudades.add(ciudad.getName());
+		for (final CiudadPersistida ciudad : result) {
+			nombresCiudades.add(ciudad.getCityName());
 		}
 		autoCompleteAdapter.notifyDataSetChanged();
 		cityProgress.cancel();
