@@ -23,6 +23,18 @@ public enum VerCiudadMenu implements ActivityMenuItem<VerCiudadActivity> {
 			activity.onAgregarCiudadSelected();
 			return true;
 		}
+	},
+	BORRAR_CIUDAD {
+		@Override
+		public Object getItemTitleOrResId() {
+			return "Quitar ciudad";
+		}
+
+		@Override
+		public boolean onSelection(final VerCiudadActivity activity) {
+			activity.borrarCiudad();
+			return true;
+		}
 	};
 
 	/**

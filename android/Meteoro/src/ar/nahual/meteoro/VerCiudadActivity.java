@@ -62,6 +62,13 @@ public class VerCiudadActivity extends CustomListActivity<Pronostico> {
 	 */
 	protected void onPersistenceDaoDisponible(final PersistenceDao intercommObject) {
 		this.persistenceDao = intercommObject;
+		mostrarLaPrimeraCiudadDisponible();
+	}
+
+	/**
+	 * Muestra la priemra ciudad disponible en la base o pide una nueva
+	 */
+	private void mostrarLaPrimeraCiudadDisponible() {
 		final AllInstancesFilter todasLasCiudades = new AllInstancesFilter(CiudadPersistida.class);
 		persistenceDao.findAllMatching(todasLasCiudades,
 				new DefaultOnFailurePersistenceOperationListener<List<CiudadPersistida>>(getContext()) {
@@ -215,6 +222,26 @@ public class VerCiudadActivity extends CustomListActivity<Pronostico> {
 	 */
 	public void onAgregarCiudadSelected() {
 		startActivityForResult(new Intent(this, AgregarCiudadActivity.class), CHOOSE_OTHER_CITY);
+	}
+
+	/**
+	 * Invocado cuando el usuario decide borrar la ciudad actual
+	 */
+	public void borrarCiudad() {
+		persistenceDao.delete(ciudadActual, new DefaultOnFailurePersistenceOperationListener<CiudadPersistida>(
+				getContext()) {
+			@Override
+			public void onSuccess(final CiudadPersistida result) {
+				onCiudadBorrada();
+			}
+		});
+	}
+
+	/**
+	 * Invocado cuando la ciudad actual fue borrada
+	 */
+	protected void onCiudadBorrada() {
+		mostrarLaPrimeraCiudadDisponible();
 	}
 
 }
