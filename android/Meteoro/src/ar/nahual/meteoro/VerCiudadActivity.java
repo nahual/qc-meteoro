@@ -13,7 +13,9 @@ import ar.com.iron.android.extensions.activities.model.CustomableListActivity;
 import ar.com.iron.android.extensions.adapters.RenderBlock;
 import ar.com.iron.android.extensions.services.local.LocalServiceConnectionListener;
 import ar.com.iron.android.extensions.services.local.LocalServiceConnector;
+import ar.com.iron.helpers.ToastHelper;
 import ar.com.iron.helpers.ViewHelper;
+import ar.com.iron.menues.ActivityMenuItem;
 import ar.com.iron.menues.ContextMenuItem;
 import ar.com.iron.persistence.DefaultOnFailurePersistenceOperationListener;
 import ar.com.iron.persistence.PersistenceDao;
@@ -24,7 +26,9 @@ import ar.nahual.meteoro.model.Pronostico;
 
 public class VerCiudadActivity extends CustomListActivity<Pronostico> {
 
-	public static final String CITY_ID = "CITY_ID";
+	public static int CHOOSE_FIRST_CITY = 1;
+	public static int CHOOSE_OTHER_CITY = 2;
+
 	private final List<CiudadPersistida> ciudades = new ArrayList<CiudadPersistida>();
 	private CiudadPersistida ciudadActual;
 
@@ -59,27 +63,41 @@ public class VerCiudadActivity extends CustomListActivity<Pronostico> {
 	protected void onPersistenceDaoDisponible(final PersistenceDao intercommObject) {
 		this.persistenceDao = intercommObject;
 		final AllInstancesFilter todasLasCiudades = new AllInstancesFilter(CiudadPersistida.class);
-		persistenceDao.findAllMatching(todasLasCiudades, new DefaultOnFailurePersistenceOperationListener<List<CiudadPersistida>>(getContext()) {
-			@Override
-			public void onSuccess(final List<CiudadPersistida> result) {
-				onCiudadesCargadasDeLaBase(result);
-			}
-		});
+		persistenceDao.findAllMatching(todasLasCiudades,
+				new DefaultOnFailurePersistenceOperationListener<List<CiudadPersistida>>(getContext()) {
+					@Override
+					public void onSuccess(final List<CiudadPersistida> result) {
+						onCiudadesCargadasDeLaBase(result);
+					}
+				});
 	}
 
 	protected void onCiudadesCargadasDeLaBase(final List<CiudadPersistida> result) {
 		this.ciudades.clear();
 		this.ciudades.addAll(result);
 		if (ciudades.isEmpty()) {
-			startActivityForResult(new Intent(this, AgregarCiudadActivity.class), 1);
+			startActivityForResult(new Intent(this, AgregarCiudadActivity.class), CHOOSE_FIRST_CITY);
 		} else {
 			mostrarLaCiudad(ciudades.get(0).getId());
 		}
 	}
 
 	@Override
-	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-		mostrarLaCiudad(data.getLongExtra(VerCiudadActivity.CITY_ID, -1l));
+	protected void onActivityResult(final int requestCode, final int resultCode, final Intent data) {
+		if (resultCode != RESULT_OK) {
+			if (requestCode == CHOOSE_FIRST_CITY) {
+				// Cancelo la seleccion de ciudad en la primera vez. Salimos
+				finish();
+			}
+			return;
+		}
+		final long cityId = data.getLongExtra(AgregarCiudadActivity.SELECTED_CITY, -1);
+		if (cityId == -1) {
+			ToastHelper.create(getContext()).showShort("El ID de ciudad es invalido");
+			finish();
+			return;
+		}
+		mostrarLaCiudad(cityId);
 	}
 
 	/**
@@ -88,15 +106,17 @@ public class VerCiudadActivity extends CustomListActivity<Pronostico> {
 	 * @param ciudadPersistida
 	 */
 	private void mostrarLaCiudad(final Long idDeCiudad) {
-		persistenceDao.getOf(CiudadPersistida.class, idDeCiudad, new DefaultOnFailurePersistenceOperationListener<CiudadPersistida>(getContext()) {
-			@Override
-			public void onSuccess(CiudadPersistida result) {
-				ciudadActual = result;
-				ViewHelper.findTextView(R.id.nombreCiudad_txt, getContentView()).setText(ciudadActual.getCityName());
-				final RequestForecastTask requestForecastTask = new RequestForecastTask(VerCiudadActivity.this);
-				requestForecastTask.execute(ciudadActual);			
-			}
-		}); 
+		persistenceDao.getOf(CiudadPersistida.class, idDeCiudad,
+				new DefaultOnFailurePersistenceOperationListener<CiudadPersistida>(getContext()) {
+					@Override
+					public void onSuccess(final CiudadPersistida result) {
+						ciudadActual = result;
+						ViewHelper.findTextView(R.id.nombreCiudad_txt, getContentView()).setText(
+								ciudadActual.getCityName());
+						final RequestForecastTask requestForecastTask = new RequestForecastTask(VerCiudadActivity.this);
+						requestForecastTask.execute(ciudadActual);
+					}
+				});
 	}
 
 	protected void onPronosticoDisponible() {
@@ -180,6 +200,21 @@ public class VerCiudadActivity extends CustomListActivity<Pronostico> {
 	protected void onStop() {
 		persistenceConector.unbindFromService(this);
 		super.onStop();
+	}
+
+	/**
+	 * @see ar.com.iron.android.extensions.activities.CustomListActivity#getMenuItems()
+	 */
+	@Override
+	public ActivityMenuItem<? extends CustomListActivity<Pronostico>>[] getMenuItems() {
+		return VerCiudadMenu.values();
+	}
+
+	/**
+	 * Invocado cuando se elige del menu la opcion para agregar una ciudad
+	 */
+	public void onAgregarCiudadSelected() {
+		startActivityForResult(new Intent(this, AgregarCiudadActivity.class), CHOOSE_OTHER_CITY);
 	}
 
 }

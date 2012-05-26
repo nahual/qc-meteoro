@@ -12,15 +12,25 @@ import ar.com.iron.menues.ActivityMenuItem;
  * @author D. García
  */
 public enum VerCiudadMenu implements ActivityMenuItem<VerCiudadActivity> {
-	AGREGAR_CIUDAD;
+	AGREGAR_CIUDAD {
+		@Override
+		public Object getItemTitleOrResId() {
+			return "Agregar ciudad";
+		}
+
+		@Override
+		public boolean onSelection(final VerCiudadActivity activity) {
+			activity.onAgregarCiudadSelected();
+			return true;
+		}
+	};
 
 	/**
 	 * @see ar.com.iron.menues.CustomMenuItem#getItemTitleOrResId()
 	 */
 	@Override
 	public Object getItemTitleOrResId() {
-		// TODO Auto-generated method stub
-		throw new UnsupportedOperationException("El método no fue implementado");
+		return null;
 	}
 
 	/**
@@ -28,8 +38,7 @@ public enum VerCiudadMenu implements ActivityMenuItem<VerCiudadActivity> {
 	 */
 	@Override
 	public Intent getFiredActivityIntent(final Context contexto) {
-		// TODO Auto-generated method stub
-		throw new UnsupportedOperationException("El método no fue implementado");
+		return null;
 	}
 
 	/**
@@ -37,8 +46,7 @@ public enum VerCiudadMenu implements ActivityMenuItem<VerCiudadActivity> {
 	 */
 	@Override
 	public boolean onSelection(final VerCiudadActivity activity) {
-		// TODO Auto-generated method stub
-		throw new UnsupportedOperationException("El método no fue implementado");
+		return false;
 	}
 
 	/**
@@ -46,8 +54,7 @@ public enum VerCiudadMenu implements ActivityMenuItem<VerCiudadActivity> {
 	 */
 	@Override
 	public Integer getIconId() {
-		// TODO Auto-generated method stub
-		throw new UnsupportedOperationException("El método no fue implementado");
+		return null;
 	}
 
 }

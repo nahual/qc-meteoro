@@ -7,6 +7,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import android.app.ProgressDialog;
+import android.content.Intent;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
@@ -22,17 +23,16 @@ import ar.com.iron.helpers.ViewHelper;
 import ar.com.iron.persistence.DefaultOnFailurePersistenceOperationListener;
 import ar.com.iron.persistence.PersistenceDao;
 import ar.com.iron.persistence.PersistenceService;
-import ar.com.iron.persistence.db4o.filters.Db4oFilter;
+import ar.com.iron.persistence.db4o.filters.PredicateFilter;
 import ar.nahual.meteoro.model.CiudadPersistida;
-
-import com.db4o.ObjectContainer;
-import com.db4o.ObjectSet;
 
 /**
  * 
  * @author D. García
  */
 public class AgregarCiudadActivity extends CustomActivity {
+
+	public static String SELECTED_CITY = "SELECTED_CITY";
 
 	private AutoCompleteTextView ciudadAutoComplete;
 	public static List<CiudadPersistida> ciudadesDisponibles;
@@ -120,34 +120,43 @@ public class AgregarCiudadActivity extends CustomActivity {
 	 * Invocado al guadar la ciudad
 	 */
 	protected void onSaveClicked() {
-		persistenceDao.findAllMatching(new Db4oFilter() {
+		final PredicateFilter<CiudadPersistida> mismoCodigo = new PredicateFilter<CiudadPersistida>(
+				CiudadPersistida.class) {
 			@Override
-			public ObjectSet<?> executeOn(ObjectContainer container) {
-				return container.queryByExample(selectedCiudad);
+			public boolean match(final CiudadPersistida arg0) {
+				return arg0.getCityCode().equals(selectedCiudad.getCityCode());
 			}
-		}, new DefaultOnFailurePersistenceOperationListener<List<CiudadPersistida>>(getContext()) {
+		};
+		persistenceDao.findAllMatching(mismoCodigo,
+				new DefaultOnFailurePersistenceOperationListener<List<CiudadPersistida>>(getContext()) {
 
-			@Override
-			public void onSuccess(List<CiudadPersistida> result) {
-				if (result.size() == 0) {
-					persistenceDao.save(selectedCiudad, new DefaultOnFailurePersistenceOperationListener<CiudadPersistida>(getContext()) {
-						@Override
-						public void onSuccess(final CiudadPersistida result) {
-							onCiudadAgregada(result);
+					@Override
+					public void onSuccess(final List<CiudadPersistida> result) {
+						if (result.size() == 0) {
+							// No hay otra ciudad con el mismo nombre
+							persistenceDao.save(selectedCiudad,
+									new DefaultOnFailurePersistenceOperationListener<CiudadPersistida>(getContext()) {
+										@Override
+										public void onSuccess(final CiudadPersistida result) {
+											onCiudadAgregada(result);
+										}
+									});
+						} else {
+							Log.d("DB", "La ciudad ya existe");
+							final CiudadPersistida persistida = result.get(0);
+							onCiudadAgregada(persistida);
 						}
-					});
-				} else {
-					Log.d("DB", "La ciudad ya existe");
-					onCiudadAgregada(selectedCiudad);
-				}
-			}
-		});
+					}
+				});
 	}
 
 	/**
 	 * Invocado al guardar la ciudad agregada
 	 */
 	protected void onCiudadAgregada(final CiudadPersistida result) {
+		final Intent resultIntent = new Intent();
+		resultIntent.putExtra(SELECTED_CITY, result.getId());
+		setResult(RESULT_OK, resultIntent);
 		finish();
 	}
 
