@@ -12,12 +12,13 @@
         android:layout_weight="1.0"
         android:text="FECHA"
         />
-    <TextView
-        android:id="@+id/estadoPronostico_txt"
-        android:layout_width="wrap_content"
+    <ImageView
+        android:id="@+id/estadoPronostico_img" 
         android:layout_height="wrap_content"
-        android:text="estado"
-        />    
+        android:layout_width="wrap_content"
+        android:layout_gravity="center"
+        android:src="@drawable/status_unknown"
+    />    
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"

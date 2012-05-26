@@ -47,6 +47,7 @@ public class VerCiudadActivity extends CustomListActivity<Pronostico> {
 			ICONOS_ESTADO.put("clear", R.drawable.status_clear);
 			ICONOS_ESTADO.put("am showers", R.drawable.status_showers);
 			ICONOS_ESTADO.put("pm showers", R.drawable.status_showers);
+			ICONOS_ESTADO.put("mist", R.drawable.status_cloudy);
 		}
 		final String normalizado = estado.toLowerCase();
 		return ICONOS_ESTADO.containsKey(normalizado) ? ICONOS_ESTADO.get(normalizado) : R.drawable.status_unknown;
@@ -207,9 +208,8 @@ public class VerCiudadActivity extends CustomListActivity<Pronostico> {
 				final TextView diaPronosticoText = ViewHelper.findTextView(
 						R.id.diaPronostico_txt, itemView);
 				diaPronosticoText.setText(item.getDate());
-				final TextView estadoPronostico = ViewHelper.findTextView(
-						R.id.estadoPronostico_txt, itemView);
-				estadoPronostico.setText(String.valueOf(item.getStatus()));
+				final ImageView img = ViewHelper.findImageView(R.id.estadoPronostico_img, itemView);
+				img.setImageResource(getIconoEstado(item.getStatus()));
 				final TextView minTempPronostico = ViewHelper.findTextView(
 						R.id.minTempPronostico_txt, itemView);
 				minTempPronostico.setText(String.valueOf(item.getMin()));
