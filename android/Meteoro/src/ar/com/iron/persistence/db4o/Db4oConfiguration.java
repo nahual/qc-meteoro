@@ -93,20 +93,20 @@ public class Db4oConfiguration {
 		// Recorremos también sus superclases
 		Class<?> currentClass = clazz;
 		while (!Object.class.equals(currentClass)) {
-			Field[] classFields = currentClass.getDeclaredFields();
+			final Field[] classFields = currentClass.getDeclaredFields();
 			// Por cada atributo verificamos si tiene annotations
-			for (Field currentField : classFields) {
-				CascadeField cascadeAnnotation = currentField.getAnnotation(CascadeField.class);
+			for (final Field currentField : classFields) {
+				final CascadeField cascadeAnnotation = currentField.getAnnotation(CascadeField.class);
 				if (cascadeAnnotation != null) {
-					ObjectField objectField = objectClass.objectField(currentField.getName());
+					final ObjectField objectField = objectClass.objectField(currentField.getName());
 					objectField.cascadeOnActivate(cascadeAnnotation.cascadeOnActivate());
 					objectField.cascadeOnDelete(cascadeAnnotation.cascadeOnDelete());
 					objectField.cascadeOnUpdate(cascadeAnnotation.cascadeOnUpdate());
 				}
 
-				IndexField indexAnnotation = currentField.getAnnotation(IndexField.class);
+				final IndexField indexAnnotation = currentField.getAnnotation(IndexField.class);
 				if (indexAnnotation != null) {
-					ObjectField objectField = objectClass.objectField(currentField.getName());
+					final ObjectField objectField = objectClass.objectField(currentField.getName());
 					objectField.indexed(true);
 				}
 			}

@@ -25,6 +25,7 @@ import ar.nahual.meteoro.model.PronosticoDiario;
 public class VerCiudadActivity extends CustomListActivity<PronosticoDiario> {
 
 	private final List<CiudadPersistida> ciudades = new ArrayList<CiudadPersistida>();
+	private CiudadPersistida ciudadActual;
 
 	private LocalServiceConnector<PersistenceDao> persistenceConector;
 	private PersistenceDao persistenceDao;
@@ -76,7 +77,18 @@ public class VerCiudadActivity extends CustomListActivity<PronosticoDiario> {
 		this.ciudades.addAll(result);
 		if (ciudades.isEmpty()) {
 			startActivity(new Intent(this, AgregarCiudadActivity.class));
+		} else {
+			mostrarLaCiudad(ciudades.get(0));
 		}
+	}
+
+	/**
+	 * Muestra en la pantalla los datos de la ciudad actual
+	 * 
+	 * @param ciudadPersistida
+	 */
+	private void mostrarLaCiudad(final CiudadPersistida ciudadPersistida) {
+		ciudadActual = ciudadPersistida;
 	}
 
 	/**

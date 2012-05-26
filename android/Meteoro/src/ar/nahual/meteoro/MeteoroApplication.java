@@ -18,7 +18,6 @@ public class MeteoroApplication extends Db4oApplication {
 	 */
 	@Override
 	protected void registerPersistentClasses(final Db4oConfiguration configuration) {
-
 	}
 
 	/**
