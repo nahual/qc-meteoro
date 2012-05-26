@@ -135,8 +135,12 @@ public class VerCiudadActivity extends CustomListActivity<Pronostico> {
 			public void render(final View itemView, final Pronostico item, final LayoutInflater inflater) {
 				final TextView diaPronosticoText = ViewHelper.findTextView(R.id.diaPronostico_txt, itemView);
 				diaPronosticoText.setText(item.getDate());
-				final TextView tempPronostico = ViewHelper.findTextView(R.id.tempPronostico_txt, itemView);
-				tempPronostico.setText(String.valueOf(item.getTemperature()));
+				final TextView estadoPronostico = ViewHelper.findTextView(R.id.estadoPronostico_txt, itemView);
+				estadoPronostico.setText(String.valueOf(item.getStatus()));
+				final TextView minTempPronostico = ViewHelper.findTextView(R.id.minTempPronostico_txt, itemView);
+				minTempPronostico.setText(String.valueOf(item.getMin()));
+				final TextView maxTempPronostico = ViewHelper.findTextView(R.id.maxTempPronostico_txt, itemView);
+				maxTempPronostico.setText(String.valueOf(item.getMax()));
 			}
 		};
 	}
