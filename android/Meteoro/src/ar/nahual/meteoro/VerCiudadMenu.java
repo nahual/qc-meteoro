@@ -35,6 +35,18 @@ public enum VerCiudadMenu implements ActivityMenuItem<VerCiudadActivity> {
 			activity.borrarCiudad();
 			return true;
 		}
+	},
+	SIGUIENTE {
+		@Override
+		public Object getItemTitleOrResId() {
+			return "Siguiente ciudad";
+		}
+
+		@Override
+		public boolean onSelection(final VerCiudadActivity activity) {
+			activity.cambiarDeCiudad();
+			return true;
+		}
 	};
 
 	/**

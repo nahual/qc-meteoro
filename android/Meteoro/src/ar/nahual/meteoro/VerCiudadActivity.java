@@ -244,4 +244,43 @@ public class VerCiudadActivity extends CustomListActivity<Pronostico> {
 		mostrarLaPrimeraCiudadDisponible();
 	}
 
+	/**
+	 * Pasa a la siguiente ciudad de las disponibles
+	 */
+	public void cambiarDeCiudad() {
+		persistenceDao.findAllMatching(new AllInstancesFilter(CiudadPersistida.class),
+				new DefaultOnFailurePersistenceOperationListener<List<CiudadPersistida>>(getContext()) {
+					@Override
+					public void onSuccess(final List<CiudadPersistida> result) {
+						onCiudadesDisponiblesParaCambio(result);
+					}
+				});
+	}
+
+	/**
+	 * Invocado al disponer de ciudades para cambio
+	 * 
+	 * @param result
+	 */
+	protected void onCiudadesDisponiblesParaCambio(final List<CiudadPersistida> result) {
+		if (result.size() < 2) {
+			// No hay 2 o mas ciudades para cambiar, no tiene sentido seguir
+			return;
+		}
+		int ciudadMostradaIndex = -1;
+		for (int i = 0; i < result.size(); i++) {
+			final CiudadPersistida ciudadDeReferencia = result.get(i);
+			if (ciudadDeReferencia.getId().equals(ciudadActual.getId())) {
+				ciudadMostradaIndex = i;
+				break;
+			}
+		}
+		int proximaCiudad = ciudadMostradaIndex + 1;
+		if (proximaCiudad >= result.size()) {
+			proximaCiudad = 0;
+		}
+		final CiudadPersistida ciudadAmostrar = result.get(proximaCiudad);
+		mostrarLaCiudad(ciudadAmostrar.getId());
+	}
+
 }
