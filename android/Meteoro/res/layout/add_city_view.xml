@@ -11,6 +11,7 @@
        android:layout_height="wrap_content"
        android:layout_width="fill_parent"
        android:completionThreshold="1"
+       android:hint="Ciudad (e.j. Buenos Aires)"
        />
 	<LinearLayout
 	    android:layout_width="fill_parent" 
