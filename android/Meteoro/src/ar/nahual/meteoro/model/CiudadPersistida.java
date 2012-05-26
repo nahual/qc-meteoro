@@ -3,6 +3,9 @@
  */
 package ar.nahual.meteoro.model;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import ar.com.iron.persistence.persistibles.PersistibleSupport;
 
 /**
@@ -14,6 +17,28 @@ public class CiudadPersistida extends PersistibleSupport {
 
 	private String cityCode;
 	private String cityName;
+
+	private Pronostico actual;
+	private List<Pronostico> futuros;
+
+	public Pronostico getActual() {
+		return actual;
+	}
+
+	public void setActual(final Pronostico actual) {
+		this.actual = actual;
+	}
+
+	public List<Pronostico> getFuturos() {
+		if (futuros == null) {
+			futuros = new ArrayList<Pronostico>();
+		}
+		return futuros;
+	}
+
+	public void setFuturos(final List<Pronostico> futuros) {
+		this.futuros = futuros;
+	}
 
 	public String getCityCode() {
 		return cityCode;

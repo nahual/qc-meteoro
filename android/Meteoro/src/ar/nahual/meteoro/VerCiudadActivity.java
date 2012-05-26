@@ -91,6 +91,10 @@ public class VerCiudadActivity extends CustomListActivity<PronosticoDiario> {
 		ciudadActual = ciudadPersistida;
 	}
 
+	protected void onPronosticoDisponible() {
+
+	}
+
 	/**
 	 * @see ar.com.iron.android.extensions.activities.model.CustomableListActivity#getContextMenuItems()
 	 */
