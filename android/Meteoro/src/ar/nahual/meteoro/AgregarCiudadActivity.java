@@ -39,11 +39,6 @@ public class AgregarCiudadActivity extends CustomActivity {
 	private ProgressDialog cityProgress;
 	private Ciudad selectedCiudad;
 	private Button saveButton;
-	private CheckBox usaHumedad;
-	private CheckBox usaPresion;
-	private CheckBox usaRayosUv;
-	private CheckBox usaSensacionTermica;
-	private CheckBox usaTemperatura;
 
 	private LocalServiceConnector<PersistenceDao> persistenceConector;
 	private PersistenceDao persistenceDao;
@@ -84,12 +79,6 @@ public class AgregarCiudadActivity extends CustomActivity {
 			}
 		});
 		persistenceConector.bindToService(this);
-
-		usaHumedad = ViewHelper.findCheckBox(R.id.usaHumedad, getContentView());
-		usaPresion = ViewHelper.findCheckBox(R.id.usaPresion, getContentView());
-		usaRayosUv = ViewHelper.findCheckBox(R.id.usaRayosUv, getContentView());
-		usaSensacionTermica = ViewHelper.findCheckBox(R.id.usaSensacionTermica, getContentView());
-		usaTemperatura = ViewHelper.findCheckBox(R.id.usaTemperatura, getContentView());
 
 		ciudadAutoComplete = ViewHelper.findAutoComplete(R.id.nombreParcialCiudad, getContentView());
 		saveButton = ViewHelper.findButton(R.id.agregarBtn, getContentView());

@@ -5,83 +5,13 @@
     android:layout_height="fill_parent"
     android:orientation="vertical"
     >
-    
-   <AutoCompleteTextView
+
+    <AutoCompleteTextView
        android:id="@+id/nombreParcialCiudad"
        android:layout_height="wrap_content"
        android:layout_width="fill_parent"
        android:completionThreshold="1"
        />
-   <TableLayout
-       android:layout_width="fill_parent" 
-       android:layout_height="wrap_content"
-       >
-       <TableRow>
-           <TextView
-               android:layout_width="wrap_content"
-               android:layout_height="wrap_content" 
-               android:text="Temperatura"
-               />
-           <CheckBox
-               android:id="@+id/usaTemperatura" 
-               android:layout_width="wrap_content"
-               android:layout_height="wrap_content"
-               android:checked="true" 
-               />
-       </TableRow>
-       <TableRow>
-           <TextView
-               android:layout_width="wrap_content"
-               android:layout_height="wrap_content" 
-               android:text="Humedad"
-               />
-           <CheckBox
-               android:id="@+id/usaHumedad" 
-               android:layout_width="wrap_content"
-               android:layout_height="wrap_content" 
-               android:checked="true" 
-               />
-       </TableRow>
-              <TableRow>
-           <TextView
-               android:layout_width="wrap_content"
-               android:layout_height="wrap_content" 
-               android:text="Presión"
-               />
-           <CheckBox
-               android:id="@+id/usaPresion" 
-               android:layout_width="wrap_content"
-               android:layout_height="wrap_content" 
-               android:checked="true" 
-               />
-       </TableRow>
-       <TableRow>
-           <TextView
-               android:layout_width="wrap_content"
-               android:layout_height="wrap_content" 
-               android:text="Sensación térmica"
-               />
-           <CheckBox
-               android:id="@+id/usaSensacionTermica" 
-               android:layout_width="wrap_content"
-               android:layout_height="wrap_content" 
-               android:checked="true" 
-               />
-       </TableRow>
-       <TableRow>
-           <TextView
-               android:layout_width="wrap_content"
-               android:layout_height="wrap_content" 
-               android:text="Rayos UV"
-               />
-           <CheckBox
-               android:id="@+id/usaRayosUv" 
-               android:layout_width="wrap_content"
-               android:layout_height="wrap_content" 
-               android:checked="true" 
-               />
-       </TableRow>
-       	</TableLayout>
 	<LinearLayout
 	    android:layout_width="fill_parent" 
 	    android:layout_height="wrap_content"
