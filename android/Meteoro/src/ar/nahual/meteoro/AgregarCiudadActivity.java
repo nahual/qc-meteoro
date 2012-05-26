@@ -164,7 +164,6 @@ public class AgregarCiudadActivity extends CustomActivity {
 	 * Invocado al guardar la ciudad agregada
 	 */
 	protected void onCiudadAgregada(final CiudadPersistida result) {
-		ToastHelper.create(this).showShort("Ciudad \"" + result.getCityName() + "\" agregada");
 		finish();
 	}
 
