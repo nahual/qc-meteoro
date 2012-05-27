@@ -6,15 +6,13 @@
 
     <uses-sdk android:minSdkVersion="3" targetSdkVersion="7"/>
     <uses-permission android:name="android.permission.INTERNET"/>
-    <supports-screens 
-                      android:smallScreens="true"
-                      android:normalScreens="true"
-                      android:largeScreens="true"
-                      android:xlargeScreens="true"
-                      android:anyDensity="true"
-                      />
-
-    
+    <supports-screens
+	    android:smallScreens="true"
+	    android:normalScreens="true"
+	    android:largeScreens="true"
+	    android:xlargeScreens="true"
+	    android:anyDensity="true"
+    />
 
     <application
         android:icon="@drawable/ic_launcher"
@@ -23,7 +21,7 @@
         >
         <activity
             android:name=".VerCiudadActivity"
-            android:label="Ver ciudad" android:theme="@android:style/Theme.NoTitleBar" >
+            android:label="Meteoro" android:theme="@android:style/Theme.NoTitleBar" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
