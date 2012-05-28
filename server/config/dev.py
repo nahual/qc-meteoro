@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 import os
 os.sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__),"..")))
 from utils import llog

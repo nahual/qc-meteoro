@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 import os
 os.sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__),"..")))
 from utils import llog
@@ -8,7 +7,7 @@ ENV = 'Heroku'
 DEBUG = False
 HOST = '0.0.0.0'
 
-NODE_NAME=u'小-@Heroku'
+NODE_NAME=u'Heroku'
 
 LOG_HANDLERS=[
                 llog.console(level=logging.INFO, format='%(message)s')
