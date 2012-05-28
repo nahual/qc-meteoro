@@ -24,6 +24,7 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import android.content.Context;
 import android.os.AsyncTask;
 import ar.com.iron.helpers.ToastHelper;
 import ar.nahual.meteoro.model.CiudadPersistida;
@@ -49,7 +50,7 @@ public class RequestCitiesTask extends AsyncTask<String, Void, List<CiudadPersis
 	 */
 	@Override
 	protected List<CiudadPersistida> doInBackground(final String... params) {
-		final HttpGet request = new HttpGet("http://meteoro.herokuapp.com/get_cities");
+		final HttpGet request = new HttpGet(MeteoroApplication.getBackend().getCitiesUri().toString());
 		HttpResponse response;
 		try {
 			response = httpClient.execute(request);

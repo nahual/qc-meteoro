@@ -12,6 +12,19 @@ import ar.com.iron.persistence.db4o.Db4oConfiguration;
  * @author D. García
  */
 public class MeteoroApplication extends Db4oApplication {
+    
+    private static MeteoroApplication app;
+    private MeteoroBackend backend;
+
+    public static MeteoroBackend getBackend() {
+        return app.backend;
+    }
+
+    public void onCreate() {
+        super.onCreate();
+        MeteoroApplication.app = this;
+        this.backend = new MeteoroBackend(getApplicationContext());
+    }
 
 	/**
 	 * @see ar.com.iron.android.extensions.applications.Db4oApplication#registerPersistentClasses(ar.com.iron.persistence.db4o.Db4oConfiguration)
@@ -27,5 +40,4 @@ public class MeteoroApplication extends Db4oApplication {
 	protected String getMainThreadName() {
 		return "Meteoro";
 	}
-
 }

@@ -24,7 +24,6 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import android.net.Uri;
 import android.os.AsyncTask;
 import ar.com.iron.helpers.ToastHelper;
 import ar.nahual.meteoro.model.CiudadPersistida;
@@ -69,10 +68,8 @@ public class RequestForecastTask extends AsyncTask<CiudadPersistida, Void, List<
 	@Override
 	protected List<Pronostico> doInBackground(final CiudadPersistida... params) {
 		ciudadElegida = params[0];
-		final Uri forecastUri = new Uri.Builder().scheme("http").authority("meteoro.herokuapp.com")
-				.path("get_forecast").appendQueryParameter("city", ciudadElegida.getCityCode()).build();
 
-		final HttpGet request = new HttpGet(forecastUri.toString());
+		final HttpGet request = new HttpGet(MeteoroApplication.getBackend().getForecastUri(ciudadElegida.getCityCode()).toString());
 		HttpResponse response;
 		try {
 			response = httpClient.execute(request);
