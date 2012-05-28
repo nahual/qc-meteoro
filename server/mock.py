@@ -18,7 +18,7 @@ class MockWeatherProvider(WeatherProvider):
         today = datetime.now()
         return [
                 {'date': today.strftime(self.date_format), 'temperature': '10°C', 'humidity': '60%', 'chill': '10°C', 'status':'clear', 'min': '', 'max': ''},
-                {'date': (today+timedelta(days=0)).strftime(self.date_format), 'temperature': '', 'humidity': '', 'chill': '', 'status':'showers', 'min': '20°C', 'max': 10°C'},
+                {'date': (today+timedelta(days=0)).strftime(self.date_format), 'temperature': '', 'humidity': '', 'chill': '', 'status':'showers', 'min': '20°C', 'max': '10°C'},
                 {'date': (today+timedelta(days=1)).strftime(self.date_format), 'temperature': '', 'humidity': '', 'chill': '', 'status':'cloudy', 'min': '20°C', 'max': '10°C'},
                 {'date': (today+timedelta(days=2)).strftime(self.date_format), 'temperature': '', 'humidity': '', 'chill': '', 'status':'snow', 'min': '20°C', 'max': '10°C'},
                 {'date': (today+timedelta(days=3)).strftime(self.date_format), 'temperature': '', 'humidity': '', 'chill': '', 'status':'storm', 'min': '20°C', 'max': '10°C'}
