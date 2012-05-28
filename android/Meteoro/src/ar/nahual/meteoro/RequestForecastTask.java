@@ -111,7 +111,6 @@ public class RequestForecastTask extends AsyncTask<CiudadPersistida, Void, List<
 				final String date = object.get("date").toString();
 				final String max = object.get("max").toString();
 				final String humidity = object.get("humidity").toString();
-				final String wind = object.get("wind").toString();
 				final String chill = object.get("chill").toString();
 				final Pronostico pronostico = new Pronostico();
 				pronostico.setChill(chill);
@@ -121,7 +120,6 @@ public class RequestForecastTask extends AsyncTask<CiudadPersistida, Void, List<
 				pronostico.setMin(min);
 				pronostico.setStatus(status);
 				pronostico.setTemperature(temperature);
-				pronostico.setWind(wind);
 				pronosticos.add(pronostico);
 			}
 		} catch (final JSONException e) {
