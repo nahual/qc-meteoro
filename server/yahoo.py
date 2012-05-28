@@ -141,6 +141,28 @@ class YahooWeatherProvider(WeatherProvider):
 			{'code': u'331928', 'name': u'San Isidro, Buenos Aires'},
 			{'code': u'467021', 'name': u'Palpala, Jujuy'}
 		]
+        self._statuses = {
+            '11': 'showers', '12': 'showers', '8': 'showers',
+            '40': 'scattered showers', '9': 'scattered showers',
+            '26': 'cloudy', '27': 'cloudy', '28': 'cloudy',
+            '29': 'partly cloudy', '30': 'partly cloudy', '44': 'partly cloudy',
+            '24': 'windy', '23': 'windy', '2': 'windy', '1': 'windy', '0': 'windy',
+            '32': 'clear', '31': 'clear', '33': 'clear', '34': 'clear', '25': 'clear', '36': 'clear',
+            '16': 'snow', '41': 'snow', '43': 'snow', '42': 'snow', '46': 'snow', '13': 'snow', '14': 'snow', '15': 'snow',
+            '3': 'storm', '4': 'storm', '37': 'storm', '38': 'storm', '39': 'storm', '45': 'storm', '47': 'storm',
+            '5': 'snow rain', '6': 'snow rain', '10': 'snow rain', '7': 'snow rain', '18': 'snow rain', '35': 'snow rain', '17': 'snow rain',
+            '20': 'fog', '21': 'fog', '22': 'fog', '19': 'fog',
+		}
+        self._text_statuses = {
+            'cloudy': 'cloudy', 'clouds': 'cloudy',
+            'partly cloudy': 'partly cloudy',
+            'clear': 'clear', 'sunny': 'clear',
+            'rain': 'showers', 'showers': 'showers',
+            'light rain': 'scattered showers', 'few showers': 'scattered showers', 'scattered showers': 'scattered showers',
+            'mist': 'fog',
+            'isolated thunderstorms': 'storm', 'thunderstorms': 'storm', 'scattered thunderstorms': 'storm',
+            'snow showers': 'snow'
+        }
 
     def get_forecast(self, city):
         try:
@@ -161,7 +183,7 @@ class YahooWeatherProvider(WeatherProvider):
             'temperature': safe_get(response, ['condition', 'temperature']),
             'chill': safe_get(response, ['condition','temperature']),
             'humidity': safe_get(response, ['atmosphere','humidity']),
-            'status': safe_get(response, ['condition','text']),
+            'status': self._statuses.get(safe_get(response, ['condition','code']), safe_get(response, ['condition','text'])),
             'wind': "%s %s %s" % (safe_get(response,['wind','direction']), safe_get(response, ['wind','speed']), safe_get(response,['units','speed'])),
             'min': '', 'max': ''
         })
@@ -172,8 +194,13 @@ class YahooWeatherProvider(WeatherProvider):
                     'date': (today+timedelta(days=i)).strftime(self.date_format),
                     'min': safe_get(day, ['low_temperature']),
                     'max': safe_get(day, ['high_temperature']),
-                    'status': safe_get(day, ['condition']),
+                    'status': self._text_statuses.get(YahooWeatherProvider._normalize_status(safe_get(day, ['condition'])), YahooWeatherProvider._normalize_status(safe_get(day, ['condition']))),
                     'temperature': '', 'chill': '', 'humidity': '', 'wind': ''
                 })
         return rv
+
+    @staticmethod
+    def _normalize_status(status):
+        print status
+        return status.lower().split("/")[0].replace("am","").replace("pm","").replace("early","").replace("late","").replace("mostly","").strip()
 
