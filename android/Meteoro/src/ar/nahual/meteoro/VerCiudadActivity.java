@@ -41,13 +41,16 @@ public class VerCiudadActivity extends CustomListActivity<Pronostico> {
 
 	private static Integer getIconoEstado(final String estado) {
 		if (ICONOS_ESTADO.isEmpty()) {
-			ICONOS_ESTADO.put("partly cloudy", R.drawable.status_partly_cloudy);
-			ICONOS_ESTADO.put("mostly cloudy", R.drawable.status_cloudy);
 			ICONOS_ESTADO.put("cloudy", R.drawable.status_cloudy);
+			ICONOS_ESTADO.put("partly cloudy", R.drawable.status_partly_cloudy);
 			ICONOS_ESTADO.put("clear", R.drawable.status_clear);
-			ICONOS_ESTADO.put("am showers", R.drawable.status_showers);
-			ICONOS_ESTADO.put("pm showers", R.drawable.status_showers);
-			ICONOS_ESTADO.put("mist", R.drawable.status_cloudy);
+			ICONOS_ESTADO.put("showers", R.drawable.status_showers);
+			ICONOS_ESTADO.put("fog", R.drawable.status_fog);
+			ICONOS_ESTADO.put("scattered showers", R.drawable.status_scattered_showers);
+			ICONOS_ESTADO.put("windy", R.drawable.status_windy);
+			ICONOS_ESTADO.put("snow", R.drawable.status_snow);
+			ICONOS_ESTADO.put("storm", R.drawable.status_storm);
+			ICONOS_ESTADO.put("snow rain", R.drawable.status_snow_rain);
 		}
 		final String normalizado = estado.toLowerCase();
 		return ICONOS_ESTADO.containsKey(normalizado) ? ICONOS_ESTADO.get(normalizado) : R.drawable.status_unknown;
