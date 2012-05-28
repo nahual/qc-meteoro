@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 from weather_provider import WeatherProvider
 import urllib2
 import json
@@ -180,11 +181,10 @@ class YahooWeatherProvider(WeatherProvider):
         rv = []
         rv.append({
             'date': today.strftime(self.date_format),
-            'temperature': safe_get(response, ['condition', 'temperature']),
-            'chill': safe_get(response, ['condition','temperature']),
-            'humidity': safe_get(response, ['atmosphere','humidity']),
-            'status': self._statuses.get(safe_get(response, ['condition','code']), safe_get(response, ['condition','text'])),
-            'wind': "%s %s %s" % (safe_get(response,['wind','direction']), safe_get(response, ['wind','speed']), safe_get(response,['units','speed'])),
+            'temperature': "%s°C" % safe_get(response, ['condition', 'temperature']),
+            'chill': "%s°C" % safe_get(response, ['condition','temperature']),
+            'humidity': "%s%%" % safe_get(response, ['atmosphere','humidity']),
+            'status': self._statuses.get(safe_get(response, ['condition','code']), safe_get(response, ['condition','text']).lower()),
             'min': '', 'max': ''
         })
         forecast = safe_get(response, ['forecast'])
@@ -192,15 +192,14 @@ class YahooWeatherProvider(WeatherProvider):
             for i, day in enumerate(forecast):
                 rv.append({
                     'date': (today+timedelta(days=i)).strftime(self.date_format),
-                    'min': safe_get(day, ['low_temperature']),
-                    'max': safe_get(day, ['high_temperature']),
+                    'min': "%s°C" % safe_get(day, ['low_temperature']),
+                    'max': "%s°C" % safe_get(day, ['high_temperature']),
                     'status': self._text_statuses.get(YahooWeatherProvider._normalize_status(safe_get(day, ['condition'])), YahooWeatherProvider._normalize_status(safe_get(day, ['condition']))),
-                    'temperature': '', 'chill': '', 'humidity': '', 'wind': ''
+                    'temperature': '', 'chill': '', 'humidity': ''
                 })
         return rv
 
     @staticmethod
     def _normalize_status(status):
-        print status
         return status.lower().split("/")[0].replace("am","").replace("pm","").replace("early","").replace("late","").replace("mostly","").strip()
 
