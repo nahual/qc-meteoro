@@ -68,7 +68,6 @@ public class RequestForecastTask extends AsyncTask<CiudadPersistida, Void, List<
 	@Override
 	protected List<Pronostico> doInBackground(final CiudadPersistida... params) {
 		ciudadElegida = params[0];
-
 		final HttpGet request = new HttpGet(MeteoroApplication.getBackend().getForecastUri(ciudadElegida.getCityCode()).toString());
 		HttpResponse response;
 		try {

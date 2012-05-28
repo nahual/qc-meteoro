@@ -18,13 +18,15 @@ public class MeteoroBackend {
     }
 
     public Uri getForecastUri(final String cityCode) {
-        return new Uri.Builder().scheme("http").authority(getServerUrl())
+        return new Uri.Builder().scheme("http"). authority(getServerUrl())
                 .path("get_forecast").appendQueryParameter("city", cityCode).build();
     }
 
     public void changeUrl(String url) {
         SharedPreferences settings = this.context.getSharedPreferences(PREFS_NAME, 0);
-        settings.edit().putString("server-url", "url");
+        SharedPreferences.Editor editor = settings.edit();
+        editor.putString("server-url", url);
+        editor.commit();
     }
 
     private String getServerUrl() {
