@@ -19,6 +19,7 @@ import android.widget.Button;
 import ar.com.iron.android.extensions.activities.CustomActivity;
 import ar.com.iron.android.extensions.services.local.LocalServiceConnectionListener;
 import ar.com.iron.android.extensions.services.local.LocalServiceConnector;
+import ar.com.iron.helpers.ToastHelper;
 import ar.com.iron.helpers.ViewHelper;
 import ar.com.iron.persistence.DefaultOnFailurePersistenceOperationListener;
 import ar.com.iron.persistence.PersistenceDao;
@@ -178,7 +179,7 @@ public class AgregarCiudadActivity extends CustomActivity {
 	}
 
 	public List<String> getNombresCiudades() {
-		if (nombresCiudades == null) {
+		if (nombresCiudades == null || nombresCiudades.size() == 0) {
 			nombresCiudades = new ArrayList<String>();
 			ciudadesDisponibles = new ArrayList<CiudadPersistida>();
 			requestCiudades();
@@ -190,13 +191,19 @@ public class AgregarCiudadActivity extends CustomActivity {
 	 * Recibe las ciudades en background
 	 */
 	public void onCiudadesDisponibles(final List<CiudadPersistida> result) {
-		this.ciudadesDisponibles = result;
+		ciudadesDisponibles = result;
 		nombresCiudades.clear();
 		for (final CiudadPersistida ciudad : result) {
 			nombresCiudades.add(ciudad.getCityName());
 		}
-		autoCompleteAdapter.notifyDataSetChanged();
 		cityProgress.cancel();
+		if (nombresCiudades.size() != 0) {
+		    autoCompleteAdapter.notifyDataSetChanged();
+		    
+		} else {
+		    ToastHelper.create(this).showShort("No se encontraron ciudades para agregar");
+		    finish();
+		}
 	}
 
 	/**
