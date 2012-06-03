@@ -7,6 +7,7 @@ import java.util.List;
 import java.util.Map;
 
 import android.content.Intent;
+import android.os.Handler;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.ImageView;
@@ -38,6 +39,7 @@ public class VerCiudadActivity extends CustomListActivity<Pronostico> {
 
 	private LocalServiceConnector<PersistenceDao> persistenceConector;
 	private PersistenceDao persistenceDao;
+	private Handler ownHandler;
 
 	private static Integer getIconoEstado(final String estado) {
 		if (ICONOS_ESTADO.isEmpty()) {
@@ -53,7 +55,12 @@ public class VerCiudadActivity extends CustomListActivity<Pronostico> {
 			ICONOS_ESTADO.put("snow rain", R.drawable.status_snow_rain);
 		}
 		final String normalizado = estado.toLowerCase();
-		return ICONOS_ESTADO.containsKey(normalizado) ? ICONOS_ESTADO.get(normalizado) : R.drawable.status_unknown;
+
+		final Integer iconoPredefinido = ICONOS_ESTADO.get(normalizado);
+		if (iconoPredefinido != null) {
+			return iconoPredefinido;
+		}
+		return R.drawable.status_unknown;
 	}
 
 	/**
@@ -61,22 +68,19 @@ public class VerCiudadActivity extends CustomListActivity<Pronostico> {
 	 */
 	@Override
 	public void setUpComponents() {
-		persistenceConector = LocalServiceConnector
-				.create(PersistenceService.class);
-		persistenceConector
-				.setConnectionListener(new LocalServiceConnectionListener<PersistenceDao>() {
-					@Override
-					public void onServiceDisconnection(
-							final PersistenceDao disconnectedIntercomm) {
-						// No hacemos nada
-					}
+		ownHandler = new Handler();
+		persistenceConector = LocalServiceConnector.create(PersistenceService.class);
+		persistenceConector.setConnectionListener(new LocalServiceConnectionListener<PersistenceDao>() {
+			@Override
+			public void onServiceDisconnection(final PersistenceDao disconnectedIntercomm) {
+				// No hacemos nada
+			}
 
-					@Override
-					public void onServiceConnection(
-							final PersistenceDao intercommObject) {
-						onPersistenceDaoDisponible(intercommObject);
-					}
-				});
+			@Override
+			public void onServiceConnection(final PersistenceDao intercommObject) {
+				onPersistenceDaoDisponible(intercommObject);
+			}
+		});
 		persistenceConector.bindToService(this);
 	}
 
@@ -85,8 +89,7 @@ public class VerCiudadActivity extends CustomListActivity<Pronostico> {
 	 * 
 	 * @param intercommObject
 	 */
-	protected void onPersistenceDaoDisponible(
-			final PersistenceDao intercommObject) {
+	protected void onPersistenceDaoDisponible(final PersistenceDao intercommObject) {
 		this.persistenceDao = intercommObject;
 		mostrarLaPrimeraCiudadDisponible();
 	}
@@ -105,22 +108,18 @@ public class VerCiudadActivity extends CustomListActivity<Pronostico> {
 				});
 	}
 
-	protected void onCiudadesCargadasDeLaBase(
-			final List<CiudadPersistida> result) {
+	protected void onCiudadesCargadasDeLaBase(final List<CiudadPersistida> result) {
 		this.ciudades.clear();
 		this.ciudades.addAll(result);
 		if (ciudades.isEmpty()) {
-			startActivityForResult(
-					new Intent(this, AgregarCiudadActivity.class),
-					CHOOSE_FIRST_CITY);
+			startActivityForResult(new Intent(this, AgregarCiudadActivity.class), CHOOSE_FIRST_CITY);
 		} else {
 			mostrarLaCiudad(ciudades.get(0).getId());
 		}
 	}
 
 	@Override
-	protected void onActivityResult(final int requestCode,
-			final int resultCode, final Intent data) {
+	protected void onActivityResult(final int requestCode, final int resultCode, final Intent data) {
 		if (resultCode != RESULT_OK) {
 			if (requestCode == CHOOSE_FIRST_CITY) {
 				// Cancelo la seleccion de ciudad en la primera vez. Salimos
@@ -128,11 +127,9 @@ public class VerCiudadActivity extends CustomListActivity<Pronostico> {
 			}
 			return;
 		}
-		final long cityId = data.getLongExtra(
-				AgregarCiudadActivity.SELECTED_CITY, -1);
+		final long cityId = data.getLongExtra(AgregarCiudadActivity.SELECTED_CITY, -1);
 		if (cityId == -1) {
-			ToastHelper.create(getContext()).showShort(
-					"El ID de ciudad es invalido");
+			ToastHelper.create(getContext()).showShort("El ID de ciudad es invalido");
 			finish();
 			return;
 		}
@@ -145,36 +142,46 @@ public class VerCiudadActivity extends CustomListActivity<Pronostico> {
 	 * @param ciudadPersistida
 	 */
 	private void mostrarLaCiudad(final Long idDeCiudad) {
-		persistenceDao
-				.getOf(CiudadPersistida.class,
-						idDeCiudad,
-						new DefaultOnFailurePersistenceOperationListener<CiudadPersistida>(
-								getContext()) {
-							@Override
-							public void onSuccess(final CiudadPersistida result) {
-								ciudadActual = result;
-								ViewHelper.findTextView(R.id.nombreCiudad_txt,
-										getContentView()).setText(
-										ciudadActual.getCityName());
-								final RequestForecastTask requestForecastTask = new RequestForecastTask(
-										VerCiudadActivity.this);
-								requestForecastTask.execute(ciudadActual);
-							}
-						});
+		persistenceDao.getOf(CiudadPersistida.class, idDeCiudad,
+				new DefaultOnFailurePersistenceOperationListener<CiudadPersistida>(getContext()) {
+					@Override
+					public void onSuccess(final CiudadPersistida result) {
+						ciudadActual = result;
+						ViewHelper.findTextView(R.id.nombreCiudad_txt, getContentView()).setText(
+								ciudadActual.getCityName());
+						cargarPronosticoDelBackend();
+					}
+				});
+	}
+
+	/**
+	 * Intenta solicitar al backend la info de pronostico de la ciudad actual
+	 * 
+	 */
+	protected void cargarPronosticoDelBackend() {
+		if (ciudadActual.getFuturos().size() > 0) {
+			// Ya tiene datos de pronostico
+		}
+		// Disparamos el pedido al backend
+		final RequestForecastTask requestForecastTask = new RequestForecastTask(VerCiudadActivity.this);
+		requestForecastTask.execute(ciudadActual);
+		// Dentro de 20s verificamos si ya cargo, o disparamos de nuevo
+		ownHandler.postDelayed(new Runnable() {
+			@Override
+			public void run() {
+				cargarPronosticoDelBackend();
+			}
+		}, 20 * 1000);
 	}
 
 	protected void onPronosticoDisponible() {
-		ViewHelper.findTextView(R.id.nombreCiudad_txt, getContentView())
-				.setText(ciudadActual.getCityName());
+		ViewHelper.findTextView(R.id.nombreCiudad_txt, getContentView()).setText(ciudadActual.getCityName());
 		final Pronostico estadoActual = ciudadActual.getActual();
 		final ImageView img = ViewHelper.findImageView(R.id.estado_img, getContentView());
 		img.setImageResource(getIconoEstado(estadoActual.getStatus()));
-		ViewHelper.findTextView(R.id.temperatura_txt, getContentView())
-				.setText(estadoActual.getTemperature());
-		ViewHelper.findTextView(R.id.humedad_txt, getContentView()).setText(
-				estadoActual.getHumidity());
-		ViewHelper.findTextView(R.id.sensacion_txt, getContentView()).setText(
-				estadoActual.getChill());
+		ViewHelper.findTextView(R.id.temperatura_txt, getContentView()).setText(estadoActual.getTemperature());
+		ViewHelper.findTextView(R.id.humedad_txt, getContentView()).setText(estadoActual.getHumidity());
+		ViewHelper.findTextView(R.id.sensacion_txt, getContentView()).setText(estadoActual.getChill());
 		this.notificarCambioEnLosDatos();
 	}
 
@@ -191,8 +198,7 @@ public class VerCiudadActivity extends CustomListActivity<Pronostico> {
 	 */
 	@Override
 	public List<Pronostico> getElementList() {
-		if (ciudadActual != null && ciudadActual.getFuturos() != null
-				&& ciudadActual.getFuturos().size() != 0) {
+		if (ciudadActual != null && ciudadActual.getFuturos() != null && ciudadActual.getFuturos().size() != 0) {
 			return ciudadActual.getFuturos();
 		} else {
 			return Collections.nCopies(4, new Pronostico());
@@ -206,18 +212,14 @@ public class VerCiudadActivity extends CustomListActivity<Pronostico> {
 	public RenderBlock<Pronostico> getElementRenderBlock() {
 		return new RenderBlock<Pronostico>() {
 			@Override
-			public void render(final View itemView, final Pronostico item,
-					final LayoutInflater inflater) {
-				final TextView diaPronosticoText = ViewHelper.findTextView(
-						R.id.diaPronostico_txt, itemView);
+			public void render(final View itemView, final Pronostico item, final LayoutInflater inflater) {
+				final TextView diaPronosticoText = ViewHelper.findTextView(R.id.diaPronostico_txt, itemView);
 				diaPronosticoText.setText(item.getDate());
 				final ImageView img = ViewHelper.findImageView(R.id.estadoPronostico_img, itemView);
 				img.setImageResource(getIconoEstado(item.getStatus()));
-				final TextView minTempPronostico = ViewHelper.findTextView(
-						R.id.minTempPronostico_txt, itemView);
+				final TextView minTempPronostico = ViewHelper.findTextView(R.id.minTempPronostico_txt, itemView);
 				minTempPronostico.setText(String.valueOf(item.getMin()));
-				final TextView maxTempPronostico = ViewHelper.findTextView(
-						R.id.maxTempPronostico_txt, itemView);
+				final TextView maxTempPronostico = ViewHelper.findTextView(R.id.maxTempPronostico_txt, itemView);
 				maxTempPronostico.setText(String.valueOf(item.getMax()));
 			}
 		};
@@ -268,8 +270,7 @@ public class VerCiudadActivity extends CustomListActivity<Pronostico> {
 	 * Invocado cuando se elige del menu la opcion para agregar una ciudad
 	 */
 	public void onAgregarCiudadSelected() {
-		startActivityForResult(new Intent(this, AgregarCiudadActivity.class),
-				CHOOSE_OTHER_CITY);
+		startActivityForResult(new Intent(this, AgregarCiudadActivity.class), CHOOSE_OTHER_CITY);
 	}
 
 	/**

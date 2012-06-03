@@ -198,11 +198,11 @@ public class AgregarCiudadActivity extends CustomActivity {
 		}
 		cityProgress.cancel();
 		if (nombresCiudades.size() != 0) {
-		    autoCompleteAdapter.notifyDataSetChanged();
-		    
+			autoCompleteAdapter.notifyDataSetChanged();
+
 		} else {
-		    ToastHelper.create(this).showShort("No se encontraron ciudades para agregar");
-		    finish();
+			ToastHelper.create(this).showLong("Actualmente no existen ciudades para consultar. Intente más tarde");
+			finish();
 		}
 	}
 
