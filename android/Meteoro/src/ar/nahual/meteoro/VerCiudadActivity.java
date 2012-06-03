@@ -11,6 +11,7 @@ import android.os.Handler;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import ar.com.iron.android.extensions.activities.CustomListActivity;
 import ar.com.iron.android.extensions.activities.model.CustomableListActivity;
@@ -161,8 +162,10 @@ public class VerCiudadActivity extends CustomListActivity<Pronostico> {
 	protected void cargarPronosticoDelBackend() {
 		if (ciudadActual.getFuturos().size() > 0) {
 			// Ya tiene datos de pronostico
+			return;
 		}
 		// Disparamos el pedido al backend
+		mostrarSpinnerDeLoading();
 		final RequestForecastTask requestForecastTask = new RequestForecastTask(VerCiudadActivity.this);
 		requestForecastTask.execute(ciudadActual);
 		// Dentro de 20s verificamos si ya cargo, o disparamos de nuevo
@@ -175,6 +178,9 @@ public class VerCiudadActivity extends CustomListActivity<Pronostico> {
 	}
 
 	protected void onPronosticoDisponible() {
+		// Ocultamos el spinner de progreso
+		ocultarSpinnerDeLoading();
+
 		ViewHelper.findTextView(R.id.nombreCiudad_txt, getContentView()).setText(ciudadActual.getCityName());
 		final Pronostico estadoActual = ciudadActual.getActual();
 		final ImageView img = ViewHelper.findImageView(R.id.estado_img, getContentView());
@@ -183,6 +189,16 @@ public class VerCiudadActivity extends CustomListActivity<Pronostico> {
 		ViewHelper.findTextView(R.id.humedad_txt, getContentView()).setText(estadoActual.getHumidity());
 		ViewHelper.findTextView(R.id.sensacion_txt, getContentView()).setText(estadoActual.getChill());
 		this.notificarCambioEnLosDatos();
+	}
+
+	protected void mostrarSpinnerDeLoading() {
+		final ProgressBar progressBar = ViewHelper.findProgressBar(R.id.loading_prg, getContentView());
+		progressBar.setVisibility(View.VISIBLE);
+	}
+
+	private void ocultarSpinnerDeLoading() {
+		final ProgressBar progressBar = ViewHelper.findProgressBar(R.id.loading_prg, getContentView());
+		progressBar.setVisibility(View.GONE);
 	}
 
 	/**

@@ -24,7 +24,6 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import android.content.Context;
 import android.os.AsyncTask;
 import ar.com.iron.helpers.ToastHelper;
 import ar.nahual.meteoro.model.CiudadPersistida;
@@ -96,7 +95,6 @@ public class RequestCitiesTask extends AsyncTask<String, Void, List<CiudadPersis
 		} catch (final IOException e) {
 			// Ya fue
 		}
-		showToast("Terminando");
 		return ciudades;
 	}
 

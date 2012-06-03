@@ -68,12 +68,13 @@ public class RequestForecastTask extends AsyncTask<CiudadPersistida, Void, List<
 	@Override
 	protected List<Pronostico> doInBackground(final CiudadPersistida... params) {
 		ciudadElegida = params[0];
-		final HttpGet request = new HttpGet(MeteoroApplication.getBackend().getForecastUri(ciudadElegida.getCityCode()).toString());
+		final HttpGet request = new HttpGet(MeteoroApplication.getBackend().getForecastUri(ciudadElegida.getCityCode())
+				.toString());
 		HttpResponse response;
 		try {
 			response = httpClient.execute(request);
 		} catch (final Exception e) {
-			showToast("Se produjo un error en la conexion: " + e.getMessage());
+			showToast("Error. Datos no disponibles al acceder al servidor: " + e.getMessage());
 			return Collections.emptyList();
 		}
 		final StatusLine statusLine = response.getStatusLine();
@@ -127,7 +128,6 @@ public class RequestForecastTask extends AsyncTask<CiudadPersistida, Void, List<
 		} catch (final IOException e) {
 			// Ya fue
 		}
-		showToast("Terminando");
 		return pronosticos;
 	}
 
