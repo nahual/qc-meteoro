@@ -19,6 +19,7 @@ public class CiudadPersistida extends PersistibleSupport {
 	private String cityName;
 	private Pronostico actual;
 	private List<Pronostico> futuros;
+	private long ultimoTimestampDeUpdate = 0;
 
 	public CiudadPersistida(final String name, final String code) {
 		this.cityName = name;
@@ -42,6 +43,7 @@ public class CiudadPersistida extends PersistibleSupport {
 
 	public void setFuturos(final List<Pronostico> futuros) {
 		this.futuros = futuros;
+		this.ultimoTimestampDeUpdate = getNow();
 	}
 
 	public String getCityCode() {
@@ -58,5 +60,29 @@ public class CiudadPersistida extends PersistibleSupport {
 
 	public void setCityName(final String cityName) {
 		this.cityName = cityName;
+	}
+
+	/**
+	 * Indica si esta ciudad posee datos actualizados del pronostico (no paso una hora desde el
+	 * ultimo update)
+	 * 
+	 * @return true si tiene datos de pronostico, y aun no paso una hora desde que se actualizaron
+	 */
+	public boolean tienePronosticoActualizado() {
+		if (getFuturos().isEmpty()) {
+			return false;
+		}
+		final long unaHora = 60 * 60 * 1000;
+		final long momentoDeProximoUpdate = ultimoTimestampDeUpdate + unaHora;
+		final long now = getNow();
+		if (momentoDeProximoUpdate <= now) {
+			// Ya paso el momento en el que deberíamos actualizar
+			return false;
+		}
+		return true;
+	}
+
+	private long getNow() {
+		return System.currentTimeMillis();
 	}
 }

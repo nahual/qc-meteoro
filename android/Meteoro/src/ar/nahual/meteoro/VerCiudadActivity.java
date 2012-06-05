@@ -160,15 +160,13 @@ public class VerCiudadActivity extends CustomListActivity<Pronostico> {
 	 * 
 	 */
 	protected void cargarPronosticoDelBackend() {
-		if (ciudadActual.getFuturos().size() > 0) {
-			// Ya tiene datos de pronostico
-			return;
+		if (!ciudadActual.tienePronosticoActualizado()) {
+			// Disparamos el pedido al backend para actualizar los datos
+			mostrarSpinnerDeLoading();
+			final RequestForecastTask requestForecastTask = new RequestForecastTask(VerCiudadActivity.this);
+			requestForecastTask.execute(ciudadActual);
 		}
-		// Disparamos el pedido al backend
-		mostrarSpinnerDeLoading();
-		final RequestForecastTask requestForecastTask = new RequestForecastTask(VerCiudadActivity.this);
-		requestForecastTask.execute(ciudadActual);
-		// Dentro de 20s verificamos si ya cargo, o disparamos de nuevo
+		// Dentro de 20s vemos si es momento de update
 		ownHandler.postDelayed(new Runnable() {
 			@Override
 			public void run() {
