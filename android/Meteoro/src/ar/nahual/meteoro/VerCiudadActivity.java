@@ -41,6 +41,12 @@ public class VerCiudadActivity extends CustomListActivity<Pronostico> {
 	private LocalServiceConnector<PersistenceDao> persistenceConector;
 	private PersistenceDao persistenceDao;
 	private Handler ownHandler;
+	private final Runnable actualizarPronostico = new Runnable() {
+		@Override
+		public void run() {
+			cargarPronosticoDelBackend();
+		}
+	};
 
 	private static Integer getIconoEstado(final String estado) {
 		if (ICONOS_ESTADO.isEmpty()) {
@@ -62,6 +68,26 @@ public class VerCiudadActivity extends CustomListActivity<Pronostico> {
 			return iconoPredefinido;
 		}
 		return R.drawable.status_unknown;
+	}
+
+	/**
+	 * @see android.app.Activity#onResume()
+	 */
+	@Override
+	protected void onResume() {
+		if (ownHandler != null) {
+			ownHandler.removeCallbacks(actualizarPronostico);
+		}
+		ownHandler = new Handler();
+		ownHandler.post(actualizarPronostico);
+	}
+
+	/**
+	 * @see android.app.Activity#onPause()
+	 */
+	@Override
+	protected void onPause() {
+		ownHandler.removeCallbacks(actualizarPronostico);
 	}
 
 	/**
@@ -160,6 +186,7 @@ public class VerCiudadActivity extends CustomListActivity<Pronostico> {
 	 * 
 	 */
 	protected void cargarPronosticoDelBackend() {
+		ownHandler.removeCallbacks(actualizarPronostico);
 		if (!ciudadActual.tienePronosticoActualizado()) {
 			// Disparamos el pedido al backend para actualizar los datos
 			mostrarSpinnerDeLoading();
@@ -167,12 +194,7 @@ public class VerCiudadActivity extends CustomListActivity<Pronostico> {
 			requestForecastTask.execute(ciudadActual);
 		}
 		// Dentro de 20s vemos si es momento de update
-		ownHandler.postDelayed(new Runnable() {
-			@Override
-			public void run() {
-				cargarPronosticoDelBackend();
-			}
-		}, 20 * 1000);
+		ownHandler.postDelayed(actualizarPronostico, 20 * 1000);
 	}
 
 	protected void onPronosticoDisponible() {
