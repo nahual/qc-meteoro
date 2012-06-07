@@ -210,6 +210,7 @@ public class VerCiudadActivity extends CustomListActivity<Pronostico> {
 		ViewHelper.findTextView(R.id.temperatura_txt, getContentView()).setText(estadoActual.getTemperature());
 		ViewHelper.findTextView(R.id.humedad_txt, getContentView()).setText(estadoActual.getHumidity());
 		ViewHelper.findTextView(R.id.sensacion_txt, getContentView()).setText(estadoActual.getChill());
+		ViewHelper.findTextView(R.id.ultimoUpdate_txt, getContentView()).setText("actualizado: " + ciudadActual.getUltimoUpdate().toLocaleString());
 		this.notificarCambioEnLosDatos();
 	}
 

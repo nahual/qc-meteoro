@@ -13,7 +13,6 @@
         android:textColor="#FFFFFF"
         />
 
-
     <ImageView
         android:id="@+id/estado_img" 
         android:layout_height="wrap_content"
@@ -64,11 +63,19 @@
 	    android:layout_weight="1.0"
 	    >
 	</ListView>
-
     <ProgressBar
         android:id="@+id/loading_prg"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content" 
         android:layout_gravity="center"
+        />
+    <TextView 
+        android:id="@+id/ultimoUpdate_txt" 
+        android:layout_height="wrap_content"
+        android:layout_width="fill_parent"
+        android:textSize="12dp"
+        android:textColor="#ADADAD"
+        android:layout_gravity="bottom|center_horizontal"
+        android:text="actualizado:"
         />
 </LinearLayout>

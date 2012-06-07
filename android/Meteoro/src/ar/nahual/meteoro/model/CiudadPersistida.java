@@ -4,6 +4,7 @@
 package ar.nahual.meteoro.model;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import ar.com.iron.persistence.persistibles.PersistibleSupport;
@@ -80,6 +81,10 @@ public class CiudadPersistida extends PersistibleSupport {
 			return false;
 		}
 		return true;
+	}
+
+	public Date getUltimoUpdate() {
+	    return new Date(ultimoTimestampDeUpdate);
 	}
 
 	private long getNow() {
