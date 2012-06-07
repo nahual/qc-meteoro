@@ -9,7 +9,6 @@ import java.util.Map;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.ImageView;
@@ -74,7 +73,6 @@ public class VerCiudadActivity extends CustomListActivity<Pronostico> {
 		persistenceConector.setConnectionListener(new LocalServiceConnectionListener<PersistenceDao>() {
 			@Override
 			public void onServiceDisconnection(final PersistenceDao disconnectedIntercomm) {
-				Log.e("paso", "Me desconecte?");
 				// No hacemos nada
 			}
 
@@ -149,11 +147,37 @@ public class VerCiudadActivity extends CustomListActivity<Pronostico> {
 					@Override
 					public void onSuccess(final CiudadPersistida result) {
 						ciudadActual = result;
-						ViewHelper.findTextView(R.id.nombreCiudad_txt, getContentView()).setText(
-								ciudadActual.getCityName());
+						actualizarVistaDeCiudad();
 						cargarPronosticoDelBackend();
 					}
 				});
+	}
+
+	/**
+	 * Actualiza la vista de la ciudad con los datos disponibles actualmente
+	 */
+	protected void actualizarVistaDeCiudad() {
+		ViewHelper.findTextView(R.id.nombreCiudad_txt, getContentView()).setText(ciudadActual.getCityName());
+		final Pronostico estadoActual = ciudadActual.getActual();
+		Integer iconoDeEstado = R.drawable.status_unknown;
+		String temperature = "N/A";
+		String humedad = "N/A";
+		String chill = "N/A";
+		String actualizado = "";
+		if (estadoActual != null) {
+			iconoDeEstado = getIconoEstado(estadoActual.getStatus());
+			temperature = estadoActual.getTemperature();
+			humedad = estadoActual.getHumidity();
+			chill = estadoActual.getChill();
+			actualizado = "actualizado: " + ciudadActual.getUltimoUpdate().toLocaleString();
+		}
+		final ImageView img = ViewHelper.findImageView(R.id.estado_img, getContentView());
+		img.setImageResource(iconoDeEstado);
+		ViewHelper.findTextView(R.id.temperatura_txt, getContentView()).setText(temperature);
+		ViewHelper.findTextView(R.id.humedad_txt, getContentView()).setText(humedad);
+		ViewHelper.findTextView(R.id.sensacion_txt, getContentView()).setText(chill);
+		ViewHelper.findTextView(R.id.ultimoUpdate_txt, getContentView()).setText(actualizado);
+		this.notificarCambioEnLosDatos();
 	}
 
 	/**
@@ -173,17 +197,7 @@ public class VerCiudadActivity extends CustomListActivity<Pronostico> {
 	protected void onPronosticoDisponible() {
 		// Ocultamos el spinner de progreso
 		ocultarSpinnerDeLoading();
-
-		ViewHelper.findTextView(R.id.nombreCiudad_txt, getContentView()).setText(ciudadActual.getCityName());
-		final Pronostico estadoActual = ciudadActual.getActual();
-		final ImageView img = ViewHelper.findImageView(R.id.estado_img, getContentView());
-		img.setImageResource(getIconoEstado(estadoActual.getStatus()));
-		ViewHelper.findTextView(R.id.temperatura_txt, getContentView()).setText(estadoActual.getTemperature());
-		ViewHelper.findTextView(R.id.humedad_txt, getContentView()).setText(estadoActual.getHumidity());
-		ViewHelper.findTextView(R.id.sensacion_txt, getContentView()).setText(estadoActual.getChill());
-		ViewHelper.findTextView(R.id.ultimoUpdate_txt, getContentView()).setText(
-				"actualizado: " + ciudadActual.getUltimoUpdate().toLocaleString());
-		this.notificarCambioEnLosDatos();
+		actualizarVistaDeCiudad();
 	}
 
 	protected void mostrarSpinnerDeLoading() {
