@@ -34,6 +34,8 @@
         </activity>
         
         <service android:name="ar.com.iron.persistence.PersistenceService" />
-    </application>
+        <service android:name=".PronosticoUpdateService" />
+        
+        </application>
     
 </manifest>

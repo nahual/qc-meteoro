@@ -3,7 +3,6 @@
  */
 package ar.nahual.meteoro;
 
-import android.content.Intent;
 import ar.com.iron.android.extensions.applications.Db4oApplication;
 import ar.com.iron.persistence.db4o.Db4oConfiguration;
 import ar.nahual.meteoro.model.CiudadPersistida;
@@ -27,15 +26,6 @@ public class MeteoroApplication extends Db4oApplication {
 		super.onCreate();
 		MeteoroApplication.app = this;
 		this.backend = new MeteoroBackend(getApplicationContext());
-		startService(new Intent(this, PronosticoUpdateService.class));
-	}
-
-	/**
-	 * @see ar.com.iron.android.extensions.applications.CustomApplication#onTerminate()
-	 */
-	@Override
-	public void onTerminate() {
-		stopService(new Intent(this, PronosticoUpdateService.class));
 	}
 
 	/**

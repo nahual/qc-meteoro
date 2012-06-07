@@ -9,7 +9,6 @@ import java.util.Map;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
-import android.os.Handler;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.ImageView;
@@ -42,13 +41,6 @@ public class VerCiudadActivity extends CustomListActivity<Pronostico> {
 
 	private LocalServiceConnector<PersistenceDao> persistenceConector;
 	private PersistenceDao persistenceDao;
-	private Handler ownHandler;
-	private final Runnable actualizarPronostico = new Runnable() {
-		@Override
-		public void run() {
-			cargarPronosticoDelBackend();
-		}
-	};
 
 	private static Integer getIconoEstado(final String estado) {
 		if (ICONOS_ESTADO.isEmpty()) {
@@ -73,33 +65,10 @@ public class VerCiudadActivity extends CustomListActivity<Pronostico> {
 	}
 
 	/**
-	 * @see android.app.Activity#onResume()
-	 */
-	@Override
-	protected void onResume() {
-	    super.onResume();
-		if (ownHandler != null) {
-			ownHandler.removeCallbacks(actualizarPronostico);
-		}
-		ownHandler = new Handler();
-		ownHandler.post(actualizarPronostico);
-	}
-
-	/**
-	 * @see android.app.Activity#onPause()
-	 */
-	@Override
-	protected void onPause() {
-	    super.onPause();
-		ownHandler.removeCallbacks(actualizarPronostico);
-	}
-
-	/**
 	 * @see ar.com.iron.android.extensions.activities.CustomListActivity#setUpComponents()
 	 */
 	@Override
 	public void setUpComponents() {
-		ownHandler = new Handler();
 		persistenceConector = LocalServiceConnector.create(PersistenceService.class);
 		persistenceConector.setConnectionListener(new LocalServiceConnectionListener<PersistenceDao>() {
 			@Override
@@ -190,15 +159,13 @@ public class VerCiudadActivity extends CustomListActivity<Pronostico> {
 	 * 
 	 */
 	protected void cargarPronosticoDelBackend() {
-		ownHandler.removeCallbacks(actualizarPronostico);
+		// Solo actualizamos si es necesario
 		if (ciudadActual != null && !ciudadActual.tienePronosticoActualizado()) {
 			// Disparamos el pedido al backend para actualizar los datos
 			mostrarSpinnerDeLoading();
 			final RequestForecastTask requestForecastTask = new RequestForecastTask(VerCiudadActivity.this);
 			requestForecastTask.execute(ciudadActual);
 		}
-		// Dentro de 20s vemos si es momento de update
-		ownHandler.postDelayed(actualizarPronostico, 20 * 1000);
 	}
 
 	protected void onPronosticoDisponible() {
@@ -212,7 +179,8 @@ public class VerCiudadActivity extends CustomListActivity<Pronostico> {
 		ViewHelper.findTextView(R.id.temperatura_txt, getContentView()).setText(estadoActual.getTemperature());
 		ViewHelper.findTextView(R.id.humedad_txt, getContentView()).setText(estadoActual.getHumidity());
 		ViewHelper.findTextView(R.id.sensacion_txt, getContentView()).setText(estadoActual.getChill());
-		ViewHelper.findTextView(R.id.ultimoUpdate_txt, getContentView()).setText("actualizado: " + ciudadActual.getUltimoUpdate().toLocaleString());
+		ViewHelper.findTextView(R.id.ultimoUpdate_txt, getContentView()).setText(
+				"actualizado: " + ciudadActual.getUltimoUpdate().toLocaleString());
 		this.notificarCambioEnLosDatos();
 	}
 
@@ -291,10 +259,20 @@ public class VerCiudadActivity extends CustomListActivity<Pronostico> {
 	}
 
 	/**
+	 * @see android.app.Activity#onStart()
+	 */
+	@Override
+	protected void onStart() {
+		super.onStart();
+		startService(new Intent(this, PronosticoUpdateService.class));
+	}
+
+	/**
 	 * @see android.app.Activity#onStop()
 	 */
 	@Override
 	protected void onStop() {
+		stopService(new Intent(this, PronosticoUpdateService.class));
 		persistenceConector.unbindFromService(this);
 		super.onStop();
 	}

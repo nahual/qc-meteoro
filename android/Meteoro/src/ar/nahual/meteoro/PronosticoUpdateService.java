@@ -32,9 +32,17 @@ public class PronosticoUpdateService extends CronBgService {
 	 */
 	@Override
 	protected void setTodayFireMoment(final Calendar calendar) {
-		final long now = calendar.getTimeInMillis();
-		// Debería ejecutar dentro de 20s
-		calendar.setTimeInMillis(now + 20 * 1000);
+		// No tiene sentido
+	}
+
+	/**
+	 * @see ar.com.iron.android.extensions.services.CronBgService#determineNextFireMoment(long,
+	 *      long)
+	 */
+	@Override
+	protected long determineNextFireMoment(final long lastFiredMoment, final long currentTime) {
+		final long nextFireMoment = lastFiredMoment + 20 * 1000;
+		return nextFireMoment;
 	}
 
 	/**
