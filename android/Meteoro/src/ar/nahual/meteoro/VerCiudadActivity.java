@@ -75,6 +75,7 @@ public class VerCiudadActivity extends CustomListActivity<Pronostico> {
 	 */
 	@Override
 	protected void onResume() {
+	    super.onResume();
 		if (ownHandler != null) {
 			ownHandler.removeCallbacks(actualizarPronostico);
 		}
@@ -87,6 +88,7 @@ public class VerCiudadActivity extends CustomListActivity<Pronostico> {
 	 */
 	@Override
 	protected void onPause() {
+	    super.onPause();
 		ownHandler.removeCallbacks(actualizarPronostico);
 	}
 
@@ -187,7 +189,7 @@ public class VerCiudadActivity extends CustomListActivity<Pronostico> {
 	 */
 	protected void cargarPronosticoDelBackend() {
 		ownHandler.removeCallbacks(actualizarPronostico);
-		if (!ciudadActual.tienePronosticoActualizado()) {
+		if (ciudadActual != null && !ciudadActual.tienePronosticoActualizado()) {
 			// Disparamos el pedido al backend para actualizar los datos
 			mostrarSpinnerDeLoading();
 			final RequestForecastTask requestForecastTask = new RequestForecastTask(VerCiudadActivity.this);
