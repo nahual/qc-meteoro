@@ -207,11 +207,11 @@ public class AgregarCiudadActivity extends CustomActivity {
 	}
 
 	/**
-	 * @see android.app.Activity#onStop()
+	 * @see ar.com.iron.android.extensions.activities.CustomActivity#onDestroy()
 	 */
 	@Override
-	protected void onStop() {
+	protected void onDestroy() {
 		persistenceConector.unbindFromService(this);
-		super.onStop();
+		super.onDestroy();
 	}
 }

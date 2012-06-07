@@ -9,6 +9,7 @@ import java.util.Map;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.ImageView;
@@ -73,6 +74,7 @@ public class VerCiudadActivity extends CustomListActivity<Pronostico> {
 		persistenceConector.setConnectionListener(new LocalServiceConnectionListener<PersistenceDao>() {
 			@Override
 			public void onServiceDisconnection(final PersistenceDao disconnectedIntercomm) {
+				Log.e("paso", "Me desconecte?");
 				// No hacemos nada
 			}
 
@@ -273,7 +275,6 @@ public class VerCiudadActivity extends CustomListActivity<Pronostico> {
 	@Override
 	protected void onStop() {
 		stopService(new Intent(this, PronosticoUpdateService.class));
-		persistenceConector.unbindFromService(this);
 		super.onStop();
 	}
 
@@ -363,5 +364,14 @@ public class VerCiudadActivity extends CustomListActivity<Pronostico> {
 				cargarPronosticoDelBackend();
 			}
 		});
+	}
+
+	/**
+	 * @see ar.com.iron.android.extensions.activities.CustomListActivity#onDestroy()
+	 */
+	@Override
+	protected void onDestroy() {
+		persistenceConector.unbindFromService(this);
+		super.onDestroy();
 	}
 }
