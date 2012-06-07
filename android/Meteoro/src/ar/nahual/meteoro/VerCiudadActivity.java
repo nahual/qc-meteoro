@@ -6,6 +6,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import android.content.BroadcastReceiver;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Handler;
 import android.view.LayoutInflater;
@@ -371,4 +373,17 @@ public class VerCiudadActivity extends CustomListActivity<Pronostico> {
 		mostrarLaCiudad(ciudadAmostrar.getId());
 	}
 
+	/**
+	 * @see ar.com.iron.android.extensions.activities.CustomListActivity#initMessageReceivers()
+	 */
+	@Override
+	public void initMessageReceivers() {
+		// Escuchamos pedidos de actualizacion de mensajes
+		registerMessageReceiver(ActualizarPronostico.ACTION, new BroadcastReceiver() {
+			@Override
+			public void onReceive(final Context context, final Intent intent) {
+				cargarPronosticoDelBackend();
+			}
+		});
+	}
 }
