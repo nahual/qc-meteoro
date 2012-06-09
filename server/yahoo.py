@@ -182,7 +182,7 @@ class YahooWeatherProvider(WeatherProvider):
         rv.append({
             'date': today.strftime(self.date_format),
             'temperature': "%s°C" % safe_get(response, ['condition', 'temperature']),
-            'chill': "%s°C" % safe_get(response, ['condition','temperature']),
+            'chill': "%shPa" % safe_get(response, ['atmosphere','pressure']), #FIXME: Cambiar nombre a presion
             'humidity': "%s%%" % safe_get(response, ['atmosphere','humidity']),
             'status': self._statuses.get(safe_get(response, ['condition','code']), safe_get(response, ['condition','text']).lower()),
             'min': '', 'max': ''
