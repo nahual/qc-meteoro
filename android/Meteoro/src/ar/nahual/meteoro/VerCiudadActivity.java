@@ -1,7 +1,10 @@
 package ar.nahual.meteoro;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Collections;
+import java.util.GregorianCalendar;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -9,6 +12,7 @@ import java.util.Map;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
+import android.text.format.DateFormat;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.ImageView;
@@ -239,7 +243,7 @@ public class VerCiudadActivity extends CustomListActivity<Pronostico> {
 			@Override
 			public void render(final View itemView, final Pronostico item, final LayoutInflater inflater) {
 				final TextView diaPronosticoText = ViewHelper.findTextView(R.id.diaPronostico_txt, itemView);
-				diaPronosticoText.setText(item.getDate());
+				diaPronosticoText.setText(diaRelativo(item.getDate()));
 				final ImageView img = ViewHelper.findImageView(R.id.estadoPronostico_img, itemView);
 				img.setImageResource(getIconoEstado(item.getStatus()));
 				final TextView minTempPronostico = ViewHelper.findTextView(R.id.minTempPronostico_txt, itemView);
@@ -248,6 +252,23 @@ public class VerCiudadActivity extends CustomListActivity<Pronostico> {
 				maxTempPronostico.setText(String.valueOf(item.getMax()));
 			}
 		};
+	}
+
+	private static SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
+	public static String diaRelativo(final String strDate) {
+	    try {
+    	    final Calendar today = GregorianCalendar.getInstance();
+    	    final Calendar date = GregorianCalendar.getInstance();
+    	    date.setTime(formatter.parse(strDate));
+    	    if (date.get(Calendar.DAY_OF_WEEK) == today.get(Calendar.DAY_OF_WEEK)) {
+    	        return "hoy";
+    	    } else if (date.get(Calendar.DAY_OF_WEEK) == today.get(Calendar.DAY_OF_WEEK)+1 || date.get(Calendar.DAY_OF_WEEK) == Calendar.MONDAY && today.get(Calendar.DAY_OF_WEEK) == Calendar.SUNDAY) {
+    	        return "mañana";
+    	    }
+    	    return DateFormat.format("EEEE", date).toString();
+	    } catch (Exception e) {
+	        return strDate;
+	    }
 	}
 
 	/**
