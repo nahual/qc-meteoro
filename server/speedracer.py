@@ -28,14 +28,15 @@ def get_cities():
 def get_forecast():
     city = request.args.get('city')
     if not city:
-        return json.dumps({'error':'City is mandatory'})
-    return json.dumps(weather_provider.get_forecast(city))
+        return json.dumps({'error':'City is mandatory'}), 400
+    result = weather_provider.get_forecast(city)
+    return json.dumps(result), ("error" in result and 400) or 200
 
 @app.route('/change_provider', methods=['GET'])
 def chage_provider():
     name = request.args.get('name')
     if name not in providers:
-        return json.dumps({'error':"%s is not a provider" % name })
+        return json.dumps({'error':"%s is not a provider" % name }), 400
     global weather_provider
     weather_provider = providers[name]
     return json.dumps({'message':'ok'}) 
