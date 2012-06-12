@@ -164,9 +164,9 @@ public class VerCiudadActivity extends CustomListActivity<Pronostico> {
 		ViewHelper.findTextView(R.id.nombreCiudad_txt, getContentView()).setText(ciudadActual.getCityName());
 		final Pronostico estadoActual = ciudadActual.getActual();
 		Integer iconoDeEstado = R.drawable.status_unknown;
-		String temperature = "N/A";
-		String humedad = "N/A";
-		String chill = "N/A";
+		String temperature = "N/D";
+		String humedad = "N/D";
+		String chill = "N/D";
 		String actualizado = "";
 		if (estadoActual != null) {
 			iconoDeEstado = getIconoEstado(estadoActual.getStatus());
