@@ -78,6 +78,10 @@ public class RequestForecastTask extends AsyncTask<CiudadPersistida, Void, List<
 			return Collections.emptyList();
 		}
 		final StatusLine statusLine = response.getStatusLine();
+		if (statusLine.getStatusCode() == HttpStatus.SC_BAD_REQUEST) {
+            showToast("El servidor no pudo responder al pedido para la ciudad: " + ciudadElegida.getCityCode());
+            return Collections.emptyList();
+        }
 		if (statusLine.getStatusCode() != HttpStatus.SC_OK) {
 			showToast("El servidor no está disponible");
 			return Collections.emptyList();
