@@ -92,4 +92,9 @@ public enum VerCiudadMenu implements ActivityMenuItem<VerCiudadActivity>, Dynami
     public boolean isEnabled() {
         return true;
     }
+
+    @Override
+    public boolean isVisible() {
+        return true;
+    }
 }
