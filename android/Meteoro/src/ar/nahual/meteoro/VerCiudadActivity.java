@@ -166,20 +166,20 @@ public class VerCiudadActivity extends CustomListActivity<Pronostico> {
 		Integer iconoDeEstado = R.drawable.status_unknown;
 		String temperature = "N/D";
 		String humedad = "N/D";
-		String chill = "N/D";
+		String pressure = "N/D";
 		String actualizado = "";
 		if (estadoActual != null) {
 			iconoDeEstado = getIconoEstado(estadoActual.getStatus());
 			temperature = estadoActual.getTemperature();
 			humedad = estadoActual.getHumidity();
-			chill = estadoActual.getChill();
+			pressure = estadoActual.getPressure();
 			actualizado = "actualizado: " + ciudadActual.getUltimoUpdate().toLocaleString();
 		}
 		final ImageView img = ViewHelper.findImageView(R.id.estado_img, getContentView());
 		img.setImageResource(iconoDeEstado);
 		ViewHelper.findTextView(R.id.temperatura_txt, getContentView()).setText(temperature);
 		ViewHelper.findTextView(R.id.humedad_txt, getContentView()).setText(humedad);
-		ViewHelper.findTextView(R.id.sensacion_txt, getContentView()).setText(chill);
+		ViewHelper.findTextView(R.id.pressure_txt, getContentView()).setText(pressure);
 		ViewHelper.findTextView(R.id.ultimoUpdate_txt, getContentView()).setText(actualizado);
 		this.notificarCambioEnLosDatos();
 	}

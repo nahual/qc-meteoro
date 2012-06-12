@@ -112,9 +112,9 @@ public class RequestForecastTask extends AsyncTask<CiudadPersistida, Void, List<
 				final String date = object.get("date").toString();
 				final String max = object.get("max").toString();
 				final String humidity = object.get("humidity").toString();
-				final String chill = object.get("chill").toString();
+				final String pressure = object.get("pressure").toString();
 				final Pronostico pronostico = new Pronostico();
-				pronostico.setChill(chill);
+				pronostico.setPressure(pressure);
 				pronostico.setDate(date);
 				pronostico.setHumidity(humidity);
 				pronostico.setMax(max);

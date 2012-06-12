@@ -15,7 +15,7 @@ public class Pronostico {
 	private String date = "N/D";
 	private String max = "N/D";
 	private String humidity = "N/D";
-	private String chill = "N/D";
+	private String pressure = "N/D";
 
 	public String getStatus() {
 		return status;
@@ -65,12 +65,12 @@ public class Pronostico {
 		this.humidity = humidity;
 	}
 
-	public String getChill() {
-		return chill;
+	public String getPressure() {
+		return pressure;
 	}
 
-	public void setChill(final String chill) {
-		this.chill = chill;
+	public void setPressure(final String pressure) {
+		this.pressure = pressure;
 	}
 
 }

@@ -182,7 +182,7 @@ class YahooWeatherProvider(WeatherProvider):
         rv.append({
             'date': today.strftime(self.date_format),
             'temperature': "%s°C" % safe_get(response, ['condition', 'temperature']),
-            'chill': "%shPa" % safe_get(response, ['atmosphere','pressure']), #FIXME: Cambiar nombre a presion
+            'pressure': "%shPa" % safe_get(response, ['atmosphere','pressure']),
             'humidity': "%s%%" % safe_get(response, ['atmosphere','humidity']),
             'status': self._statuses.get(safe_get(response, ['condition','code']), safe_get(response, ['condition','text']).lower()),
             'min': '', 'max': ''
@@ -195,7 +195,7 @@ class YahooWeatherProvider(WeatherProvider):
                     'min': "%s°C" % safe_get(day, ['low_temperature']),
                     'max': "%s°C" % safe_get(day, ['high_temperature']),
                     'status': self._text_statuses.get(YahooWeatherProvider._normalize_status(safe_get(day, ['condition'])), YahooWeatherProvider._normalize_status(safe_get(day, ['condition']))),
-                    'temperature': '', 'chill': '', 'humidity': ''
+                    'temperature': '', 'pressure': '', 'humidity': ''
                 })
         return rv
 

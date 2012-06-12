@@ -41,8 +41,8 @@
             android:layout_weight="1"
             />
 	    <TextView 
-            android:id="@+id/sensacion_txt" 
-            android:text="NN°"
+            android:id="@+id/pressure_txt" 
+            android:text="NNNhpa"
             android:layout_height="wrap_content"
             android:layout_width="wrap_content"
             android:gravity="center"
