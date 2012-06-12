@@ -6,12 +6,13 @@ package ar.nahual.meteoro;
 import android.content.Context;
 import android.content.Intent;
 import ar.com.iron.menues.ActivityMenuItem;
+import ar.com.iron.menues.DynamicMenuItem;
 
 /**
  * 
  * @author D. García
  */
-public enum VerCiudadMenu implements ActivityMenuItem<VerCiudadActivity> {
+public enum VerCiudadMenu implements ActivityMenuItem<VerCiudadActivity>, DynamicMenuItem {
 	AGREGAR_CIUDAD {
 		@Override
 		public Object getItemTitleOrResId() {
@@ -41,6 +42,12 @@ public enum VerCiudadMenu implements ActivityMenuItem<VerCiudadActivity> {
 		public Object getItemTitleOrResId() {
 			return "Siguiente ciudad";
 		}
+
+        @Override
+        public boolean isEnabled() {
+            // FIXME: Como accedo a los datos?
+            return true;
+        }
 
 		@Override
 		public boolean onSelection(final VerCiudadActivity activity) {
@@ -81,4 +88,8 @@ public enum VerCiudadMenu implements ActivityMenuItem<VerCiudadActivity> {
 		return null;
 	}
 
+    @Override
+    public boolean isEnabled() {
+        return true;
+    }
 }
