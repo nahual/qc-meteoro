@@ -64,17 +64,17 @@ public class CiudadPersistida extends PersistibleSupport {
 	}
 
 	/**
-	 * Indica si esta ciudad posee datos actualizados del pronostico (no paso una hora desde el
+	 * Indica si esta ciudad posee datos actualizados del pronostico (no pasaron cinco minutos desde el
 	 * ultimo update)
 	 * 
-	 * @return true si tiene datos de pronostico, y aun no paso una hora desde que se actualizaron
+	 * @return true si tiene datos de pronostico, y aun no pasaron cinco minutos desde que se actualizaron
 	 */
 	public boolean tienePronosticoActualizado() {
 		if (getFuturos().isEmpty()) {
 			return false;
 		}
-		final long unaHora = 60 * 60 * 1000;
-		final long momentoDeProximoUpdate = ultimoTimestampDeUpdate + unaHora;
+		final long cincoMinutos = 5 * 60 * 1000;
+		final long momentoDeProximoUpdate = ultimoTimestampDeUpdate + cincoMinutos;
 		final long now = getNow();
 		if (momentoDeProximoUpdate <= now) {
 			// Ya paso el momento en el que deberíamos actualizar
