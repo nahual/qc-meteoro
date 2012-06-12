@@ -43,18 +43,14 @@ public enum VerCiudadMenu implements ActivityMenuItem<VerCiudadActivity>, Dynami
 			return "Siguiente ciudad";
 		}
 
-        @Override
-        public boolean isEnabled() {
-            // FIXME: Como accedo a los datos?
-            return true;
-        }
-
 		@Override
 		public boolean onSelection(final VerCiudadActivity activity) {
 			activity.cambiarDeCiudad();
 			return true;
 		}
 	};
+
+	private boolean enabled = true;
 
 	/**
 	 * @see ar.com.iron.menues.CustomMenuItem#getItemTitleOrResId()
@@ -90,7 +86,11 @@ public enum VerCiudadMenu implements ActivityMenuItem<VerCiudadActivity>, Dynami
 
     @Override
     public boolean isEnabled() {
-        return true;
+        return this.enabled;
+    }
+
+    public void setEnabled(final boolean enabled) {
+        this.enabled = enabled;
     }
 
     @Override

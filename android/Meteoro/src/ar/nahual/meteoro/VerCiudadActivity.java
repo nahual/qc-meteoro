@@ -1,11 +1,12 @@
 package ar.nahual.meteoro;
 
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.GregorianCalendar;
 import java.util.HashMap;
+import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Map;
 
@@ -40,7 +41,7 @@ public class VerCiudadActivity extends CustomListActivity<Pronostico> {
 	public static int CHOOSE_OTHER_CITY = 2;
 	public static final Map<String, Integer> ICONOS_ESTADO = new HashMap<String, Integer>();
 
-	private final List<CiudadPersistida> ciudades = new ArrayList<CiudadPersistida>();
+	private final Collection<CiudadPersistida> ciudades = new LinkedHashSet<CiudadPersistida>();
 	private CiudadPersistida ciudadActual;
 
 	private LocalServiceConnector<PersistenceDao> persistenceConector;
@@ -118,7 +119,7 @@ public class VerCiudadActivity extends CustomListActivity<Pronostico> {
 		if (ciudades.isEmpty()) {
 			startActivityForResult(new Intent(this, AgregarCiudadActivity.class), CHOOSE_FIRST_CITY);
 		} else {
-			mostrarLaCiudad(ciudades.get(0).getId());
+			mostrarLaCiudad(ciudades.iterator().next().getId());
 		}
 	}
 
@@ -150,6 +151,7 @@ public class VerCiudadActivity extends CustomListActivity<Pronostico> {
 				new DefaultOnFailurePersistenceOperationListener<CiudadPersistida>(getContext()) {
 					@Override
 					public void onSuccess(final CiudadPersistida result) {
+					    ciudades.add(result);
 						ciudadActual = result;
 						actualizarVistaDeCiudad();
 						cargarPronosticoDelBackend();
@@ -318,6 +320,7 @@ public class VerCiudadActivity extends CustomListActivity<Pronostico> {
 	 */
 	@Override
 	public ActivityMenuItem<? extends CustomListActivity<Pronostico>>[] getMenuItems() {
+	    VerCiudadMenu.SIGUIENTE.setEnabled(ciudades.size() > 1);
 		return VerCiudadMenu.values();
 	}
 
