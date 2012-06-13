@@ -11,6 +11,7 @@
     <string name="separator">|</string>
     <string name="label_min_temperature">Min</string>
     <string name="label_max_temperature">Max</string>
-    <string name="label_last_updated">actualizado:</string>
+    <string name="label_last_updated">actualizado: </string>
     <string name="placeholder_date">fecha</string>
+    <string name="placeholder_not_available">N/D</string>
 </resources>
