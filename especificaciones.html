@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Meteoro - Especificaci&oacute;n</title>
+    <link href="css/specs.css" rel="stylesheet">
+    
+</head>
+
+<body>
+    <h2>Especificaci&oacute;n Funcional</h2>
+
+    <h3>Pantalla Agragar Ciudad</h3>
+
+    <ul>
+        <li>El usuario selecciona la opci&oacute;n del men&uacute; "Agregar Ciudad".</li>
+        <li>
+            Se accede a la pantalla para agregar ciudad.
+            <ul>
+                <li>T&iacute;tulo de la pantalla: Alta de ciudad</li>
+                <li>Buscador: Campo texto: "Ciudad (e.j Buenos Aires)"</li>
+                <li>Opciones:
+                    <ul>
+                        <li>Agregar</li>
+                        <li>Back</li>
+                    </ul>
+                </li>
+            </ul>
+        </li>
+        <li>El usuario selecciona una ciudad (ver B&uacute;squeda / selecci&oacute;n de ciudad).</li>
+        <li>El usuario selecciona la opci&oacute;n "Agregar".</li>
+        <li>Luego de agregar la ciudad, se regresa a la pantalla de visualizaci&oacute;n de informaci&oacute;n del tiempo para la nueva ciudad, la cual estar&aacute; al final de la lista de ciudades agregadas.</li>
+        <li>Nota: No es posible dar de alta dos veces la misma ciudad. En caso que el usuario agregue una ciudad ya seleccionada anteriormente, la ciudad no se agrega (y se contin&uacute;a con el curso normal).</li>
+        <li>Nota: En caso de intentar agregar una ciudad, si la aplicaci&oacute;n a&uacute;n no carg&oacute; la lista de ciudades disponibles y no tiene acceso a internet, emitir&aacute; un mensaje que diga: "Actualmente no existen ciudades para consultar. Intente m&aacute;s tarde"</li>
+    </ul>
+
+    <h4>B&uacute;squeda / selecci&oacute;n de ciudad</h4>
+    <ul>
+        <li>El sistema va autocompletando a medida que se escribe</li>
+        <li>Para hacer efectiva la selecci&oacute;n, el usuario debe elegir una de las opciones que despliega el buscador</li>
+        <li>Nota: La b&uacute;squeda no distingue entre may&uacute;sculas y min&uacute;sculas, ni tampoco tildes: si ingreso andalgal&aacute; o Andalgala, deber&iacute;a traerme la ciudad Andalgal&aacute; (con el tilde). O si ingreso bUenOs aireS, deber&iacute;a traerme Buenos Aires.</li>
+    </ul>
+
+<span style="color:red">AGREGAR SCREENSHOT</span>
+    <h3>Pantalla de Visualizaci&oacute;n de estado del tiempo</h3>
+
+    <ul>
+        <li>El usuario ingresa a la aplicaci&oacute;n.</li>
+        <li>Se accede a las pantallas con al informaci&oacute;n del tiempo, de manera secuencial, en el mismo orden que fueron dadas de alta las distintas ciudades (en el caso de ser la primera vez que se accede a la aplicaci&oacute;n se va directamente a la pantalla de alta de ciudad).</li>
+        <li>
+            Para cada ciudad se visualiza:
+            <ul>
+                <li>
+                    Estado actual:
+                    <ul>
+                        <li>Estado del Tiempo</li>
+                        <li>Temperatura</li>
+                        <li>Presi&oacute;n Atmosf&eacute;rica</li>
+                        <li>Humedad</li>
+                    </ul>
+                </li>
+                <li>
+                    Pron&oacute;stico (Para el d&iacute;a de hoy m&aacute;s los proximos 3 d&iacute;as):
+                    <ul>
+                        <li>D&iacute;a de la semana (se visualiza "hoy", "ma&ntilde;ana" y el nombre de los siguientes d&iacute;as)</li>
+                        <li>Estado del tiempo</li>
+                        <li>M&iacute;nima esperada</li>
+                        <li>M&aacute;xima esperada</li>
+                    </ul>
+                </li>
+                <li>&uacute;ltima actualizaci&oacute;n: En el pie de la pantalla se debe visualizar informaci&oacute;n sobre la &uacute;ltima actualizaci&oacute;n</li>
+            </ul>
+        </li>
+        <li>
+            Observaciones:
+            <ul>
+                <li>Las temperaturas se miden en grados celsius y los valores posibles van de -273 a 99.</li>
+                <li>
+                    Los posibles estados del tiempo son:
+                    <table id="statuses">
+                        <tr>
+                            <td><img src="img/status_unknown.png"/><br>N/D</td>
+                            <td><img src="img/status_clear.png"/><br>Despejado</td>
+                            <td><img src="img/status_cloudy.png"/><br>Nublado</td>
+                            <td><img src="img/status_partly_cloudy.png"/><br>Parcialmente Nublado</td>
+                        </tr>
+                        <tr>
+                            <td><img src="img/status_fog.png"/><br>Brumoso</td>
+                            <td><img src="img/status_scattered_showers.png"/><br>Lluvias Aisladas</td>
+                            <td><img src="img/status_showers.png"/><br>Lluvioso</td>
+                            <td><img src="img/status_snow.png"/><br>Nieve</td>
+                        </tr>
+                        <tr>
+                            <td><img src="img/status_snow_rain.png"/><br>Lluvia y Nieve</td>
+                            <td><img src="img/status_storm.png"/><br>Tormentoso</td>
+                            <td><img src="img/status_windy.png"/><br>Ventoso</td>
+                            <td>&nbsp;</td>
+                        </tr>
+                    </table>
+                </li>
+                <li>La humedad se mide en porcentaje y va de 0 a 100 por ciento.</li>
+                <li>La presi&oacute;n se mide en hectopascales (hPa)</li>
+                <li>En caso de no encontrarse disponible la informaci&oacute;n, se debe visualizar la signa "N/D" (No Disponible).</li>
+            </ul>
+        </li>
+    </ul>
+<span style="color:red">AGREGAR SCREENSHOT DE LA PANTALLA</span>
+    
+    <h3>Actualizaci&oacute;n de Datos</h3>
+    <p>Cuando el usuario acceda a la pantalla de visualizaci&oacute;n de estado del tiempo para una ciudad, la aplicaci&oacute;n:</p>
+    <ul>
+        <li>Si no tiene datos, mostrar&aacute; N/D e intentar&aacute; traerlos del servidor.</li>
+        <li>Si tiene datos, los mostrar&aacute;.</li>
+        <li>Si tiene datos cuya actualizaci&oacute;n sea de hace m&aacute;s de 5 minutos, luego de mostrarlos, intentar&aacute; actualizarlos.</li>
+    </ul>
+    <p>Por m&aacute;s que haya conexi&oacute;n a internet disponible, hasta que el usuario no intente ver una ciudad, los datos no se actualizar&aacute;n.</p>
+    
+    <h3>Opciones del men&uacute;</h3>
+    <ul>
+        <li>Agregar ciudad: Al seleccionar esta opci&oacute;n se dirige a la funcionalidad "Pantalla Agragar Ciudad"</li>
+        <li>Quitar ciudad: Elimina la ciudad que se est&aacute; visualizando y pasa a la primer ciudad disponible. En caso de no quedar m&aacute;s ciudades, vuelve a la pantalla "Agregar Ciudad"</li>
+        <li>Siguiente ciudad: Muestra la siguiente ciudad seleccionada. En caso de haber llegado a la &uacute;ltima, vuelve a empezar. En caso de haber una sola ciudad, esta opci&oacute;n est&aacute; deshabilitada.</li>
+    </ul>
+
+    <h3>Mensajes de Error</h3>
+    <p>En los casos en que la aplicaci&oacute;n requiera conectarse con el servidor y no pueda hacerlo, deber&aacute; mostrar mensajes de error, indicando el motivo:</p>
+    <ul>
+        <li>Si el dispositivo no tiene acceso a internet, ""Se produjo un error en la conexion: " y el motivo del error.</li>
+        <li>Si el dispositivo tiene acceso a internet, pero el servidor no responde correctamente: "El servidor no est&aacute; disponible".</li>
+    </ul>
+    <figure>
+        <img src="img/toast-example.png"/>
+        <figcaption>Ejemplo de c&oacute;mo deben verse los mensajes de error</figcaption>
+    </figure>
+
+    <h3>Proveedor de datos</h3>
+    <p>El servidor utilizado por la aplicaci&oacute;n debe ser el alojado en: <a href="http://meteoro.herokuapp.com">http://meteoro.herokuapp.com</a></p>
+    <p>Las ciudades disponibles deben ser las devueltas por: <a href="http://meteoro.herokuapp.com/get_cities">http://meteoro.herokuapp.com/get_cities</a></p>
+    <p>Para un c&oacute;digo de ciudad obtenido con get_cities, el estado actual y el pron&oacute;stico deben ser los correspondientes a <a href="http://meteoro.herokuapp.com/get_forecast?city=CODIGO">http://meteoro.herokuapp.com/get_forecast?city=CODIGO</a></p>
+</body>
+</html>
