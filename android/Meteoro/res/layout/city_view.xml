@@ -88,6 +88,43 @@
         android:background="#ADADAD"
         android:textColor="#FFFFFF"
         />
+	<LinearLayout
+        android:layout_height="wrap_content" 
+        android:layout_width="fill_parent"
+        >
+        <TextView 
+        android:id="@+id/placeholder_lbl"
+        android:layout_width="0dip"
+        android:layout_height="wrap_content"
+        android:layout_weight="1.0"
+        />
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="|"
+        />
+    <TextView
+        android:id="@+id/minTempPronostico_lbl"
+        android:ems="3"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Min"
+        android:gravity="center"
+        />
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="|"
+        />
+    <TextView
+        android:id="@+id/maxTempPronostico_lbl"
+        android:ems="3"
+        android:layout_height="wrap_content"
+        android:layout_width="wrap_content"
+        android:text="Max"
+        android:gravity="center"
+        />
+    </LinearLayout>
 	<ListView
 	    android:id="@android:id/list"
 	    android:layout_width="fill_parent" 
