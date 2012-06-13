@@ -20,36 +20,68 @@
         android:layout_gravity="center"
         android:src="@drawable/status_unknown"
     />
+    <LinearLayout
+        android:layout_height="wrap_content" 
+        android:layout_width="fill_parent"
+        >
+        <TextView 
+            android:id="@+id/temperatura_lbl"
+            android:text="Temperatura"
+            android:layout_height="wrap_content"
+            android:layout_width="fill_parent"
+            android:gravity="center"
+            android:layout_weight="1"
+            android:textSize="12dp"
+            />
+        <TextView 
+            android:id="@+id/humedad_lbl"
+            android:text="Humedad"
+            android:layout_height="wrap_content"
+            android:layout_width="fill_parent"
+            android:gravity="center"
+            android:layout_weight="1"
+            android:textSize="12dp"
+            />
+        <TextView 
+            android:id="@+id/pressure_lbl"
+            android:text="Presión"
+            android:layout_height="wrap_content"
+            android:layout_width="fill_parent"
+            android:gravity="center"
+            android:layout_weight="1"
+            android:textSize="12dp"
+            />
+    </LinearLayout>
 	<LinearLayout
-	    android:layout_height="wrap_content" 
+	    android:layout_height="wrap_content"
 	    android:layout_width="fill_parent"
 	    >
 	    <TextView 
-	        android:id="@+id/temperatura_txt" 
+	        android:id="@+id/temperatura_txt"
 	        android:text="NN°"
 	        android:layout_height="wrap_content"
-	        android:layout_width="wrap_content"
+	        android:layout_width="fill_parent"
 	        android:gravity="center"
 	        android:layout_weight="1"
 	        />
-	    <TextView 
-            android:id="@+id/humedad_txt" 
+	    <TextView
+            android:id="@+id/humedad_txt"
             android:text="NN°"
             android:layout_height="wrap_content"
-            android:layout_width="wrap_content"
+            android:layout_width="fill_parent"
             android:gravity="center"
             android:layout_weight="1"
             />
-	    <TextView 
-            android:id="@+id/pressure_txt" 
-            android:text="NNNhpa"
+	    <TextView
+            android:id="@+id/pressure_txt"
+            android:text="NNNNhPa"
             android:layout_height="wrap_content"
-            android:layout_width="wrap_content"
+            android:layout_width="fill_parent"
             android:gravity="center"
             android:layout_weight="1"
             />
 	</LinearLayout>
-	<TextView 
+	<TextView
         android:text="Pronóstico"
         android:layout_height="wrap_content"
         android:layout_width="fill_parent"
