@@ -4,13 +4,12 @@
     android:layout_width="fill_parent"
     android:orientation="horizontal"
     >
-    
     <TextView 
         android:id="@+id/diaPronostico_txt"
         android:layout_width="0dip"
         android:layout_height="wrap_content"
         android:layout_weight="1.0"
-        android:text="FECHA"
+        android:text="@string/placeholder_date"
         />
     <ImageView
         android:id="@+id/estadoPronostico_img" 
@@ -22,27 +21,27 @@
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="|"
+        android:text="@string/separator"
         />
     <TextView
         android:id="@+id/minTempPronostico_txt"
         android:ems="3"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="-YY°C"
+        android:text="@string/placeholder_temperature"
         android:gravity="right"
         />
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="|"
+        android:text="@string/separator"
         />
     <TextView
         android:id="@+id/maxTempPronostico_txt"
         android:ems="3"
         android:layout_height="wrap_content"
         android:layout_width="wrap_content"
-        android:text="-YY°C"
+        android:text="@string/placeholder_temperature"
         android:gravity="right"
         />
 </LinearLayout>

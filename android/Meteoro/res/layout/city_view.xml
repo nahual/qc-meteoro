@@ -3,148 +3,147 @@
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
     android:orientation="vertical" >
-    <TextView 
-        android:id="@+id/nombreCiudad_txt" 
-        android:text="Ciudad"
-        android:layout_height="wrap_content"
+
+    <TextView
+        android:id="@+id/nombreCiudad_txt"
         android:layout_width="fill_parent"
-        android:textSize="30dp"
+        android:layout_height="wrap_content"
         android:background="#ADADAD"
+        android:text="@string/placeholder_city"
         android:textColor="#FFFFFF"
-        />
+        android:textSize="30dp" />
 
     <ImageView
-        android:id="@+id/estado_img" 
-        android:layout_height="wrap_content"
+        android:id="@+id/estado_img"
         android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:layout_gravity="center"
-        android:src="@drawable/status_unknown"
-    />
+        android:src="@drawable/status_unknown" />
+
     <LinearLayout
-        android:layout_height="wrap_content" 
         android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
         >
-        <TextView 
-            android:id="@+id/temperatura_lbl"
-            android:text="Temperatura"
-            android:layout_height="wrap_content"
+
+        <TextView
+            style="@style/small_label"
             android:layout_width="fill_parent"
-            android:gravity="center"
+            android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:textSize="12dp"
+            android:gravity="center"
+            android:text="@string/label_temperature"
             />
-        <TextView 
-            android:id="@+id/humedad_lbl"
-            android:text="Humedad"
-            android:layout_height="wrap_content"
+
+        <TextView
+            style="@style/small_label"
             android:layout_width="fill_parent"
-            android:gravity="center"
+            android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:textSize="12dp"
+            android:gravity="center"
+            android:text="@string/label_hummidity"
             />
-        <TextView 
-            android:id="@+id/pressure_lbl"
-            android:text="Presión"
-            android:layout_height="wrap_content"
+
+        <TextView
+            style="@style/small_label"
             android:layout_width="fill_parent"
-            android:gravity="center"
+            android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:textSize="12dp"
+            android:gravity="center"
+            android:text="@string/label_pressure"
             />
     </LinearLayout>
-	<LinearLayout
-	    android:layout_height="wrap_content"
-	    android:layout_width="fill_parent"
-	    >
-	    <TextView 
-	        android:id="@+id/temperatura_txt"
-	        android:text="NN°"
-	        android:layout_height="wrap_content"
-	        android:layout_width="fill_parent"
-	        android:gravity="center"
-	        android:layout_weight="1"
-	        />
-	    <TextView
+
+    <LinearLayout
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content" >
+
+        <TextView
+            android:id="@+id/temperatura_txt"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:text="@string/placeholder_temperature" />
+
+        <TextView
             android:id="@+id/humedad_txt"
-            android:text="NN°"
-            android:layout_height="wrap_content"
             android:layout_width="fill_parent"
-            android:gravity="center"
+            android:layout_height="wrap_content"
             android:layout_weight="1"
-            />
-	    <TextView
+            android:gravity="center"
+            android:text="@string/placeholder_temperature" />
+
+        <TextView
             android:id="@+id/pressure_txt"
-            android:text="NNNNhPa"
-            android:layout_height="wrap_content"
             android:layout_width="fill_parent"
-            android:gravity="center"
+            android:layout_height="wrap_content"
             android:layout_weight="1"
-            />
-	</LinearLayout>
-	<TextView
-        android:text="Pronóstico"
-        android:layout_height="wrap_content"
-        android:layout_width="fill_parent"
-        android:background="#ADADAD"
-        android:textColor="#FFFFFF"
-        />
-	<LinearLayout
-        android:layout_height="wrap_content" 
-        android:layout_width="fill_parent"
-        >
-        <TextView 
-        android:id="@+id/placeholder_lbl"
-        android:layout_width="0dip"
-        android:layout_height="wrap_content"
-        android:layout_weight="1.0"
-        />
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="|"
-        />
-    <TextView
-        android:id="@+id/minTempPronostico_lbl"
-        android:ems="3"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Min"
-        android:gravity="center"
-        />
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="|"
-        />
-    <TextView
-        android:id="@+id/maxTempPronostico_lbl"
-        android:ems="3"
-        android:layout_height="wrap_content"
-        android:layout_width="wrap_content"
-        android:text="Max"
-        android:gravity="center"
-        />
+            android:gravity="center"
+            android:text="@string/placeholder_pressure" />
     </LinearLayout>
-	<ListView
-	    android:id="@android:id/list"
-	    android:layout_width="fill_parent" 
-	    android:layout_height="0dip"
-	    android:layout_weight="1.0"
-	    >
-	</ListView>
+
+    <TextView
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:background="#ADADAD"
+        android:text="@string/label_forecast"
+        android:textColor="#FFFFFF" />
+
+    <LinearLayout
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content" >
+
+        <TextView
+            android:layout_width="0dip"
+            android:layout_height="wrap_content"
+            android:layout_weight="1.0" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/separator" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:ems="3"
+            android:gravity="center"
+            android:text="@string/label_min_temperature" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/separator" />
+
+        <TextView
+            android:id="@+id/maxTempPronostico_lbl"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:ems="3"
+            android:gravity="center"
+            android:text="@string/label_max_temperature" />
+    </LinearLayout>
+
+    <ListView
+        android:id="@android:id/list"
+        android:layout_width="fill_parent"
+        android:layout_height="0dip"
+        android:layout_weight="1.0" >
+    </ListView>
+
     <ProgressBar
         android:id="@+id/loading_prg"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content" 
-        android:layout_gravity="center"
-        />
-    <TextView 
-        android:id="@+id/ultimoUpdate_txt" 
         android:layout_height="wrap_content"
+        android:layout_gravity="center" />
+
+    <TextView
+        style="@style/small_label"
+        android:id="@+id/ultimoUpdate_txt"
         android:layout_width="fill_parent"
-        android:textSize="12dp"
-        android:textColor="#ADADAD"
+        android:layout_height="wrap_content"
         android:layout_gravity="bottom|center_horizontal"
-        android:text="actualizado:"
-        />
+        android:text="@string/label_last_updated"
+    />
+
 </LinearLayout>

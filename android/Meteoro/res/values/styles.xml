@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources xmlns:android="http://schemas.android.com/apk/res/android">
+    <style name="small_label" parent="android:Widget.TextView">
+        <item name="android:textSize">12dp</item>
+    </style>
+</resources>

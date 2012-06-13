@@ -1,4 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="app_name">Meteoro</string>
+    <string name="placeholder_city">Ciudad</string>
+    <string name="label_temperature">Temperatura</string>
+    <string name="label_hummidity">Humedad</string>
+    <string name="label_pressure">Presión</string>
+    <string name="placeholder_temperature">NN°</string>
+    <string name="placeholder_pressure">NNNNhPa</string>
+    <string name="label_forecast">Pronóstico</string>
+    <string name="separator">|</string>
+    <string name="label_min_temperature">Min</string>
+    <string name="label_max_temperature">Max</string>
+    <string name="label_last_updated">actualizado:</string>
+    <string name="placeholder_date">fecha</string>
 </resources>
