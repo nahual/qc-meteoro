@@ -1,6 +1,3 @@
-/**
- * 07/06/2012 09:30:17 Copyright (C) 2011 10Pines S.R.L.
- */
 package ar.nahual.meteoro;
 
 import android.content.Intent;

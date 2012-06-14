@@ -1,6 +1,3 @@
-/**
- * 30/04/2012 17:35:18 Copyright (C) 2011 10Pines S.R.L.
- */
 package ar.nahual.meteoro;
 
 import java.util.ArrayList;

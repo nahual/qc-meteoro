@@ -1,6 +1,3 @@
-/**
- * 26/05/2012 16:55:16 Copyright (C) 2011 10Pines S.R.L.
- */
 package ar.nahual.meteoro;
 
 import java.io.BufferedReader;

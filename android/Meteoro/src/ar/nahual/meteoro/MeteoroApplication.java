@@ -1,6 +1,3 @@
-/**
- * 13/05/2012 17:42:57 Copyright (C) 2011 10Pines S.R.L.
- */
 package ar.nahual.meteoro;
 
 import ar.com.iron.android.extensions.applications.Db4oApplication;
