@@ -97,7 +97,7 @@ public class VerCiudadActivity extends CustomListActivity<Pronostico> {
 	protected void onPersistenceDaoDisponible(final PersistenceDao intercommObject) {
 		this.persistenceDao = intercommObject;
 		mostrarLaPrimeraCiudadDisponible();
-		// Mandando siempre a agregar ciudad cuando se inicia la app
+		// BUG: Mandando siempre a agregar ciudad cuando se inicia la app
         startActivityForResult(new Intent(this, AgregarCiudadActivity.class), CHOOSE_OTHER_CITY);
 	}
 
@@ -180,7 +180,7 @@ public class VerCiudadActivity extends CustomListActivity<Pronostico> {
 			temperature = estadoActual.getTemperature();
 			humedad = estadoActual.getHumidity();
 			pressure = estadoActual.getPressure();
-			// Haciendo que la fecha ultimo update siempre aparezca como 9:00 del dia actual
+			// BUG: Haciendo que la fecha ultimo update siempre aparezca como 9:00 del dia actual
 			final Calendar ultimoUpdate = GregorianCalendar.getInstance();
 			ultimoUpdate.set(Calendar.HOUR_OF_DAY,9);
 			ultimoUpdate.clear(Calendar.MINUTE);
@@ -392,7 +392,7 @@ public class VerCiudadActivity extends CustomListActivity<Pronostico> {
 				break;
 			}
 		}
-		// Haciendo que se muestre la ciudad anterior, en vez de la siguiente
+		//BUG: Haciendo que se muestre la ciudad anterior, en vez de la siguiente
 		int proximaCiudad = ciudadMostradaIndex - 1;
 		if (proximaCiudad < 0) {
 			proximaCiudad = result.size() - 1;
