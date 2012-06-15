@@ -26,6 +26,8 @@ def get_cities():
 
 @app.route('/get_forecast', methods=['GET'])
 def get_forecast():
+    if not working:
+        return json.dumps({'error':'Service down'}), 503
     city = request.args.get('city')
     if not city:
         return json.dumps({'error':'City is mandatory'}), 400
@@ -41,11 +43,19 @@ def chage_provider():
     weather_provider = providers[name]
     return json.dumps({'message':'ok'}) 
 
+@app.route('/toggle', methods=['GET'])
+def toggle_out_of_service():
+    global working
+    working = not working
+    return json.dumps({'message':(working and 'Now working') or 'Not working anymore'})
+
+
 if __name__ == '__main__':
     providers = {
         'yahoo': YahooWeatherProvider(log_handlers=app.config['LOG_HANDLERS']),
         'mock': MockWeatherProvider(log_handlers=app.config['LOG_HANDLERS']),
     }
     weather_provider = providers['yahoo'] 
+    working = True
     app.run(host=app.config['HOST'], port=app.config['PORT'], debug=app.config['DEBUG'])
 
