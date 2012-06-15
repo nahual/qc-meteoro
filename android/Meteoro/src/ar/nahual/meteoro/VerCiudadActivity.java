@@ -97,6 +97,8 @@ public class VerCiudadActivity extends CustomListActivity<Pronostico> {
 	protected void onPersistenceDaoDisponible(final PersistenceDao intercommObject) {
 		this.persistenceDao = intercommObject;
 		mostrarLaPrimeraCiudadDisponible();
+		// Mandando siempre a agregar ciudad cuando se inicia la app
+        startActivityForResult(new Intent(this, AgregarCiudadActivity.class), CHOOSE_OTHER_CITY);
 	}
 
 	/**
@@ -120,8 +122,6 @@ public class VerCiudadActivity extends CustomListActivity<Pronostico> {
 			startActivityForResult(new Intent(this, AgregarCiudadActivity.class), CHOOSE_FIRST_CITY);
 		} else {
 			mostrarLaCiudad(ciudades.iterator().next().getId());
-			// Mandando siempre a agregar ciudad cuando se inicia la app
-			startActivityForResult(new Intent(this, AgregarCiudadActivity.class), CHOOSE_OTHER_CITY);
 		}
 	}
 
