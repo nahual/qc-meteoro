@@ -175,7 +175,12 @@ public class VerCiudadActivity extends CustomListActivity<Pronostico> {
 			temperature = estadoActual.getTemperature();
 			humedad = estadoActual.getHumidity();
 			pressure = estadoActual.getPressure();
-			actualizado += ciudadActual.getUltimoUpdate().toLocaleString();
+			// Haciendo que la fecha ultimo update siempre aparezca como 9:00 del dia actual
+			final Calendar ultimoUpdate = GregorianCalendar.getInstance();
+			ultimoUpdate.set(Calendar.HOUR_OF_DAY,9);
+			ultimoUpdate.clear(Calendar.MINUTE);
+			ultimoUpdate.clear(Calendar.SECOND);
+			actualizado += ultimoUpdate.getTime().toLocaleString();
 		}
 		final ImageView img = ViewHelper.findImageView(R.id.estado_img, getContentView());
 		img.setImageResource(iconoDeEstado);
