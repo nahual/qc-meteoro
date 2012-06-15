@@ -387,9 +387,10 @@ public class VerCiudadActivity extends CustomListActivity<Pronostico> {
 				break;
 			}
 		}
-		int proximaCiudad = ciudadMostradaIndex + 1;
-		if (proximaCiudad >= result.size()) {
-			proximaCiudad = 0;
+		// Haciendo que se muestre la ciudad anterior, en vez de la siguiente
+		int proximaCiudad = ciudadMostradaIndex - 1;
+		if (proximaCiudad < 0) {
+			proximaCiudad = result.size() - 1;
 		}
 		final CiudadPersistida ciudadAmostrar = result.get(proximaCiudad);
 		mostrarLaCiudad(ciudadAmostrar.getId());
