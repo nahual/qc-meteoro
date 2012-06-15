@@ -142,6 +142,7 @@ class YahooWeatherProvider(WeatherProvider):
 			{'code': u'331928', 'name': u'San Isidro, Buenos Aires'},
 			{'code': u'467021', 'name': u'Palpala, Jujuy'}
 		]
+        self._cities.sort(key = lambda city: city['name'])
         self._statuses = {
             '11': 'showers', '12': 'showers', '8': 'showers',
             '40': 'scattered showers', '9': 'scattered showers',
