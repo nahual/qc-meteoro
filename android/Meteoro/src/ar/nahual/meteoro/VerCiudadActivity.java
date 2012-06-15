@@ -131,6 +131,9 @@ public class VerCiudadActivity extends CustomListActivity<Pronostico> {
 			if (requestCode == CHOOSE_FIRST_CITY) {
 				// Cancelo la seleccion de ciudad en la primera vez. Salimos
 				finish();
+			} else if (requestCode == CHOOSE_OTHER_CITY) {
+			    // BUG: Si se cancela el agregar, en vez de volver, ir a la primer ciudad 
+			    mostrarLaPrimeraCiudadDisponible();
 			}
 			return;
 		}
