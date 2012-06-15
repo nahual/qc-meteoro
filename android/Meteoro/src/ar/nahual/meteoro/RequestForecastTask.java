@@ -81,7 +81,8 @@ public class RequestForecastTask extends AsyncTask<CiudadPersistida, Void, List<
         }
 		if (statusLine.getStatusCode() != HttpStatus.SC_OK) {
 			showToast("El servidor no está disponible");
-			return Collections.emptyList();
+			// BUG: Explotando si el servidor no esta disponible
+			throw new RuntimeException();
 		}
 
 		final HttpEntity entity = response.getEntity();
