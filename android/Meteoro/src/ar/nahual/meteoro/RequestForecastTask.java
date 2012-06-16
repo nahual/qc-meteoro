@@ -35,6 +35,7 @@ public class RequestForecastTask extends AsyncTask<CiudadPersistida, Void, List<
 	private final VerCiudadActivity activity;
 	private DefaultHttpClient httpClient;
 	private CiudadPersistida ciudadElegida;
+	private static int failedAttempts = 0;
 
 	/**
 	 * @see android.os.AsyncTask#onPreExecute()
@@ -71,9 +72,15 @@ public class RequestForecastTask extends AsyncTask<CiudadPersistida, Void, List<
 		try {
 			response = httpClient.execute(request);
 		} catch (final Exception e) {
-			showToast("Error. Datos no disponibles al acceder al servidor: " + e.getMessage());
+			failedAttempts++;
+			if (failedAttempts == 1) {
+				// Solo la primera vez
+				showToast("Error. Datos no disponibles al acceder al servidor: " + e.getMessage());
+			}
 			return Collections.emptyList();
 		}
+		// Reseteamos el contador
+		failedAttempts = 0;
 		final StatusLine statusLine = response.getStatusLine();
 		if (statusLine.getStatusCode() == HttpStatus.SC_BAD_REQUEST) {
             showToast("El servidor no pudo responder al pedido para la ciudad: " + ciudadElegida.getCityCode());
