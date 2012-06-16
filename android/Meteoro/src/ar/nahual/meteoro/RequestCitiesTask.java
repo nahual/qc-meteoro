@@ -33,6 +33,8 @@ public class RequestCitiesTask extends AsyncTask<String, Void, List<CiudadPersis
 	private DefaultHttpClient httpClient;
 	private final AgregarCiudadActivity activity;
 
+	private static int failedAttempts = 0;
+
 	/**
 	 * @param customArrayAdapter
 	 * 
@@ -51,9 +53,15 @@ public class RequestCitiesTask extends AsyncTask<String, Void, List<CiudadPersis
 		try {
 			response = httpClient.execute(request);
 		} catch (final Exception e) {
-			showToast("Se produjo un error en la conexion: " + e.getMessage());
+			failedAttempts++;
+			if (failedAttempts == 1) {
+				// Es la primera vez que falla
+				showToast("Se produjo un error en la conexion: " + e.getMessage());
+			}
 			return Collections.emptyList();
 		}
+		// Reseteamos el contador de fallos
+		failedAttempts = 0;
 		final StatusLine statusLine = response.getStatusLine();
 		if (statusLine.getStatusCode() != HttpStatus.SC_OK) {
 			showToast("El servidor no está disponible");
