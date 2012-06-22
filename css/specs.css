@@ -1,0 +1,14 @@
+table#statuses td {
+    text-align:center;
+    width: 20%;
+    border: solid 1px;
+}
+
+figure {
+    text-align: center;
+}
+
+figure figcaption {
+    font-size: 0.8em;
+    font-style: italic;
+}
