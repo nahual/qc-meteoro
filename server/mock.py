@@ -6,12 +6,12 @@ class MockWeatherProvider(WeatherProvider):
     def __init__(self, log_handlers):
         WeatherProvider.__init__(self, "MockWeahterProvider", log_handlers)
         self._cities = [
-            {"code":"466863", "name": "Mar del Plata"},
-            {"code":"466863", "name": "Buenos Aires"},
-            {"code":"466863", "name": "La Plata"},
-            {"code":"466863", "name": "Mendoza"},
-            {"code":"466863", "name": "Cordoba"},
-            {"code":"466863", "name": "Rosario"},
+            {"code":"1", "name": "Mar del Plata"},
+            {"code":"2", "name": "Buenos Aires"},
+            {"code":"3", "name": "La Plata"},
+            {"code":"4", "name": "Mendoza"},
+            {"code":"5", "name": "Cordoba"},
+            {"code":"6", "name": "Rosario"},
         ]          
 
     def get_forecast(self, city):
