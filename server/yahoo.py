@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 from weather_provider import WeatherProvider
 import urllib2
+import urllib
 import json
 from datetime import datetime, timedelta
 
@@ -15,7 +16,8 @@ def safe_get(data, keys):
 class YahooWeatherProvider(WeatherProvider):
     def __init__(self, log_handlers):
         WeatherProvider.__init__(self, "MockWeahterProvider", log_handlers)
-        self.url = 'http://weather.yahooapis.com/forecastjson?w=%s&d=3&u=c'
+        self.url = 'http://weather.yahooapis.com/forecastjson?w=%s&d=3&u=c' # TODO: Remove, old url
+        self.url = "http://query.yahooapis.com/v1/public/yql?"
         self._cities = [
             {'code': u'468739', 'name': u'Buenos Aires, Buenos Aires'},
 			{'code': u'466861', 'name': u'C\xf3rdoba, C\xf3rdoba'},
@@ -168,8 +170,13 @@ class YahooWeatherProvider(WeatherProvider):
 
     def get_forecast(self, city):
         try:
-            data = urllib2.urlopen(self.url % city)
+            
+            query = urllib.urlencode([('q', "select * from weather.forecast where location=%s" % city)])
+            full_url = self.url + query + "&format=json&u=c&d=3" # FIXME: Parameters don't work
+
+            data = urllib2.urlopen(full_url)
             response = json.loads(data.read())
+            print response
             if 'Message' in response:
                 raise Exception(response['Message'])
             return self._build_meteoro_result(response)
