@@ -173,8 +173,9 @@ class YahooWeatherProvider(WeatherProvider):
             full_url = self.url + query
             data = urllib2.urlopen(full_url).read()
             response = json.loads(data)
+            response = response['query']['results']['channel']
             if 'Error' in data:
-                raise Exception(response['query']['results']['channel']['item']['title'])
+                raise Exception(response['item']['title'])
             return self._build_meteoro_result(response)
         except Exception as e:
             self._log.error("Error while getting weather from Yahoo", exc_info = True)
@@ -185,20 +186,20 @@ class YahooWeatherProvider(WeatherProvider):
         rv = []
         rv.append({
             'date': today.strftime(self.date_format),
-            'temperature': "%s°C" % safe_get(response, ['condition', 'temperature']),
+            'temperature': u"%s°C" % safe_get(response, ['item', 'condition', 'temp']),
             'pressure': "%shPa" % safe_get(response, ['atmosphere','pressure']),
             'humidity': "%s%%" % safe_get(response, ['atmosphere','humidity']),
-            'status': self._statuses.get(safe_get(response, ['condition','code']), safe_get(response, ['condition','text']).lower()),
+            'status': self._statuses.get(safe_get(response, ['item', 'condition','code']), safe_get(response, ['item', 'condition','text']).lower()),
             'min': '', 'max': ''
         })
-        forecast = safe_get(response, ['forecast'])
+        forecast = safe_get(response, ['item', 'forecast'])
         if forecast:
             for i, day in enumerate(forecast):
                 rv.append({
                     'date': (today+timedelta(days=i)).strftime(self.date_format),
-                    'min': "%s°C" % safe_get(day, ['low_temperature']),
-                    'max': "%s°C" % safe_get(day, ['high_temperature']),
-                    'status': self._text_statuses.get(YahooWeatherProvider._normalize_status(safe_get(day, ['condition'])), YahooWeatherProvider._normalize_status(safe_get(day, ['condition']))),
+                    'min': u"%s°C" % safe_get(day, ['low']),
+                    'max': u"%s°C" % safe_get(day, ['high']),
+                    'status': self._text_statuses.get(YahooWeatherProvider._normalize_status(safe_get(day, ['text'])), YahooWeatherProvider._normalize_status(safe_get(day, ['text']))),
                     'temperature': '', 'pressure': '', 'humidity': ''
                 })
         return rv
