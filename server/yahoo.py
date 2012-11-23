@@ -16,8 +16,7 @@ def safe_get(data, keys):
 class YahooWeatherProvider(WeatherProvider):
     def __init__(self, log_handlers):
         WeatherProvider.__init__(self, "MockWeahterProvider", log_handlers)
-        self.url = 'http://weather.yahooapis.com/forecastjson?w=%s&d=3&u=c' # TODO: Remove, old url
-        self.url = "http://query.yahooapis.com/v1/public/yql?"
+        self.url = "http://query.yahooapis.com/v1/public/yql?format=json&"
         self._cities = [
             {'code': u'468739', 'name': u'Buenos Aires, Buenos Aires'},
 			{'code': u'466861', 'name': u'C\xf3rdoba, C\xf3rdoba'},
@@ -170,15 +169,12 @@ class YahooWeatherProvider(WeatherProvider):
 
     def get_forecast(self, city):
         try:
-            
-            query = urllib.urlencode([('q', "select * from weather.forecast where location=%s" % city)])
-            full_url = self.url + query + "&format=json&u=c&d=3" # FIXME: Parameters don't work
-
-            data = urllib2.urlopen(full_url)
-            response = json.loads(data.read())
-            print response
-            if 'Message' in response:
-                raise Exception(response['Message'])
+            query = urllib.urlencode([('q', "select * from weather.forecast where (woeid=%s and u='c')" % city)])
+            full_url = self.url + query
+            data = urllib2.urlopen(full_url).read()
+            response = json.loads(data)
+            if 'Error' in data:
+                raise Exception(response['query']['results']['channel']['item']['title'])
             return self._build_meteoro_result(response)
         except Exception as e:
             self._log.error("Error while getting weather from Yahoo", exc_info = True)

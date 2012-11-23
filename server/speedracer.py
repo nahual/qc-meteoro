@@ -55,7 +55,7 @@ if __name__ == '__main__':
         'yahoo': YahooWeatherProvider(log_handlers=app.config['LOG_HANDLERS']),
         'mock': MockWeatherProvider(log_handlers=app.config['LOG_HANDLERS']),
     }
-    weather_provider = providers['mock'] 
+    weather_provider = providers['yahoo'] 
     working = True
     app.run(host=app.config['HOST'], port=app.config['PORT'], debug=app.config['DEBUG'])
 
