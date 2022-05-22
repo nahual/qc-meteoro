@@ -1,6 +1,5 @@
 # -*- coding: utf-8 -*-
 from weather_provider import WeatherProvider
-import urllib2
 import urllib
 import json
 from datetime import datetime, timedelta
@@ -169,9 +168,9 @@ class YahooWeatherProvider(WeatherProvider):
 
     def get_forecast(self, city):
         try:
-            query = urllib.urlencode([('q', "select * from weather.forecast where (woeid=%s and u='c')" % city)])
+            query = urllib.parse.urlencode([('q', "select * from weather.forecast where (woeid=%s and u='c')" % city)])
             full_url = self.url + query
-            data = urllib2.urlopen(full_url).read()
+            data = urllib.request.urlopen(full_url).read()
             response = json.loads(data)
             response = response['query']['results']['channel']
             if 'Error' in data:
